@@ -2,6 +2,8 @@ import { Navbar } from '@/components/layout/Navbar';
 import { HeroSection } from '@/components/pages/home/HeroSection';
 import { LocationsSection } from '@/components/pages/home/LocationsSection';
 import { StatisticsSection } from '@/components/pages/home/StatisticsSection';
+import { ServicesSectionWrapper } from '@/components/pages/home/ServicesSection';
+
 
 export default function HomePage() {
   return (
@@ -10,6 +12,7 @@ export default function HomePage() {
       <HeroSection />
       <LocationsSection />
       <StatisticsSection />
+      <ServicesSectionWrapper />
     </main>
   );
 }

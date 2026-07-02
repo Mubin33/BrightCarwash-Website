@@ -1,10 +1,8 @@
 'use client';
-
 import { Icon } from '@/components/ui/Icon';
 import { Button } from '@/components/ui/Button';
 import { MoveUpRight } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
-
 interface LocationData {
     name: string;
     address: string;
@@ -13,35 +11,31 @@ interface LocationData {
     mapEmbedUrl: string;
     directionsUrl: string;
 }
-
 interface Props {
     location: LocationData;
 }
-
 export function LocationCard({ location }: Props) {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
-
     return (
         <div
-            className={`flex p-6 flex-col justify-center items-start gap-6 flex-1 rounded-lg border ${isDark ? 'border-white/20 bg-white/[0.12]' : 'border-[#DFE1E7] bg-white'
+            className={`flex p-4 sm:p-6 flex-col justify-center items-start gap-4 sm:gap-6 flex-1 rounded-lg border ${isDark ? 'border-white/20 bg-white/[0.12]' : 'border-[#DFE1E7] bg-white'
                 }`}
         >
             {/* Header */}
-            <div className="flex justify-between items-end self-stretch">
-                <h3 className={`font-bebas-neue text-4xl font-normal leading-[121%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
+            <div className="flex flex-wrap justify-between items-center gap-3 self-stretch">
+                <h3 className={`font-bebas-neue text-2xl sm:text-3xl lg:text-4xl font-normal leading-[121%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
                     {location.name}
                 </h3>
                 <a href={location.directionsUrl} target="_blank" rel="noopener noreferrer">
-                    <Button className="flex py-3 px-5 justify-center items-center gap-2 rounded-lg bg-[#B23730] text-white font-inter text-sm hover:bg-[#9A2E28]">
+                    <Button className="flex py-2.5 sm:py-3 px-4 sm:px-5 justify-center items-center gap-2 rounded-lg bg-[#B23730] text-white font-inter text-xs sm:text-sm hover:bg-[#9A2E28]">
                         Get Directions
                         <MoveUpRight size={16} />
                     </Button>
                 </a>
             </div>
-
             {/* Map */}
-            <div className="flex h-[250px] self-stretch rounded-lg border border-[#DFE1E7] relative overflow-hidden">
+            <div className="flex h-[180px] sm:h-[220px] lg:h-[250px] self-stretch rounded-lg border border-[#DFE1E7] relative overflow-hidden">
                 <iframe
                     src={location.mapEmbedUrl}
                     width="100%"
@@ -52,18 +46,17 @@ export function LocationCard({ location }: Props) {
                     referrerPolicy="no-referrer-when-downgrade"
                 />
             </div>
-
             {/* Contact Info */}
-            <div className='flex gap-3'>
+            <div className="flex flex-wrap gap-3 sm:gap-4">
                 <div className="flex items-start gap-2">
                     <Icon name="location" width={24} height={24} color="#0098E8" />
-                    <span className={`font-inter text-lg ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
+                    <span className={`font-inter text-sm sm:text-base lg:text-lg ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
                         {location.address}
                     </span>
                 </div>
                 <div className="flex items-start gap-2">
                     <Icon name="phone" width={24} height={24} color="#0098E8" />
-                    <span className={`font-inter text-lg ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
+                    <span className={`font-inter text-sm sm:text-base lg:text-lg ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
                         {location.phone}
                     </span>
                 </div>
