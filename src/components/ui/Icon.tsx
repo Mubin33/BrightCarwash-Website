@@ -13,6 +13,8 @@ const COLOR_FILTERS: Record<string, string> = {
     '#0098E8': 'brightness(0) saturate(100%) invert(56%) sepia(82%) saturate(2365%) hue-rotate(179deg) brightness(97%) contrast(93%)',
     '#FFFFFF': 'brightness(0) saturate(100%) invert(100%)',
     '#FEC300': 'brightness(0) saturate(100%) invert(78%) sepia(62%) saturate(1667%) hue-rotate(358deg) brightness(103%) contrast(105%)',
+    '#FAAD14': 'brightness(0) saturate(100%) invert(72%) sepia(92%) saturate(1280%) hue-rotate(360deg) brightness(101%) contrast(101%)',
+    '#E8E8E8': 'brightness(0) saturate(100%) invert(95%) sepia(2%) saturate(0%) hue-rotate(0deg) brightness(96%) contrast(86%)',
 };
 
 export function Icon({ name, width = 24, height = 24, color, className = '' }: IconProps) {
