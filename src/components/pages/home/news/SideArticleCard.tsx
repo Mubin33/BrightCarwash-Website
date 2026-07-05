@@ -31,7 +31,7 @@ export function SideArticleCard({ article }: Props) {
                     </span>
                 </div>
                 <h3
-                    className={`self-stretch font-bebas-neue text-2xl font-normal leading-[112%] capitalize ${isDark ? 'text-white' : 'text-[#4A4C56]'
+                    className={`font-bebas self-stretch font-bebas-neue text-2xl font-normal leading-[112%] capitalize ${isDark ? 'text-white' : 'text-[#4A4C56]'
                         }`}
                 >
                     {article.title}

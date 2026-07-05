@@ -5,7 +5,7 @@ import { FounderCard } from './FounderCard';
 
 export function AboutSectionWrapper() {
     return (
-        <section className="font-bebas flex py-20 px-4 sm:px-8 lg:px-[300px] flex-col justify-center items-center gap-12 self-stretch bg-[#092544]">
+        <section className=" flex py-20 px-4 sm:px-8 lg:px-[300px] flex-col justify-center items-center gap-12 self-stretch bg-[#092544]">
             <div className="flex flex-col lg:flex-row items-start gap-6 self-stretch">
                 {/* Left Content */}
                 <div className="flex w-full lg:w-[648px] flex-col items-start gap-6 self-stretch">

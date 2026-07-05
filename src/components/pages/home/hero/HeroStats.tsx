@@ -6,7 +6,7 @@ const stats = [
 ];
 export function HeroStats() {
     return (
-        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+        <div className=" flex flex-wrap items-center gap-3 sm:gap-4">
             {stats.map((stat, i) => (
                 <div key={stat.icon} className="flex items-center gap-3 sm:gap-4">
                     <div className="flex items-center gap-2">

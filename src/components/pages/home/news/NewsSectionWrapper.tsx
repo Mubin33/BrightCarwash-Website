@@ -54,7 +54,7 @@ export function NewsSectionWrapper() {
                             </span>
                         </div>
                         <h3
-                            className={`w-full lg:w-[559px] font-bebas-neue text-4xl font-normal leading-[100%] capitalize ${isDark ? 'text-white' : 'text-[#1D1F2C]'
+                            className={`font-bebas w-full lg:w-[559px] font-bebas-neue text-4xl font-normal leading-[100%] capitalize ${isDark ? 'text-white' : 'text-[#1D1F2C]'
                                 }`}
                         >
                             {featuredArticle.title}

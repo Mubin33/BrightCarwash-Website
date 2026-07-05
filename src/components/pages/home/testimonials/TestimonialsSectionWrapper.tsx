@@ -11,7 +11,7 @@ export function TestimonialsSectionWrapper() {
 
     return (
         <section
-            className={`font-bebas flex py-20 px-4 sm:px-8 lg:px-[300px] flex-col justify-center items-center gap-12 self-stretch border ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-white'
+            className={` flex py-20 px-4 sm:px-8 lg:px-[300px] flex-col justify-center items-center gap-12 self-stretch border ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-white'
                 }`}
         >
             <SectionHeader
@@ -27,7 +27,7 @@ export function TestimonialsSectionWrapper() {
                 subheading="Our clients rave about the exceptional service and attention to detail they receive at every visit. Join them today!"
             />
 
-            <div className="columns-1 md:columns-2 lg:columns-3 gap-1 w-full max-w-[1320px] [&_>_*]:mb-0">
+            <div className="font-bebas columns-1 md:columns-2 lg:columns-3 gap-1 w-full max-w-[1320px] [&_>_*]:mb-0">
                 {testimonials.map((t) => (
                     <div key={t.id} className="break-inside-avoid p-2">
                         <TestimonialCard testimonial={t} />

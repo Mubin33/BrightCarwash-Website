@@ -30,17 +30,17 @@ export function Accordion({
             type="button"
             onClick={() => setExpanded(!expanded)}
             className={`flex p-6 justify-between items-center self-stretch rounded-lg border text-left transition-colors ${expanded
-                    ? isDark
-                        ? `border-[#B23730]/40 bg-[#B23730]/[0.12] rounded-xl ${expandedClassName}`
-                        : `border-[#B23730] bg-[#F7EBEA] rounded-xl ${expandedClassName}`
-                    : isDark
-                        ? `border-white/20 bg-white/[0.06] ${collapsedClassName}`
-                        : `border-[#DFE1E7] bg-white ${collapsedClassName}`
+                ? isDark
+                    ? `border-[#B23730]/40 bg-[#B23730]/[0.12] rounded-xl ${expandedClassName}`
+                    : `border-[#B23730] bg-[#F7EBEA] rounded-xl ${expandedClassName}`
+                : isDark
+                    ? `border-white/20 bg-white/[0.06] ${collapsedClassName}`
+                    : `border-[#DFE1E7] bg-white ${collapsedClassName}`
                 }`}
         >
             <div className="flex flex-col items-start gap-3 flex-1">
                 <span
-                    className={`font-bebas-neue text-2xl font-normal leading-[100%] ${expanded && !isDark ? 'text-[#B23730]' : isDark ? 'text-white' : 'text-[#1D1F2C]'
+                    className={`font-bebas text-2xl font-normal leading-[100%] ${expanded && !isDark ? 'text-[#B23730]' : isDark ? 'text-white' : 'text-[#1D1F2C]'
                         } ${questionClassName}`}
                 >
                     {question}

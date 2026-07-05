@@ -28,7 +28,7 @@ export function VehicleCard({ image, name, doors, selected, onClick }: Props) {
             <span className="text-[#1D1F2C] font-inter text-xs sm:text-sm lg:text-base font-medium leading-[100%] truncate w-full text-center">
                 {name}
             </span>
-            <span className="text-[#4A4C56] font-inter text-[10px] sm:text-sm! font-normal leading-[150%] tracking-wider">
+            <span className="text-[#4A4C56] font-inter text-[10px] sm:text-xs! font-normal leading-[150%] tracking-wider">
                 {doors}
             </span>
         </button>

@@ -16,12 +16,12 @@ export function ServicesSectionWrapper() {
 
     return (
         <section
-            className={`font-bebas flex py-20 px-4 sm:px-8 lg:px-[300px] flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-white'
+            className={`flex py-20 px-4 sm:px-8 lg:px-[300px] flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-white'
                 }`}
         >
             <ServicesHeader />
 
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 self-stretch">
+            <div className="font-bebas  flex flex-col sm:flex-row justify-between items-center gap-4 self-stretch">
                 <LocationFilter />
                 <Link href="/services">
                     <Button
@@ -34,7 +34,7 @@ export function ServicesSectionWrapper() {
                 </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-[1320px]">
+            <div className="font-bebas grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-[1320px]">
                 {services.map((service) => (
                     <ServiceCard
                         key={service.id}

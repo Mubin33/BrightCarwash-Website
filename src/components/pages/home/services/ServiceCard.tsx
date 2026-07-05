@@ -47,7 +47,7 @@ export function ServiceCard({ service, selected, onSelect }: Props) {
 
             {/* Name */}
             <h3
-                className={`h-16 self-stretch font-bebas-neue text-[32px] font-normal leading-[100%] ${selected ? 'text-white' : isDark ? 'text-white' : 'text-[#1D1F2C]'
+                className={`self-stretch  text-[32px] font-normal leading-[100%] ${selected ? 'text-white' : isDark ? 'text-white' : 'text-[#1D1F2C]'
                     }`}
             >
                 {service.name}
@@ -96,10 +96,10 @@ export function ServiceCard({ service, selected, onSelect }: Props) {
                 variant={selected ? 'primary' : 'outline'}
                 onClick={(e) => { e.stopPropagation(); onSelect(service.id); }}
                 className={`w-full py-[14px] px-5 justify-center items-center gap-2 rounded-lg font-inter text-sm ${selected
-                        ? ''
-                        : isDark
-                            ? 'border-white/20 bg-white/[0.08] text-white hover:bg-white/[0.16]'
-                            : 'bg-white hover:bg-[#F8FAFB]'
+                    ? ''
+                    : isDark
+                        ? 'border-white/20 bg-white/[0.08] text-white hover:bg-white/[0.16]'
+                        : 'bg-white hover:bg-[#F8FAFB]'
                     }`}
             >
                 {selected ? 'Confirm booking - pay deposit' : 'Add to cart'}

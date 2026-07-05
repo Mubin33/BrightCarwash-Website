@@ -11,7 +11,7 @@ export function HowItWorksSectionWrapper() {
 
     return (
         <section
-            className={`font-bebas flex py-20 px-4 sm:px-8 lg:px-[300px] flex-col justify-center items-center gap-12 self-stretch border ${isDark
+            className={` flex py-20 px-4 sm:px-8 lg:px-[300px] flex-col justify-center items-center gap-12 self-stretch border ${isDark
                 ? 'border-white/20 bg-[#1A1A1A]'
                 : 'border-[#DFE1E7] bg-white'
                 }`}
@@ -37,7 +37,7 @@ export function HowItWorksSectionWrapper() {
             />
 
             {/* Steps Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-[1320px]">
+            <div className="font-bebas grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-[1320px]">
                 {howItWorksData.steps.map((step) => (
                     <StepCard key={step.number} step={step} />
                 ))}
