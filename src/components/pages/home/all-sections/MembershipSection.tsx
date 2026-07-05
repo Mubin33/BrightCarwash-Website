@@ -1,4 +1,4 @@
-import { MembershipSectionWrapper } from "./membership/MembershipSectionWrapper";
+import { MembershipSectionWrapper } from "../membership/MembershipSectionWrapper";
 
 
 export function MembershipSection() {

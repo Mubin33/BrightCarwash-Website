@@ -1,4 +1,4 @@
-import { HeroSectionWrapper } from "./hero/HeroSectionWrapper";
+import { HeroSectionWrapper } from "../hero/HeroSectionWrapper";
 
 
 export function HeroSection() {

@@ -1,0 +1,13 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: app-frontend
+    container_name: app-frontend
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    working_dir: /usr/src/app
+    command: npm start

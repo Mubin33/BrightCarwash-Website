@@ -7,8 +7,8 @@ import { DatePicker } from '@/components/ui/DatePicker';
 
 const vehicles = [
     { name: 'Sedan', doors: '2-4 doors', image: '/images/Sedan.png' },
-    { name: 'SUV', doors: '4-6 doors', image: '/images/SUV.png' },
-    { name: 'Truck', doors: '2-4 doors', image: '/images/Truck.png' },
+    { name: 'SUV', doors: '5+ doors', image: '/images/SUV.png' },
+    { name: 'Truck', doors: 'For Work or Cargo', image: '/images/Truck.png' },
 ];
 
 export function QuoteForm() {
@@ -23,7 +23,7 @@ export function QuoteForm() {
                     <span className="text-white font-bebas-neue text-2xl sm:text-[32px] leading-[100%] self-stretch text-start">
                         Get Your Free Quote
                     </span>
-                    <span className="text-white/80 font-inter text-sm sm:text-base leading-[160%] self-stretch text-start">
+                    <span className="font-inter! text-white/80  text-md sm:text-base leading-[160%] self-stretch text-start">
                         Fill in your details and we&apos;ll get back to you with the best offer for your vehicle.
                     </span>
                 </div>

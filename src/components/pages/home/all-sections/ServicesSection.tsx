@@ -1,4 +1,4 @@
-import { ServicesSectionWrapper } from "./services/ServiceSectionWrapper";
+import { ServicesSectionWrapper } from "../services/ServiceSectionWrapper";
 
 
 

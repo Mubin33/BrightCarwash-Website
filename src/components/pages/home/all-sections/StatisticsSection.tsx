@@ -1,4 +1,4 @@
-import { StatCard } from './statistics/StatCard';
+import { StatCard } from '../statistics/StatCard';
 import { statistics } from '@/data/statistics';
 
 export function StatisticsSection() {

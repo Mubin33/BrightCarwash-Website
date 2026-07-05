@@ -1,4 +1,4 @@
-import { GallerySectionWrapper } from './gallery/GallerySectionWrapper';
+import { GallerySectionWrapper } from '../gallery/GallerySectionWrapper';
 
 export function GallerySection() {
     return <GallerySectionWrapper />;

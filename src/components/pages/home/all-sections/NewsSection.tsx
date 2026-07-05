@@ -1,4 +1,4 @@
-import { NewsSectionWrapper } from './news/NewsSectionWrapper';
+import { NewsSectionWrapper } from '../news/NewsSectionWrapper';
 
 export function NewsSection() {
     return <NewsSectionWrapper />;
