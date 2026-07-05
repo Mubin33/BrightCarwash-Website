@@ -47,20 +47,20 @@ export function ServiceCard({ service, selected, onSelect }: Props) {
 
             {/* Name */}
             <h3
-                className={`self-stretch  text-[32px] font-normal leading-[100%] ${selected ? 'text-white' : isDark ? 'text-white' : 'text-[#1D1F2C]'
+                className={`font-bebas self-stretch  text-[32px] font-normal leading-[100%] ${selected ? 'text-white' : isDark ? 'text-white' : 'text-[#1D1F2C]'
                     }`}
             >
                 {service.name}
             </h3>
 
             {/* Price & Duration */}
-            <div className="flex justify-between items-center self-stretch flex-wrap gap-2">
-                <span className="text-[#B23730] font-inter text-[32px] font-bold leading-[100%]">
+            <div className="font-inter flex justify-between items-center self-stretch flex-wrap gap-2">
+                <span className="font-inter text-[#B23730] text-[42px] font-bold leading-[100%]">
                     ${service.price}
                 </span>
                 <div className={`flex py-1.5 px-2 items-center gap-2 rounded-lg border ${isDark && !selected ? 'border-white/20' : 'border-[#DFE1E7]'}`}>
-                    <Icon name="clock" width={14} height={14} color="#0098E8" />
-                    <span className={`font-inter text-sm ${selected ? 'text-white/80' : isDark ? 'text-white/60' : 'text-[#777980]'
+                    <Icon name="clock" width={20} height={20} color={isDark && !selected ? 'ffffff' : '#0098E8'} />
+                    <span className={`font-inter text-md ${selected ? 'text-white/80' : isDark ? 'text-white/60' : 'text-[#777980]'
                         }`}>
                         {service.duration}
                     </span>
@@ -71,10 +71,10 @@ export function ServiceCard({ service, selected, onSelect }: Props) {
             <button
                 type="button"
                 onClick={(e) => { e.stopPropagation(); setExpanded(!expanded); }}
-                className={`flex w-full py-3 px-4 flex-col items-start gap-4 rounded-md border ${isDark && !selected ? 'border-white/20 bg-white/[0.08]' : 'border-[#DFE1E7] bg-white'
+                className={`flex w-full py-3 px-4 flex-col items-start gap-4 rounded-md border ${isDark && !selected ? 'border-white/20 bg-white/[0.08]' : 'border-[#DFE1E7] bg-[#F8FAFB]'
                     }`}
             >
-                <div className="flex justify-between items-center self-stretch">
+                <div className=" flex justify-between items-center self-stretch">
                     <span className={`font-inter text-sm ${isDark && !selected ? 'text-white' : 'text-[#1D1F2C]'}`}>
                         {expanded ? 'Hide details' : 'Show details'}
                     </span>
@@ -85,7 +85,7 @@ export function ServiceCard({ service, selected, onSelect }: Props) {
                     )}
                 </div>
                 {expanded && (
-                    <p className={`font-inter text-sm leading-[150%] ${isDark && !selected ? 'text-white/60' : 'text-[#777980]'}`}>
+                    <p className={`font-inter text-start text-sm leading-[150%] ${isDark && !selected ? 'text-white/60' : 'text-[#777980]'}`}>
                         {service.description}
                     </p>
                 )}

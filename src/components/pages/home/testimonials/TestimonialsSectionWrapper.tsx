@@ -27,7 +27,7 @@ export function TestimonialsSectionWrapper() {
                 subheading="Our clients rave about the exceptional service and attention to detail they receive at every visit. Join them today!"
             />
 
-            <div className="font-bebas columns-1 md:columns-2 lg:columns-3 gap-1 w-full max-w-[1320px] [&_>_*]:mb-0">
+            <div className=" columns-1 md:columns-2 lg:columns-3 gap-1 w-full max-w-[1320px] [&_>_*]:mb-0">
                 {testimonials.map((t) => (
                     <div key={t.id} className="break-inside-avoid p-2">
                         <TestimonialCard testimonial={t} />

@@ -3,6 +3,8 @@ import { Inter, Bebas_Neue } from 'next/font/google';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import './globals.css';
 import { Footer } from '@/components/layout/Footer';
+import { Navbar } from '@/components/layout/Navbar';
+import { FaqSection } from '@/components/pages/home/all-sections/FaqSection';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const bebasNeue = Bebas_Neue({
@@ -21,7 +23,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${inter.variable} ${bebasNeue.variable}`} suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider>
+          <Navbar />
           {children}
+          <FaqSection />
           <Footer />
         </ThemeProvider>
       </body>

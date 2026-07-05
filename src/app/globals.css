@@ -24,3 +24,11 @@ body {
   color: var(--foreground);
   font-family: var(--font-inter), sans-serif;
 }
+
+.adm-hero-bg {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.60) 0%, rgba(0, 0, 0, 0.60) 100%), url('/images/service-hero.jpg') lightgray 50% / cover no-repeat;
+}
+
+.glr-hero-bg {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.60) 0%, rgba(0, 0, 0, 0.60) 100%), url('/images/gallery.png') lightgray 60% / cover no-repeat;
+}

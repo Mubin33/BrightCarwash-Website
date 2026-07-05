@@ -8,11 +8,13 @@ interface Props {
     badgeText: string;
     heading: React.ReactNode;
     subheading: string;
+    forceDark?: boolean;
+    className?: string;
 }
 
-export function SectionHeader({ badgeIcon, badgeText, heading, subheading }: Props) {
+export function SectionHeader({ badgeIcon, badgeText, heading, subheading, forceDark, className }: Props) {
     const { theme } = useTheme();
-    const isDark = theme === 'dark';
+    const isDark = forceDark ?? theme === 'dark';
 
     return (
         <div className="flex min-h-[auto] lg:h-56 flex-col justify-end items-center gap-3 self-stretch">
@@ -29,7 +31,7 @@ export function SectionHeader({ badgeIcon, badgeText, heading, subheading }: Pro
                     color={isDark ? '#0098E8' : '#B23730'}
                 />
                 <span
-                    className={`font-bebas text-sm font-normal leading-[112%] ${isDark ? 'text-[#0098E8]' : 'text-[#B23730]'
+                    className={`font-inter text-sm font-normal leading-[112%] ${isDark ? 'text-[#0098E8]' : 'text-[#B23730]'
                         }`}
                 >
                     {badgeText}
@@ -37,7 +39,7 @@ export function SectionHeader({ badgeIcon, badgeText, heading, subheading }: Pro
             </div>
 
             <h2
-                className={`font-bebas w-full sm:w-[380px] lg:w-[410px] text-center font-bebas-neue text-3xl sm:text-4xl lg:text-5xl font-normal leading-[116%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'
+                className={`font-bebas w-full sm:w-[380px] lg:w-[540px] text-center font-bebas-neue text-3xl sm:text-4xl lg:text-5xl font-normal leading-[116%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'
                     }`}
             >
                 {heading}

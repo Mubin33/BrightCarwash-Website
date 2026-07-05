@@ -9,6 +9,7 @@ const NAV_LINKS = [
     { label: 'Service', href: '/services' },
     { label: 'Gallery', href: '/gallery' },
     { label: 'News & Events', href: '/news' },
+    { label: 'Store', href: '/store' },
     { label: 'FAQ', href: '/faq' },
 ];
 
@@ -27,8 +28,8 @@ export function NavItems() {
                         key={link.href}
                         href={link.href}
                         className={`font-inter text-base font-normal leading-[100%] transition-colors ${isActive
-                                ? 'underline decoration-[#B23730] decoration-[11%] underline-offset-[25%]'
-                                : 'no-underline'
+                            ? 'underline decoration-[#B23730] decoration-[11%] underline-offset-[25%]'
+                            : 'no-underline'
                             } ${isActive
                                 ? isDark
                                     ? 'text-white'

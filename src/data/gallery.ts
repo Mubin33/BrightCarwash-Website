@@ -45,4 +45,5 @@ export const galleryImages: GalleryImage[] = [
         alt: 'Fleet Service',
         label: 'Fleet Service',
     },
+
 ];

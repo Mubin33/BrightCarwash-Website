@@ -15,7 +15,7 @@ export function HeroSectionWrapper() {
         >
             <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14 self-stretch">
                 {/* Left Content */}
-                <div className="flex flex-col items-start gap-8 lg:gap-12 flex-1 w-full">
+                <div className="flex flex-col items-start gap-8 lg:gap-12 flex-1 w-full md:pt-20 sm:pt-50">
                     <div className="flex flex-col items-start gap-3">
                         {/* Badge */}
                         <div className="font-bebas flex flex-wrap py-[6px] px-3 items-center gap-3 rounded-lg border border-[#DCA3A0] bg-[#F7EBEA]">
@@ -25,7 +25,7 @@ export function HeroSectionWrapper() {
                             </span>
                         </div>
                         {/* Headline */}
-                        <h1 className="font-bebas w-full lg:w-[536px] font-bebas-neue text-4xl sm:text-5xl lg:pt-0 md:pt-16 md:text-6xl lg:text-[72px] font-normal leading-[120%] tracking-[2px]">
+                        <h1 className="font-bebas w-full lg:w-[536px]  text-4xl sm:text-5xl lg:pt-0  md:text-6xl lg:text-[72px] font-normal leading-[120%] tracking-[2px]">
                             <span className="text-white">YOUR </span>
                             <span className="text-[#B23730]">CAR DESERVES A</span>
                             <br />

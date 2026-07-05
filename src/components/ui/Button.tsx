@@ -13,7 +13,7 @@ export function Button({
     disabled,
     ...props
 }: ButtonProps) {
-    const baseClass = 'cursor-pointer inline-flex items-center justify-center gap-2 font-inter text-sm font-medium transition-colors';
+    const baseClass = ' cursor-pointer inline-flex items-center justify-center gap-2 font-inter text-sm font-medium transition-colors';
 
     const variantClass = {
         primary: 'bg-[#0098E8] text-white hover:bg-[#0088D8] rounded-lg py-[14px] px-5',

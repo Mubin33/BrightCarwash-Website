@@ -24,7 +24,7 @@ export function LocationCard({ location }: Props) {
         >
             {/* Header */}
             <div className="flex flex-wrap justify-between items-center gap-3 self-stretch">
-                <h3 className={`font-bebas-neue text-2xl sm:text-3xl lg:text-4xl font-normal leading-[121%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
+                <h3 className={`font-bebas text-2xl sm:text-3xl lg:text-4xl font-normal leading-[121%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
                     {location.name}
                 </h3>
                 <a href={location.directionsUrl} target="_blank" rel="noopener noreferrer">

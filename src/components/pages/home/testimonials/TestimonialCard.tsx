@@ -18,7 +18,7 @@ export function TestimonialCard({ testimonial }: Props) {
     return (
         <div
             className={`flex w-full sm:w-[380px] lg:w-[424px] ${height} p-4 flex-col justify-between items-start rounded-lg border ${testimonial.featured
-                ? 'border-[#DFE1E7] bg-[#092544]'
+                ? 'border-[#DFE1E7]/20 bg-[#092544]'
                 : isDark
                     ? 'border-white/20 bg-white/[0.12]'
                     : 'border-[#DFE1E7] bg-[#F8FAFB]'

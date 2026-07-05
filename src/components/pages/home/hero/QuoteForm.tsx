@@ -53,7 +53,7 @@ export function QuoteForm() {
                 </div>
 
                 {/* Form Fields */}
-                <div className="font-bebas grid grid-cols-1 sm:grid-cols-2 gap-3 self-stretch">
+                <div className=" grid grid-cols-1 sm:grid-cols-2 gap-3 self-stretch">
                     <div className="flex flex-col gap-1.5">
                         <label className="text-[#4A4C56] font-inter text-sm font-medium">Full Name</label>
                         <input type="text" placeholder="Enter your name" className="px-4 py-3 border border-[#DFE1E7] rounded-lg text-sm outline-none focus:border-[#0098E8]" />

@@ -65,7 +65,7 @@ export const testimonials: TestimonialData[] = [
         comment:
             'My car is my office. Brightside keeps it looking showroom-ready. The online booking makes it so easy to fit into my schedule.',
         image: '/images/testimonial.png',
-        tall: true,
+        tall: false,
     },
     {
         id: '7',
@@ -75,7 +75,7 @@ export const testimonials: TestimonialData[] = [
         comment:
             'My car is my office. Brightside keeps it looking showroom-ready. The online booking makes it so easy to fit into my schedule.',
         image: '/images/testimonial.png',
-        tall: false,
+        tall: true,
         featured: true,
     },
 

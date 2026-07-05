@@ -8,6 +8,12 @@ import { GalleryImageCard } from './GalleryImageCard';
 import { galleryImages } from '@/data/gallery';
 import { useTheme } from '@/contexts/ThemeContext';
 
+const COLS = 3;
+
+const columns = Array.from({ length: COLS }, (_, colIndex) =>
+    galleryImages.filter((_, i) => i % COLS === colIndex)
+);
+
 export function GallerySectionWrapper() {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
@@ -30,10 +36,18 @@ export function GallerySectionWrapper() {
                 subheading="Experience the beauty of our services through stunning moments captured at Brightside Gallery. Join us and see for yourself!"
             />
 
-            <div className="columns-1 md:columns-2 lg:columns-3 gap-4 w-full max-w-[1320px]">
-                {galleryImages.map((img) => (
-                    <div key={img.id} className="break-inside-avoid mb-4">
-                        <GalleryImageCard image={img} />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-[1320px]">
+                {columns.map((col, colIndex) => (
+                    <div key={colIndex} className="flex flex-col gap-4 h-auto md:h-[600px] lg:h-[800px]">
+                        {col.map((img, idx) => (
+                            <GalleryImageCard
+                                key={`${img.id}-${idx}`}
+                                image={img}
+                                seed={`${img.id}-${idx}`}
+                                idx={idx}
+                                colIndex={colIndex}
+                            />
+                        ))}
                     </div>
                 ))}
             </div>
