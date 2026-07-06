@@ -1,9 +1,12 @@
+'use client';
+
 import { Icon } from '@/components/ui/Icon';
 
 import { Button } from '@/components/ui/Button';
 import { MoveUpRight } from 'lucide-react';
 import { HeroStats } from './HeroStats';
 import { QuoteForm } from './QuoteForm';
+import Link from 'next/link';
 
 export function HeroSectionWrapper() {
     return (
@@ -18,7 +21,7 @@ export function HeroSectionWrapper() {
                 <div className="flex flex-col items-start gap-8 lg:gap-12 flex-1 w-full md:pt-20 sm:pt-50">
                     <div className="flex flex-col items-start gap-3">
                         {/* Badge */}
-                        <div className="font-bebas flex flex-wrap py-[6px] px-3 items-center gap-3 rounded-lg border border-[#DCA3A0] bg-[#F7EBEA]">
+                        <div className="flex flex-wrap py-[6px] px-3 items-center gap-3 rounded-lg border border-[#DCA3A0] bg-[#F7EBEA]">
                             <Icon name="car" width={16} height={16} color="#B23730" />
                             <span className="text-[#B23730] font-inter text-xs sm:text-sm font-normal leading-[112%]">
                                 Veteran-Owned | Naperville, IL | EST. 2025
@@ -39,13 +42,24 @@ export function HeroSectionWrapper() {
                     </div>
                     {/* Buttons */}
                     <div className="flex flex-wrap items-center gap-4">
-                        <Button className="flex py-[14px] px-5 justify-center items-center gap-2 rounded bg-[#0098E8] text-white font-inter text-sm font-medium hover:bg-[#0088D8]">
-                            Book my wash
-                            <MoveUpRight size={16} />
-                        </Button>
-                        <Button variant="outline" className="flex py-[14px] px-5 justify-center items-center gap-2 rounded border border-[#DFE1E7] text-white font-inter text-sm font-medium hover:bg-white/10">
-                            See our services
-                        </Button>
+                        <Link
+                            href="#services"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                const section = document.getElementById('services');
+                                if (section) section.scrollIntoView({ behavior: 'smooth' });
+                            }}
+                        >
+                            <Button className="flex py-[14px] px-5 justify-center items-center gap-2 rounded bg-[#0098E8] text-white font-inter text-sm font-medium hover:bg-[#0088D8]">
+                                Book my wash
+                                <Icon name="book" width={20} height={20} />
+                            </Button>
+                        </Link>
+                        <Link href="/services">
+                            <Button variant="outline" className="flex py-[14px] px-5 justify-center items-center gap-2 rounded border border-[#DFE1E7] text-white font-inter text-sm font-medium hover:bg-white/10">
+                                See our services
+                            </Button>
+                        </Link>
                     </div>
                     {/* Stats */}
                     <HeroStats />

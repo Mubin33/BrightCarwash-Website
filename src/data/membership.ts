@@ -5,5 +5,5 @@ export const membershipData = {
     description:
         'For veterans, military, law enforcement, firefighters, first responders, educators & healthcare workers. Includes one Annual Express Detail ($160+ value) plus 10% daily discount on all services.',
     buttonText: 'Join now',
-    image: '/images/membership.png',
+    image: '/images/membership.jpg',
 };

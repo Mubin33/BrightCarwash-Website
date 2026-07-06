@@ -2,12 +2,27 @@
 
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { FaqAccordion } from './FaqAccordion';
-import { faqItems } from '@/data/faq';
+import { useFaqs } from '@/hooks/useFaqs';
 import { useTheme } from '@/contexts/ThemeContext';
 
 export function FaqSectionWrapper() {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
+    const { faqs, loading } = useFaqs();
+
+    if (loading) {
+        return (
+            <section className={`flex py-20 px-4 sm:px-8 lg:px-[300px] flex-col justify-center items-center gap-12 self-stretch border ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-white'
+                }`}>
+                <div className="flex flex-col gap-4 w-full max-w-[1320px]">
+                    {[...Array(4)].map((_, i) => (
+                        <div key={i} className="h-20 bg-gray-100 animate-pulse rounded-lg" />
+                    ))}
+                </div>
+            </section>
+        );
+    }
+    if (loading || faqs.length === 0) return null;
 
     return (
         <section
@@ -28,7 +43,7 @@ export function FaqSectionWrapper() {
             />
 
             <div className=" flex flex-col gap-4 w-full max-w-[1320px]">
-                {faqItems.map((item) => (
+                {faqs.map((item) => (
                     <FaqAccordion key={item.id} item={item} />
                 ))}
             </div>

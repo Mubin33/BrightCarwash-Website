@@ -14,6 +14,7 @@ export function TestimonialCard({ testimonial }: Props) {
     const isDark = theme === 'dark';
 
     const height = testimonial.tall ? 'h-[576px]' : 'h-[276px]';
+    console.log('Testimonial image:', testimonial.image);
 
     return (
         <div
@@ -69,14 +70,21 @@ export function TestimonialCard({ testimonial }: Props) {
                         {testimonial.title}
                     </span>
                 </div>
-                <div className="w-[42px] h-[42px] rounded-full relative overflow-hidden shrink-0">
-                    <Image
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        fill
-                        className="object-cover"
-                        sizes="42px"
-                    />
+                <div className="w-[42px] h-[42px] rounded-full relative overflow-hidden shrink-0 bg-[#0098E8] flex items-center justify-center">
+                    {testimonial.image ? (
+                        <Image
+                            src={testimonial.image}
+                            alt={testimonial.name}
+                            fill
+                            className="object-cover"
+                            sizes="42px"
+
+                        />
+                    ) : (
+                        <span className="text-white font-inter text-sm font-medium">
+                            {testimonial.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                        </span>
+                    )}
                 </div>
             </div>
         </div>

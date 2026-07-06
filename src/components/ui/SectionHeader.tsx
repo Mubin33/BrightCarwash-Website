@@ -39,7 +39,7 @@ export function SectionHeader({ badgeIcon, badgeText, heading, subheading, force
             </div>
 
             <h2
-                className={`font-bebas w-full sm:w-[380px] lg:w-[540px] text-center font-bebas-neue text-3xl sm:text-4xl lg:text-5xl font-normal leading-[116%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'
+                className={`font-bebas w-full sm:w-[380px] lg:w-[540px] text-center  text-3xl sm:text-4xl lg:text-5xl font-normal leading-[116%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'
                     }`}
             >
                 {heading}

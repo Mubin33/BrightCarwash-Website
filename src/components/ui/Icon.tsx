@@ -8,21 +8,30 @@ interface IconProps {
     className?: string;
 }
 
-const COLOR_FILTERS: Record<string, string> = {
-    '#B23730': 'brightness(0) saturate(100%) invert(17%) sepia(88%) saturate(2397%) hue-rotate(349deg) brightness(93%) contrast(89%)',
-    '#0098E8': 'brightness(0) saturate(100%) invert(56%) sepia(82%) saturate(2365%) hue-rotate(179deg) brightness(97%) contrast(93%)',
-    '#FFFFFF': 'brightness(0) saturate(100%) invert(100%)',
-    '#FEC300': 'brightness(0) saturate(100%) invert(78%) sepia(62%) saturate(1667%) hue-rotate(358deg) brightness(103%) contrast(105%)',
-    '#FAAD14': 'brightness(0) saturate(100%) invert(72%) sepia(92%) saturate(1280%) hue-rotate(360deg) brightness(101%) contrast(101%)',
-    '#E8E8E8': 'brightness(0) saturate(100%) invert(95%) sepia(2%) saturate(0%) hue-rotate(0deg) brightness(96%) contrast(86%)',
-};
-
 export function Icon({ name, width = 24, height = 24, color, className = '' }: IconProps) {
+    if (color) {
+        return (
+            <span
+                className={`shrink-0 inline-block ${className}`}
+                style={{
+                    width,
+                    height,
+                    backgroundColor: color,
+                    WebkitMaskImage: `url(/icons/svgs/${name}.svg)`,
+                    maskImage: `url(/icons/svgs/${name}.svg)`,
+                    WebkitMaskRepeat: 'no-repeat',
+                    maskRepeat: 'no-repeat',
+                    WebkitMaskSize: 'contain',
+                    maskSize: 'contain',
+                    WebkitMaskPosition: 'center',
+                    maskPosition: 'center',
+                }}
+            />
+        );
+    }
+
     return (
-        <span
-            className={`shrink-0 inline-flex ${className}`}
-            style={color ? { filter: COLOR_FILTERS[color] || 'none' } : undefined}
-        >
+        <span className={`shrink-0 inline-flex ${className}`}>
             <Image
                 src={`/icons/svgs/${name}.svg`}
                 alt={`${name} icon`}

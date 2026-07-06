@@ -17,7 +17,9 @@ export function LocationsSectionWrapper() {
                     <LocationCard key={loc.name} location={loc} />
                 ))}
             </div>
-            <LocationHours hours={hours} />
+            <div className="w-full max-w-[1320px]">
+                <LocationHours hours={hours} />
+            </div>
         </section>
     );
 }

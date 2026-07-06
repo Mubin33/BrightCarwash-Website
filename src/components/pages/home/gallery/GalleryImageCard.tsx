@@ -21,7 +21,7 @@ interface Props {
 
 export function GalleryImageCard({ image, seed, idx, colIndex = 0 }: Props) {
     const grow = getFlexGrow(seed ?? image.id, idx, colIndex);
-
+    console.log('GalleryImageCard src:', image.src);
     return (
         <div
             className="relative w-full min-h-[200px] overflow-hidden rounded-xl group"
@@ -33,6 +33,7 @@ export function GalleryImageCard({ image, seed, idx, colIndex = 0 }: Props) {
                 fill
                 className="object-cover rounded-xl"
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 424px"
+                unoptimized
             />
             {image.label && (
                 <span className="absolute bottom-5 left-5 text-white font-bebas-neue text-2xl font-normal leading-[100%]">

@@ -1,10 +1,24 @@
-export const locations = [
+export interface LocationData {
+    name: string;
+    address: string;
+    phone: string;
+    mapImage: string;
+    mapEmbedUrl: string;
+    directionsUrl: string;
+}
+
+export interface HoursData {
+    days: string;
+    time: string;
+}
+
+export const locations: LocationData[] = [
     {
         name: '75th Street Location',
         address: '1095 E 75th St, Naperville, IL 60540',
         phone: '(331) 401-5793',
         mapImage: 'map-75th.png',
-        mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2980.123456789!2d-88.123456!3d41.123456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDA3JzI0LjQiTiA4OMKwMDcnMjQuNCJX!5e0!3m2!1sen!2sus!4v1234567890',
+        mapEmbedUrl: 'https://www.google.com/maps/embed?...',
         directionsUrl: 'https://www.google.com/maps/dir/?api=1&destination=1095+E+75th+St,+Naperville,+IL+60540',
     },
     {
@@ -12,7 +26,7 @@ export const locations = [
         address: '5008 Ace Lane, Naperville, IL 60564',
         phone: '(630) 904-0033',
         mapImage: 'map-ace-lane.png',
-        mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m12!1m8!1m3!1d190588.7396834498!2d-88.2071686!3d41.7216181!3m2!1i1024!2i768!4f13.1!2m1!1s5008%20Ace%20Lane%20Naperville%20IL%2060564%20brightside%20car%20wash!5e0!3m2!1sen!2sbd!4v1783132376506!5m2!1sen!2sbd',
+        mapEmbedUrl: 'https://www.google.com/maps/embed?pb=...',
         directionsUrl: 'https://www.google.com/maps/dir/?api=1&destination=5008+Ace+Lane,+Naperville,+IL+60564',
     },
 ];

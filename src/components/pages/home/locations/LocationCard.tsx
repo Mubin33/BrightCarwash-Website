@@ -30,7 +30,7 @@ export function LocationCard({ location }: Props) {
                 <a href={location.directionsUrl} target="_blank" rel="noopener noreferrer">
                     <Button className="flex py-2.5 sm:py-3 px-4 sm:px-5 justify-center items-center gap-2 rounded-lg bg-[#B23730] text-white font-inter text-xs sm:text-sm hover:bg-[#9A2E28]">
                         Get Directions
-                        <MoveUpRight size={16} />
+                        <Icon name="book" width={20} height={20} />
                     </Button>
                 </a>
             </div>

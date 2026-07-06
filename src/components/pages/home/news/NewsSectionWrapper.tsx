@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { SideArticleCard } from './SideArticleCard';
-import { featuredArticle, sideArticles } from '@/data/news';
+import { useNewsList } from '@/hooks/useNewsList';
 import { useTheme } from '@/contexts/ThemeContext';
 import { MoveUpRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
@@ -12,10 +12,18 @@ import Link from 'next/link';
 export function NewsSectionWrapper() {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
+    const { articles, loading } = useNewsList(1, 4);
+
+    if (loading || articles.length === 0) {
+        return null;
+    }
+
+    const featuredArticle = articles[0];
+    const sideArticles = articles.slice(1, 4);
 
     return (
         <section
-            className={`flex py-20 px-4 sm:px-8 lg:px-[300px] flex-col justify-center items-center gap-12 self-stretch border ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-white'
+            className={`flex py-20 px-4 sm:px-8 lg:px-[300px] flex-col justify-center items-center gap-12 self-stretch border ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-[#ECEFF3]'
                 }`}
         >
             <SectionHeader
@@ -32,9 +40,12 @@ export function NewsSectionWrapper() {
             />
 
             <div className="flex flex-col lg:flex-row items-stretch gap-6 self-stretch">
-                {/* Featured Article (Left) */}
-                <div className="flex flex-col items-start gap-5 flex-1 h-full">
-                    <div className="h-56 sm:h-80 lg:h-[324px] self-stretch rounded-lg relative overflow-hidden">
+
+                <div
+                    className={`flex-1 flex-col items-start rounded-xl border overflow-hidden ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#ECEFF3] bg-white'
+                        }`}
+                >
+                    <div className="h-56 sm:h-80 lg:h-[324px] self-stretch relative">
                         <Image
                             src={featuredArticle.image}
                             alt={featuredArticle.title}
@@ -43,7 +54,7 @@ export function NewsSectionWrapper() {
                             sizes="(max-width: 1024px) 100vw, 50vw"
                         />
                     </div>
-                    <div className="flex px-0 lg:px-5 pb-4 flex-col items-start gap-3 self-stretch">
+                    <div className="flex px-5 pb-4 pt-3 flex-col items-start gap-3 self-stretch">
                         <div className="flex items-center gap-2">
                             <span className="text-[#A5A5AB] font-inter text-sm font-medium leading-[100%]">
                                 {featuredArticle.category}
@@ -54,7 +65,7 @@ export function NewsSectionWrapper() {
                             </span>
                         </div>
                         <h3
-                            className={`font-bebas w-full lg:w-[559px] font-bebas-neue text-4xl font-normal leading-[100%] capitalize ${isDark ? 'text-white' : 'text-[#1D1F2C]'
+                            className={`font-bebas w-full font-bebas-neue text-4xl font-normal leading-[100%] capitalize ${isDark ? 'text-white' : 'text-[#1D1F2C]'
                                 }`}
                         >
                             {featuredArticle.title}

@@ -1,3 +1,5 @@
+import type { ApiService, ServiceVariation } from '@/types/services';
+
 export interface ServiceData {
     id: string;
     name: string;
@@ -5,31 +7,22 @@ export interface ServiceData {
     price: number;
     duration: string;
     image: string;
+    variationId: string;
 }
 
-export const services: ServiceData[] = [
-    {
-        id: 'express-detail',
-        name: 'Express Detail',
-        description: 'Quick exterior wash, interior vacuum, window cleaning, and tire shine. Perfect for regular maintenance.',
-        price: 50,
-        duration: '8 hours',
-        image: '/images/service-express.jpg',
-    },
-    {
-        id: 'full-detail',
-        name: 'Full Detail',
-        description: 'Complete interior and exterior detailing including wax, polish, shampoo, and leather treatment.',
-        price: 120,
-        duration: '4 hours',
-        image: '/images/service-full.jpg',
-    },
-    {
-        id: 'premium-detail',
-        name: 'Premium Detail',
-        description: 'Our most comprehensive package with ceramic coating, engine bay cleaning, and headlight restoration.',
-        price: 200,
-        duration: '6 hours',
-        image: '/images/service-premium.jpg',
-    },
-];
+export function transformService(apiService: ApiService): ServiceData {
+    const variation: ServiceVariation = apiService.variations[0] || {
+        id: '', version: '', name: '', durationMinutes: 0, priceInCents: 0, currency: 'USD', images: [],
+    };
+    return {
+        id: apiService.id,
+        name: apiService.name,
+        description: apiService.description,
+        price: variation.priceInCents / 100,
+        duration: variation.durationMinutes >= 60
+            ? `${Math.floor(variation.durationMinutes / 60)} hours${variation.durationMinutes % 60 > 0 ? ` ${variation.durationMinutes % 60} min` : ''}`
+            : `${variation.durationMinutes} min`,
+        image: apiService.images[0] || variation.images[0] || '/images/service.png',
+        variationId: variation.id,
+    };
+}

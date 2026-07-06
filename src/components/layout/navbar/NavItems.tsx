@@ -9,8 +9,8 @@ const NAV_LINKS = [
     { label: 'Service', href: '/services' },
     { label: 'Gallery', href: '/gallery' },
     { label: 'News & Events', href: '/news' },
-    { label: 'Store', href: '/store' },
-    { label: 'FAQ', href: '/faq' },
+    { label: 'Store', href: 'https://brightsidecw.qbstores.com/' },
+
 ];
 
 export function NavItems() {

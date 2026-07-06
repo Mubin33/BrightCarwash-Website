@@ -5,19 +5,31 @@ import { SectionHeader } from '@/components/ui/SectionHeader';
 import { Button } from '@/components/ui/Button';
 import { MoveUpRight } from 'lucide-react';
 import { GalleryImageCard } from './GalleryImageCard';
-import { galleryImages } from '@/data/gallery';
+import { useGallery } from '@/hooks/useGallery';
 import { useTheme } from '@/contexts/ThemeContext';
 
-const COLS = 3;
 
-const columns = Array.from({ length: COLS }, (_, colIndex) =>
-    galleryImages.filter((_, i) => i % COLS === colIndex)
-);
 
 export function GallerySectionWrapper() {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
-
+    const { images, loading } = useGallery();
+    const columns = Array.from({ length: 3 }, (_, colIndex) =>
+        images.filter((_, i) => i % 3 === colIndex)
+    );
+    if (loading) {
+        return (
+            <section className={`flex py-20 px-4 sm:px-8 lg:px-[300px] flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-white'
+                }`}>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-[1320px]">
+                    {[...Array(6)].map((_, i) => (
+                        <div key={i} className="h-[500px] bg-gray-100 animate-pulse rounded-lg" />
+                    ))}
+                </div>
+            </section>
+        );
+    }
+    if (loading || images.length === 0) return null;
     return (
         <section
             className={`font-bebas flex py-20 px-4 sm:px-8 lg:px-[300px] flex-col justify-center items-center gap-12 self-stretch border ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-white'

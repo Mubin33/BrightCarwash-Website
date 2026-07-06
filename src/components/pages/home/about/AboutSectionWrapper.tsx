@@ -37,7 +37,7 @@ export function AboutSectionWrapper() {
                     {/* Left Image */}
                     <div className="flex p-4 flex-col justify-end items-center gap-2.5 flex-1 self-stretch rounded-lg relative overflow-hidden min-h-[300px]">
                         <Image
-                            src="/images/about_us_service_image.png"
+                            src="/images/about-us-service-image.jpg"
                             alt="Brightside car wash service"
                             fill
                             className="object-cover"

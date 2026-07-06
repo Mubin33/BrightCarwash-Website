@@ -11,6 +11,8 @@ interface Props {
 export function SideArticleCard({ article }: Props) {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
+    console.log('SideArticleCard image:', article.image);
+
 
     return (
         <div

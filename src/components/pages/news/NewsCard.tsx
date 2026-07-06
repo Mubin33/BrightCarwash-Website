@@ -12,9 +12,10 @@ interface Props {
 export function NewsCard({ article }: Props) {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
+    console.log('NewsCard image:', article.image);
 
     return (
-        <Link href={`/news/${article.id}`} className='self-strech'>
+        <Link href={`/news/${article.slug}`} className='self-strech'>
             <div
                 className={`h-full flex flex-col  items-start gap-4 self-stretch rounded-xl border ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#ECEFF3] bg-white'
                     }`}

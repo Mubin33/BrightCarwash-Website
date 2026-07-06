@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import type { ServiceData } from '@/data/services';
+import { useBooking } from '@/contexts/BookingContext';
 
 interface Props {
     service: ServiceData;
@@ -15,10 +16,16 @@ interface Props {
 }
 
 export function ServiceCard({ service, selected, onSelect }: Props) {
-    const [expanded, setExpanded] = useState(false);
+    const [expanded, setExpanded] = useState(true);
     const { theme } = useTheme();
     const isDark = theme === 'dark';
+    const { addService } = useBooking();
 
+    const handleConfirmBooking = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        addService(service);
+        window.location.href = '/booking';
+    };
     return (
         <div
             onClick={() => onSelect(service.id)}
@@ -47,10 +54,10 @@ export function ServiceCard({ service, selected, onSelect }: Props) {
 
             {/* Name */}
             <h3
-                className={`font-bebas self-stretch  text-[32px] font-normal leading-[100%] ${selected ? 'text-white' : isDark ? 'text-white' : 'text-[#1D1F2C]'
+                className={`font-bebas self-stretch text-[32px] font-normal leading-[100%] truncate ${selected ? 'text-white' : isDark ? 'text-white' : 'text-[#1D1F2C]'
                     }`}
             >
-                {service.name}
+                {service.name.split(' ').slice(0, 5).join(' ')}
             </h3>
 
             {/* Price & Duration */}
@@ -59,7 +66,12 @@ export function ServiceCard({ service, selected, onSelect }: Props) {
                     ${service.price}
                 </span>
                 <div className={`flex py-1.5 px-2 items-center gap-2 rounded-lg border ${isDark && !selected ? 'border-white/20' : 'border-[#DFE1E7]'}`}>
-                    <Icon name="clock" width={20} height={20} color={isDark && !selected ? 'ffffff' : '#0098E8'} />
+                    <Icon
+                        name="clock"
+                        width={20}
+                        height={20}
+                        color={selected ? '#FFFFFF' : isDark ? '#FFFFFF' : '#4A4C56'}
+                    />
                     <span className={`font-inter text-md ${selected ? 'text-white/80' : isDark ? 'text-white/60' : 'text-[#777980]'
                         }`}>
                         {service.duration}
@@ -92,18 +104,19 @@ export function ServiceCard({ service, selected, onSelect }: Props) {
             </button>
 
             {/* Button */}
-            <Button
-                variant={selected ? 'primary' : 'outline'}
-                onClick={(e) => { e.stopPropagation(); onSelect(service.id); }}
-                className={`w-full py-[14px] px-5 justify-center items-center gap-2 rounded-lg font-inter text-sm ${selected
-                    ? ''
-                    : isDark
-                        ? 'border-white/20 bg-white/[0.08] text-white hover:bg-white/[0.16]'
-                        : 'bg-white hover:bg-[#F8FAFB]'
-                    }`}
-            >
-                {selected ? 'Confirm booking - pay deposit' : 'Add to cart'}
-            </Button>
+            <div className="w-full mt-auto">
+                {selected ? (
+                    <Button onClick={handleConfirmBooking} className="w-full py-[14px] px-5 justify-center items-center gap-2 rounded-lg bg-[#0098E8] text-white font-inter text-sm">
+                        Confirm booking - pay deposit
+                    </Button>
+                ) : (
+                    <Button variant="outline" onClick={(e) => { e.stopPropagation(); onSelect(service.id); }}
+                        className={`w-full py-[14px] px-5 justify-center items-center gap-2 rounded-lg font-inter text-sm ${isDark ? 'border-white/20 bg-white/[0.08] text-white hover:bg-white/[0.16]' : 'bg-white hover:bg-[#F8FAFB]'}`}
+                    >
+                        Add to cart
+                    </Button>
+                )}
+            </div>
         </div>
     );
 }
