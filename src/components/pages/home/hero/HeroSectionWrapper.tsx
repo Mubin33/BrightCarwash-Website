@@ -10,7 +10,7 @@ import Link from 'next/link';
 export function HeroSectionWrapper() {
     return (
         <section
-            className="flex pt-24 sm:pt-28 md:pt-32 lg:pt-36 pb-10 px-4 sm:px-6 md:px-10 lg:px-20 xl:px-40 2xl:px-[300px] flex-col justify-center items-center gap-[10px] self-stretch min-h-screen"
+            className="flex pt-24 sm:pt-28 md:pt-32 lg:pt-36 pb-10 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40 2xl:px-[300px] flex-col justify-center items-center gap-[10px] self-stretch min-h-screen"
             style={{
                 background: `linear-gradient(0deg, rgba(0, 0, 0, 0.60) 0%, rgba(0, 0, 0, 0.60) 100%), url('/images/hero-image.png') lightgray 50% / cover no-repeat`,
             }}
@@ -70,7 +70,7 @@ export function HeroSectionWrapper() {
                 </div>
 
                 {/* Right Form */}
-                <div className="w-full lg:w-auto lg:max-w-[600px] xl:max-w-[648px]">
+                <div className="w-full lg:max-w-[600px] xl:max-w-[648px]">
                     <QuoteForm />
                 </div>
             </div>

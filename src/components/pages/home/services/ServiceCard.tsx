@@ -29,11 +29,11 @@ export function ServiceCard({ service, selected, onSelect }: Props) {
     return (
         <div
             onClick={() => onSelect(service.id)}
-            className={`flex w-full sm:w-[380px] lg:w-[424px] p-6 flex-col items-start gap-8 rounded-lg border transition-all cursor-pointer ${selected
-                ? 'border-[#0098E8] bg-[#092544]'
-                : isDark
-                    ? 'border-white/20 bg-white/[0.06] hover:bg-white/[0.12] hover:border-[#0098E8]/30'
-                    : 'border-[#DFE1E7] bg-white hover:bg-[#F0F8FF] hover:border-[#0098E8]/30'
+            className={`flex w-full p-4 sm:p-6 flex-col items-start gap-6 sm:gap-8 rounded-lg border transition-all cursor-pointer ${selected
+                    ? 'border-[#0098E8] bg-[#092544]'
+                    : isDark
+                        ? 'border-white/20 bg-white/[0.06] hover:bg-white/[0.12] hover:border-[#0098E8]/30'
+                        : 'border-[#DFE1E7] bg-white hover:bg-[#F0F8FF] hover:border-[#0098E8]/30'
                 }`}
         >
             {/* Image */}

@@ -12,10 +12,7 @@ export function NewsFilters() {
 
     return (
         <div className="flex justify-between items-center self-stretch">
-            <h2
-                className={`font-bebas-neue text-4xl font-normal leading-[100%] tracking-[0.8px] capitalize ${isDark ? 'text-white' : 'text-[#1D1F2C]'
-                    }`}
-            >
+            <h2 className={`font-bebas-neue text-3xl sm:text-4xl font-normal leading-[100%] tracking-[0.8px] capitalize ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
                 Latest News & Updates
             </h2>
             <div className="flex items-center gap-3">

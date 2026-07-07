@@ -25,11 +25,10 @@ export function NewsCard({ article }: Props) {
                 </div>
                 <div className="flex flex-col items-start gap-3 p-4 pt-0">
                     <div className="flex items-center gap-2">
-                        <span className="text-[#A5A5AB] font-inter text-sm font-medium leading-[100%]">
+                        <span className="text-[#A5A5AB] font-inter text-sm font-medium leading-[100%] whitespace-nowrap">
                             {article.category}
                         </span>
-                        <span className="w-1 h-1 rounded-full bg-[#A5A5AB]" />
-                        <span className="text-[#A5A5AB] font-inter text-sm font-medium leading-[100%]">
+                        <span className="text-[#A5A5AB] font-inter text-sm font-medium leading-[100%] whitespace-nowrap">
                             {article.date}
                         </span>
                     </div>

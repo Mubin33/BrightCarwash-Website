@@ -8,7 +8,6 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { MoveUpRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
-import { Icon } from '@/components/ui/Icon';
 
 export function NewsSectionWrapper() {
     const { theme } = useTheme();
@@ -24,8 +23,7 @@ export function NewsSectionWrapper() {
 
     return (
         <section
-            className={`flex py-20 px-4 sm:px-8 lg:px-[300px] flex-col justify-center items-center gap-12 self-stretch border ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-[#ECEFF3]'
-                }`}
+            className={`flex py-20 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40 2xl:px-[300px] flex-col justify-center items-center gap-12 self-stretch border ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-[#ECEFF3]'}`}
         >
             <SectionHeader
                 badgeIcon="car"
@@ -41,10 +39,9 @@ export function NewsSectionWrapper() {
             />
 
             <div className="flex flex-col lg:flex-row items-stretch gap-6 self-stretch">
-
+                {/* Featured Article */}
                 <div
-                    className={`flex-1 flex-col items-start rounded-xl border overflow-hidden ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#ECEFF3] bg-white'
-                        }`}
+                    className={`flex-1 flex-col items-start rounded-xl border overflow-hidden ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#ECEFF3] bg-white'}`}
                 >
                     <div className="h-56 sm:h-80 lg:h-[324px] self-stretch relative">
                         <Image
@@ -66,14 +63,12 @@ export function NewsSectionWrapper() {
                             </span>
                         </div>
                         <h3
-                            className={`font-bebas w-full font-bebas-neue text-4xl font-normal leading-[100%] capitalize ${isDark ? 'text-white' : 'text-[#1D1F2C]'
-                                }`}
+                            className={`font-bebas w-full font-bebas-neue text-3xl sm:text-4xl font-normal leading-[100%] capitalize ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}
                         >
                             {featuredArticle.title}
                         </h3>
                         <p
-                            className={`self-stretch font-inter text-base font-normal leading-[160%] tracking-[0.16px] ${isDark ? 'text-white/80' : 'text-[#4A4C56]'
-                                }`}
+                            className={`self-stretch font-inter text-sm sm:text-base font-normal leading-[160%] tracking-[0.16px] ${isDark ? 'text-white/80' : 'text-[#4A4C56]'}`}
                         >
                             {featuredArticle.excerpt}
                         </p>
@@ -81,16 +76,16 @@ export function NewsSectionWrapper() {
                 </div>
 
                 {/* Side Articles (Right) */}
-                <div className="flex flex-col justify-between items-start flex-1 self-stretch gap-4">
+                <div className="flex flex-col justify-between items-start flex-1 self-stretch gap-4 whitespace-nowrap">
                     {sideArticles.map((article) => (
                         <SideArticleCard key={article.id} article={article} />
                     ))}
                 </div>
             </div>
             <Link href="/news">
-                <Button className="flex py-[14px] px-5 justify-center items-center gap-2 rounded-lg bg-[#0098E8] text-white font-inter text-lg hover:bg-[#0088D8]">
+                <Button className="flex py-[14px] px-5 justify-center items-center gap-2 rounded-lg bg-[#0098E8] text-white font-inter text-base sm:text-lg hover:bg-[#0088D8]">
                     Read All
-                    <Icon name="book" width={20} height={20} />
+                    <MoveUpRight size={16} />
                 </Button>
             </Link>
         </section>

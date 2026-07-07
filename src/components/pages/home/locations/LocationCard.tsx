@@ -1,7 +1,6 @@
 'use client';
 import { Icon } from '@/components/ui/Icon';
 import { Button } from '@/components/ui/Button';
-import { MoveUpRight } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 interface LocationData {
     name: string;
@@ -23,14 +22,14 @@ export function LocationCard({ location }: Props) {
                 }`}
         >
             {/* Header */}
-            <div className="flex flex-wrap justify-between items-center gap-3 self-stretch">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 self-stretch">
                 <h3 className={`font-bebas text-2xl sm:text-3xl lg:text-4xl font-normal leading-[121%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
                     {location.name}
                 </h3>
-                <a href={location.directionsUrl} target="_blank" rel="noopener noreferrer">
+                <a href={location.directionsUrl} target="_blank" rel="noopener noreferrer" className="sm:shrink-0">
                     <Button className="flex py-2.5 sm:py-3 px-4 sm:px-5 justify-center items-center gap-2 rounded-lg bg-[#B23730] text-white font-inter text-xs sm:text-sm hover:bg-[#9A2E28]">
                         Get Directions
-                        <Icon name="book" width={20} height={20} />
+                        <Icon name="book" width={16} height={16} color="white" />
                     </Button>
                 </a>
             </div>
@@ -47,16 +46,16 @@ export function LocationCard({ location }: Props) {
                 />
             </div>
             {/* Contact Info */}
-            <div className="flex flex-wrap gap-3 sm:gap-4">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
                 <div className="flex items-start gap-2">
-                    <Icon name="location" width={24} height={24} color="#0098E8" />
-                    <span className={`font-inter text-sm sm:text-base lg:text-lg ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
+                    <Icon name="location" width={18} height={18} color="#0098E8" className="sm:w-5 sm:h-5" />
+                    <span className={`font-inter text-sm sm:text-base ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
                         {location.address}
                     </span>
                 </div>
                 <div className="flex items-start gap-2">
-                    <Icon name="phone" width={24} height={24} color="#0098E8" />
-                    <span className={`font-inter text-sm sm:text-base lg:text-lg ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
+                    <Icon name="phone" width={18} height={18} color="#0098E8" className="sm:w-5 sm:h-5" />
+                    <span className={`font-inter text-sm sm:text-base ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
                         {location.phone}
                     </span>
                 </div>

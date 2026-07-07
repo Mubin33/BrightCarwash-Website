@@ -58,18 +58,11 @@ export function StepCard({ step }: Props) {
             </div>
 
             {/* Title */}
-            <h3
-                className={`font-bebas self-stretch  text-2xl font-normal leading-[100%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'
-                    }`}
-            >
+            <h3 className={`font-bebas self-stretch text-xl sm:text-2xl font-normal leading-[100%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
                 {step.title}
             </h3>
 
-            {/* Description */}
-            <p
-                className={`self-stretch font-inter text-base font-normal leading-[160%] ${isDark ? 'text-white/80' : 'text-[#4A4C56]'
-                    }`}
-            >
+            <p className={`self-stretch font-inter text-sm sm:text-base font-normal leading-[160%] ${isDark ? 'text-white/80' : 'text-[#4A4C56]'}`}>
                 {step.description}
             </p>
         </div>

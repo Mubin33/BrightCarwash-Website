@@ -26,7 +26,7 @@ export function NewsDetailWrapper() {
     }
 
     return (
-        <div className="pt-28">
+        <div >
             <Breadcrumb
                 items={[
                     { label: 'Home', href: '/' },

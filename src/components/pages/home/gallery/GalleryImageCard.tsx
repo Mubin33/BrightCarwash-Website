@@ -21,7 +21,6 @@ interface Props {
 
 export function GalleryImageCard({ image, seed, idx, colIndex = 0 }: Props) {
     const grow = getFlexGrow(seed ?? image.id, idx, colIndex);
-    console.log('GalleryImageCard src:', image.src);
     return (
         <div
             className="relative w-full min-h-[200px] overflow-hidden rounded-xl group"
