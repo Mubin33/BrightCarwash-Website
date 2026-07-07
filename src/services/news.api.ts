@@ -16,7 +16,10 @@ export async function fetchNewsList(page = 1, limit = 10, categoryId?: string) {
 
 export async function fetchNewsBySlug(slug: string) {
     const { data } = await axios.get<NewsDetailResponse>(`${API_BASE}/news-and-events/${slug}`);
-    return transformNewsArticle(data.data);
+    return {
+        article: transformNewsArticle(data.data.item),
+        related: data.data.related_items.map(transformNewsArticle),
+    };
 }
 
 export async function fetchNewsCategories() {

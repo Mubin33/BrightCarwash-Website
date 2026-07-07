@@ -55,7 +55,7 @@ export function HeroSectionWrapper() {
                         >
                             <Button className="w-full sm:w-auto flex py-[14px] px-5 justify-center items-center gap-2 rounded bg-[#0098E8] text-white font-inter text-sm font-medium hover:bg-[#0088D8]">
                                 Book my wash
-                                <MoveUpRight size={16} />
+                                <Icon name="book" width={16} height={16} color="white" />
                             </Button>
                         </Link>
                         <Link href="/services" className="w-full sm:w-auto">

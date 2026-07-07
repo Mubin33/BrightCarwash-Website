@@ -1,16 +1,26 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useServices } from '@/hooks/useServices';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useBooking } from '@/contexts/BookingContext';
 import { LocationFilter } from '../home/services/LocationFilter';
 import { ServiceCard } from '../home/services/ServiceCard';
+import type { ServiceData } from '@/data/services';
 
 export function ServicesList() {
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const { services, loading } = useServices();
     const { theme } = useTheme();
     const isDark = theme === 'dark';
+    const router = useRouter();
+    const { addService } = useBooking();
+
+    const handleConfirmBooking = (service: ServiceData) => {
+        addService(service);
+        router.push('/booking');
+    };
 
     if (loading) {
         return (
@@ -39,6 +49,7 @@ export function ServicesList() {
                         service={service}
                         selected={selectedId === service.id}
                         onSelect={setSelectedId}
+                        onConfirmBooking={handleConfirmBooking}
                     />
                 ))}
             </div>

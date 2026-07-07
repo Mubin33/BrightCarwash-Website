@@ -14,7 +14,7 @@ export function BookingPageWrapper() {
     const isDark = theme === 'dark';
 
     return (
-        <div className="pt-28">
+        <div >
             <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Booking', href: '/booking' }]} />
             <section
                 className={`flex py-20 px-4 sm:px-8 lg:px-[300px] flex-col justify-center items-center gap-12 self-stretch border rounded-lg ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-white'

@@ -54,5 +54,9 @@ export interface NewsListResponse {
 export interface NewsDetailResponse {
     success: boolean;
     message: string;
-    data: ApiNewsArticle;
+    data: {
+        item: ApiNewsArticle;
+        related_items: ApiNewsArticle[];
+    };
 }
+

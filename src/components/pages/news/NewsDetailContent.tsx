@@ -20,7 +20,7 @@ export function NewsDetailContent({ article }: Props) {
             <div className="flex flex-col items-start gap-8 self-stretch max-w-[1320px]">
                 {/* Main Featured Image */}
                 <div className="h-[300px] sm:h-[400px] lg:h-[450px] self-stretch rounded-lg relative overflow-hidden">
-                    <Image src={article.image} alt={article.title} fill className="object-cover" sizes="100vw" />
+                    <Image src={article.image} alt={article.title} fill className="object-cover" sizes="100vw" unoptimized />
                 </div>
 
                 {/* Title */}

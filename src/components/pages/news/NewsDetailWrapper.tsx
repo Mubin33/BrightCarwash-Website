@@ -3,6 +3,7 @@
 import { useParams } from 'next/navigation';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { NewsDetailContent } from './NewsDetailContent';
+import { NewsDetailRelated } from './NewsDetailRelated';
 import { useNewsDetail } from '@/hooks/useNewsDetail';
 
 export function NewsDetailWrapper() {
@@ -11,7 +12,7 @@ export function NewsDetailWrapper() {
 
     if (loading) {
         return (
-            <div className="pt-28">
+            <div className="pt-20 sm:pt-24 lg:pt-28">
                 <div className="h-[450px] bg-gray-100 animate-pulse rounded-lg mx-4 sm:mx-8 lg:mx-[300px]" />
             </div>
         );
@@ -19,7 +20,7 @@ export function NewsDetailWrapper() {
 
     if (!article) {
         return (
-            <div className="pt-28 text-center py-20">
+            <div className="pt-20 sm:pt-24 lg:pt-28 text-center py-20">
                 <p className="text-[#777980] font-inter">Article not found</p>
             </div>
         );
@@ -35,6 +36,9 @@ export function NewsDetailWrapper() {
                 ]}
             />
             <NewsDetailContent article={article} />
+            {article.relatedArticles.length > 0 && (
+                <NewsDetailRelated articles={article.relatedArticles} />
+            )}
         </div>
     );
 }

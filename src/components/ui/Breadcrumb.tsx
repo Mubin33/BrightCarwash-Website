@@ -6,7 +6,7 @@ interface Props {
 
 export function Breadcrumb({ items }: Props) {
     return (
-        <div className="flex py-4 px-4 sm:px-8 lg:px-[300px] justify-center items-center gap-6 self-stretch bg-[#092544]">
+        <div className="flex py-4 px-4 sm:px-8 lg:px-[300px] justify-start items-center gap-6 self-stretch bg-[#092544]">
             <div className="flex items-center gap-1.5">
                 {items.map((item, i) => (
                     <div key={item.href} className="flex items-center gap-1.5">

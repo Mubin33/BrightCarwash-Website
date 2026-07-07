@@ -16,6 +16,7 @@ export interface NewsDetail extends NewsArticle {
     firstHalf: string;
     secondHalf: string;
     images: string[];
+    relatedArticles: NewsArticle[];
 }
 
 export function transformNewsArticle(api: ApiNewsArticle): NewsArticle {
@@ -38,6 +39,7 @@ export function transformNewsDetail(api: ApiNewsArticle): NewsDetail {
         ...base,
         firstHalf: parsed.firstHalf,
         secondHalf: parsed.secondHalf,
-        images: parsed.images.length > 0 ? parsed.images : ['/images/news-detail-1.png', '/images/news-detail-2.png'],
+        images: parsed.images,
+        relatedArticles: [],
     };
 }
