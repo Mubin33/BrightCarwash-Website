@@ -10,7 +10,6 @@ const NAV_LINKS = [
     { label: 'Gallery', href: '/gallery' },
     { label: 'News & Events', href: '/news' },
     { label: 'Store', href: 'https://brightsidecw.qbstores.com/' },
-
 ];
 
 export function NavItems() {
@@ -19,7 +18,7 @@ export function NavItems() {
     const isDark = theme === 'dark';
 
     return (
-        <nav className="flex items-center gap-8">
+        <nav className="flex flex-col lg:flex-row items-start lg:items-center gap-3 lg:gap-5 xl:gap-8">
             {NAV_LINKS.map((link) => {
                 const isActive = pathname === link.href;
 
@@ -27,16 +26,12 @@ export function NavItems() {
                     <Link
                         key={link.href}
                         href={link.href}
-                        className={`font-inter text-base font-normal leading-[100%] transition-colors ${isActive
-                            ? 'underline decoration-[#B23730] decoration-[11%] underline-offset-[25%]'
-                            : 'no-underline'
+                        className={`font-inter text-base font-normal leading-[100%] transition-colors whitespace-nowrap ${isActive
+                                ? 'underline decoration-[#B23730] decoration-[11%] underline-offset-[25%]'
+                                : 'no-underline'
                             } ${isActive
-                                ? isDark
-                                    ? 'text-white'
-                                    : 'text-[#1D1F2C]'
-                                : isDark
-                                    ? 'text-white/80'
-                                    : 'text-[#777980]'
+                                ? isDark ? 'text-white' : 'text-[#1D1F2C]'
+                                : isDark ? 'text-white/80' : 'text-[#777980]'
                             }`}
                     >
                         {link.label}
