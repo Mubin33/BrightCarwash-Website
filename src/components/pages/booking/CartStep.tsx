@@ -76,8 +76,8 @@ export function CartStep({ onProceed }: Props) {
                     <Button
                         variant="outline"
                         className={`w-full py-[14px] px-5 justify-center rounded border font-inter text-sm ${isDark
-                                ? 'border-white/20 bg-white/[0.08] text-white'
-                                : 'border-[#DFE1E7] bg-[#F8FAFB] text-[#1B1B1B]'
+                            ? 'border-white/20 bg-white/[0.08] text-white'
+                            : 'border-[#DFE1E7] bg-[#F8FAFB] text-[#1B1B1B]'
                             }`}
                     >
                         Add another service

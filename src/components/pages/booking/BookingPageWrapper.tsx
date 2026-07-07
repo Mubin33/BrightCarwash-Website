@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { useTheme } from '@/contexts/ThemeContext';
 import { BookingSteps } from './BookingSteps';
@@ -8,24 +9,49 @@ import { CartStep } from './CartStep';
 import { DateTimeStep } from './DateTimeStep';
 import { CheckoutStep } from './CheckoutStep';
 
+type Step = 'cart' | 'datetime' | 'checkout';
+
 export function BookingPageWrapper() {
-    const [step, setStep] = useState<'cart' | 'datetime' | 'checkout'>('cart');
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const stepParam = searchParams.get('step') as Step | null;
+    const [step, setStep] = useState<Step>(stepParam || 'cart');
     const { theme } = useTheme();
     const isDark = theme === 'dark';
 
+    // Sync step to URL
+    const updateStep = (newStep: Step) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set('step', newStep);
+        router.push(`/booking?${params.toString()}`, { scroll: false });
+        setStep(newStep);
+    };
+
+    // Read step from URL on load
+    useEffect(() => {
+        if (stepParam && stepParam !== step) {
+            setStep(stepParam);
+        }
+    }, [stepParam]);
+
     return (
-        <div >
+        <div>
             <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Booking', href: '/booking' }]} />
             <section
-                className={`flex py-20 px-4 sm:px-8 lg:px-[300px] flex-col justify-center items-center gap-12 self-stretch border rounded-lg ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-white'
+                className={`flex py-16 sm:py-20 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40 2xl:px-[300px] flex-col justify-center items-center gap-8 sm:gap-12 self-stretch border rounded-lg ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-white'
                     }`}
             >
                 <div className="flex flex-col justify-between items-center self-stretch w-full max-w-[1320px]">
-                    <div className="flex flex-col items-start gap-6 self-stretch">
-                        <BookingSteps currentStep={step} onStepChange={setStep} />
-                        {step === 'cart' && <CartStep onProceed={() => setStep('datetime')} />}
-                        {step === 'datetime' && <DateTimeStep />}
-                        {step === 'checkout' && <CheckoutStep />}
+                    <div className="flex flex-col items-start gap-4 sm:gap-6 self-stretch">
+                        <BookingSteps currentStep={step} onStepChange={updateStep} />
+                        {step === 'cart' && <CartStep onProceed={() => updateStep('datetime')} />}
+                        {step === 'datetime' && (
+                            <DateTimeStep
+                                onProceed={() => updateStep('checkout')}
+                                onBack={() => updateStep('cart')}
+                            />
+                        )}
+                        {step === 'checkout' && <CheckoutStep onBack={() => updateStep('datetime')} />}
                     </div>
                 </div>
             </section>

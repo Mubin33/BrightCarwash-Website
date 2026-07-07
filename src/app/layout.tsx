@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer';
 import { Navbar } from '@/components/layout/Navbar';
 import { FaqSection } from '@/components/pages/home/all-sections/FaqSection';
 import { BookingProvider } from '@/contexts/BookingContext';
+import { ConditionalFaq } from '@/components/layout/ConditionalFaq';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const bebasNeue = Bebas_Neue({
   weight: '400',
@@ -26,7 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <BookingProvider>
             <Navbar />
             {children}
-            <FaqSection />
+            <ConditionalFaq />
             <Footer />
           </BookingProvider>
         </ThemeProvider>

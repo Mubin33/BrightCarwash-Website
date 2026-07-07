@@ -30,10 +30,10 @@ export function BookingSteps({ currentStep, onStepChange }: Props) {
                         type="button"
                         onClick={() => onStepChange(s.key)}
                         className={`flex py-2 px-3 justify-center items-center gap-3 flex-1 self-stretch rounded-full font-inter text-sm font-medium transition-colors ${currentStep === s.key
-                                ? 'bg-[#B23730] text-white'
-                                : isDark
-                                    ? 'text-white/60 hover:text-white'
-                                    : 'text-[#777980] hover:text-[#1B1B1B]'
+                            ? 'bg-[#B23730] text-white'
+                            : isDark
+                                ? 'text-white/60 hover:text-white'
+                                : 'text-[#777980] hover:text-[#1B1B1B]'
                             }`}
                     >
                         <Icon
