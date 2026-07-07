@@ -50,7 +50,7 @@ export function StepCard({ step }: Props) {
 
                 {/* Number */}
                 <span
-                    className={`font-bebas-neue text-5xl font-normal leading-[100%] ${isDark ? 'text-white opacity-40' : 'text-[#B23730]/40'
+                    className={`font-bebas text-5xl font-normal leading-[100%] ${isDark ? 'text-white opacity-40' : 'text-[#B23730]/40'
                         }`}
                 >
                     {step.number}
@@ -59,7 +59,7 @@ export function StepCard({ step }: Props) {
 
             {/* Title */}
             <h3
-                className={`self-stretch font-bebas-neue text-2xl font-normal leading-[100%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'
+                className={`font-bebas self-stretch  text-2xl font-normal leading-[100%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'
                     }`}
             >
                 {step.title}

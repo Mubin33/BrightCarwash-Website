@@ -13,6 +13,7 @@ export function AboutSectionWrapper() {
                     <SectionHeader
                         badgeIcon="car"
                         badgeText={aboutData.badgeText}
+                        align='start'
                         heading={
                             <>
                                 <span className='text-[#FFFFFF]'>{aboutData.heading.prefix}{' '}</span>

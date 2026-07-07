@@ -22,7 +22,7 @@ export function MembershipSectionWrapper() {
             {/* Right Content */}
             <div className="flex flex-col items-start gap-4 flex-1">
                 {/* Badge */}
-                <div className="font-bebas flex py-[6px] px-3 items-center gap-2 rounded-lg border border-white/20 bg-white/[0.12]">
+                <div className=" flex py-[6px] px-3 items-center gap-2 rounded-lg border border-white/20 bg-white/[0.12]">
                     <Icon name={membershipData.badgeIcon} width={16} height={16} color="#FFFFFF" />
                     <span className="text-white font-inter text-sm font-normal leading-[112%]">
                         {membershipData.badgeText}
@@ -40,9 +40,9 @@ export function MembershipSectionWrapper() {
                 </p>
 
                 {/* Button */}
-                <Button className="font-bebas flex py-[14px] px-5 justify-center items-center gap-2 rounded-lg bg-white text-[#B23730]! text-lg! hover:bg-gray-100 mt-8">
+                <Button className=" flex py-[14px] px-5 justify-center items-center gap-2 rounded-lg bg-white text-[#B23730]! text-lg! hover:bg-gray-100 mt-8">
                     {membershipData.buttonText}
-                    <MoveUpRight size={16} />
+                    <Icon name="book" width={20} height={20} color='#a5283dff' />
                 </Button>
             </div>
         </section>

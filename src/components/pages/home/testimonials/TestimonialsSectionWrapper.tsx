@@ -42,11 +42,20 @@ export function TestimonialsSectionWrapper() {
             />
 
             <div className=" columns-1 md:columns-2 lg:columns-3 gap-1 w-full max-w-[1320px] [&_>_*]:mb-0">
-                {testimonials.map((t) => (
-                    <div key={t.id} className="break-inside-avoid p-2">
-                        <TestimonialCard testimonial={t} />
-                    </div>
-                ))}
+
+                {testimonials.map((t, i) => {
+                    const isLast = i === testimonials.length - 1;
+                    const cardData = {
+                        ...t,
+                        tall: isLast ? true : t.tall,
+                        featured: isLast,
+                    };
+                    return (
+                        <div key={t.id} className="break-inside-avoid p-2">
+                            <TestimonialCard testimonial={cardData} />
+                        </div>
+                    );
+                })}
             </div>
         </section>
     );

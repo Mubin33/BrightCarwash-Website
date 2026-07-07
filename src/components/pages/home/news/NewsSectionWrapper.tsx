@@ -8,6 +8,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { MoveUpRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
+import { Icon } from '@/components/ui/Icon';
 
 export function NewsSectionWrapper() {
     const { theme } = useTheme();
@@ -89,7 +90,7 @@ export function NewsSectionWrapper() {
             <Link href="/news">
                 <Button className="flex py-[14px] px-5 justify-center items-center gap-2 rounded-lg bg-[#0098E8] text-white font-inter text-lg hover:bg-[#0088D8]">
                     Read All
-                    <MoveUpRight size={16} />
+                    <Icon name="book" width={20} height={20} />
                 </Button>
             </Link>
         </section>

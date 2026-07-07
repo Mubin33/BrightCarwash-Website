@@ -16,7 +16,7 @@ export function SideArticleCard({ article }: Props) {
 
     return (
         <div
-            className={`flex items-center gap-4 self-stretch rounded-xl border ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#ECEFF3] bg-white'
+            className={`min-h-0 lg:min-h-[150px]  flex items-center gap-4 self-stretch rounded-xl border ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#ECEFF3] bg-white'
                 }`}
         >
             <div className="w-[246px] self-stretch relative overflow-hidden rounded-l-xl shrink-0 hidden sm:block">

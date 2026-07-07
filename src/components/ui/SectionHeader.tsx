@@ -10,14 +10,15 @@ interface Props {
     subheading: string;
     forceDark?: boolean;
     className?: string;
+    align?: 'center' | 'start';
 }
 
-export function SectionHeader({ badgeIcon, badgeText, heading, subheading, forceDark, className }: Props) {
+export function SectionHeader({ badgeIcon, badgeText, heading, subheading, forceDark, align = 'center', className }: Props) {
     const { theme } = useTheme();
     const isDark = forceDark ?? theme === 'dark';
 
     return (
-        <div className="flex min-h-[auto] lg:h-56 flex-col justify-end items-center gap-3 self-stretch">
+        <div className={`flex min-h-[auto] lg:h-56 flex-col justify-end ${align === 'center' ? 'items-center' : 'items-start'} gap-3 self-stretch`}>
             <div
                 className={`flex py-[6px] px-3 items-center gap-3 rounded-lg border ${isDark
                     ? 'border-[#0098E8]/20 bg-[#0098E8]/[0.12]'
@@ -39,18 +40,20 @@ export function SectionHeader({ badgeIcon, badgeText, heading, subheading, force
             </div>
 
             <h2
-                className={`font-bebas w-full sm:w-[380px] lg:w-[540px] text-center  text-3xl sm:text-4xl lg:text-5xl font-normal leading-[116%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'
-                    }`}
+                className={`font-bebas text-3xl sm:text-4xl lg:text-5xl font-normal leading-[116%] ${align === 'center' ? 'text-center w-full sm:w-[380px] lg:w-[540px]' : 'text-left w-full'
+                    } ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}
             >
                 {heading}
             </h2>
 
-            <p
-                className={`w-full sm:w-[500px] lg:w-[638px] text-center font-inter text-sm sm:text-base font-normal leading-[160%] ${isDark ? 'text-white/80' : 'text-[#4A4C56]'
-                    }`}
-            >
-                {subheading}
-            </p>
+            {subheading && (
+                <p
+                    className={`font-inter text-sm sm:text-base font-normal leading-[160%] ${align === 'center' ? 'text-center w-full sm:w-[500px] lg:w-[638px]' : 'text-left w-full'
+                        } ${isDark ? 'text-white/80' : 'text-[#4A4C56]'}`}
+                >
+                    {subheading}
+                </p>
+            )}
         </div>
     );
 }

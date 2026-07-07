@@ -20,6 +20,6 @@ export function transformTestimonial(api: ApiTestimonial): TestimonialData {
         comment: api.review_text,
         image: api.avatar || '',
         tall: api.review_text.length > 200,
-        featured: api.ratings === 5,
+        featured: false,
     };
 }

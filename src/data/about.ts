@@ -12,7 +12,7 @@ export const aboutData = {
     ],
     founder: {
         name: 'Jonathan Roldan',
-        title: 'Founder & CEO',
+        title: 'Founder',
         quote:
             'Founded by U.S. Army veteran Jonathan Roldan, Brightside was built on the values of integrity, hard work, and service. Those principles guide everything we do, from the way we care for our customers\' vehicles to the way we support and develop our team members.',
     },
