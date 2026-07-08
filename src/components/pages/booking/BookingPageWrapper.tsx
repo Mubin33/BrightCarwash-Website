@@ -8,8 +8,9 @@ import { BookingSteps } from './BookingSteps';
 import { CartStep } from './CartStep';
 import { DateTimeStep } from './DateTimeStep';
 import { CheckoutStep } from './CheckoutStep';
+import { BookingSuccess } from './BookingSuccess';
 
-type Step = 'cart' | 'datetime' | 'checkout';
+type Step = 'cart' | 'datetime' | 'checkout' | 'confirmed';
 
 export function BookingPageWrapper() {
     const searchParams = useSearchParams();
@@ -19,7 +20,6 @@ export function BookingPageWrapper() {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
 
-    // Sync step to URL
     const updateStep = (newStep: Step) => {
         const params = new URLSearchParams(searchParams.toString());
         params.set('step', newStep);
@@ -27,12 +27,13 @@ export function BookingPageWrapper() {
         setStep(newStep);
     };
 
-    // Read step from URL on load
     useEffect(() => {
         if (stepParam && stepParam !== step) {
             setStep(stepParam);
         }
     }, [stepParam]);
+
+    const visibleStep: 'cart' | 'datetime' | 'checkout' = step === 'confirmed' ? 'checkout' : step;
 
     return (
         <div>
@@ -43,7 +44,7 @@ export function BookingPageWrapper() {
             >
                 <div className="flex flex-col justify-between items-center self-stretch w-full max-w-[1320px]">
                     <div className="flex flex-col items-start gap-4 sm:gap-6 self-stretch">
-                        <BookingSteps currentStep={step} onStepChange={updateStep} />
+                        <BookingSteps currentStep={visibleStep} onStepChange={updateStep} />
                         {step === 'cart' && <CartStep onProceed={() => updateStep('datetime')} />}
                         {step === 'datetime' && (
                             <DateTimeStep
@@ -51,7 +52,13 @@ export function BookingPageWrapper() {
                                 onBack={() => updateStep('cart')}
                             />
                         )}
-                        {step === 'checkout' && <CheckoutStep onBack={() => updateStep('datetime')} />}
+                        {step === 'checkout' && (
+                            <CheckoutStep
+                                onBack={() => updateStep('datetime')}
+                                onSuccess={() => updateStep('confirmed')}
+                            />
+                        )}
+                        {step === 'confirmed' && <BookingSuccess />}
                     </div>
                 </div>
             </section>

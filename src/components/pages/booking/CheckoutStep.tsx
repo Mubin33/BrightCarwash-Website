@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { ContactInfoForm } from './ContactInfoForm';
 import { PaymentDetailsForm } from './PaymentDetailsForm';
@@ -15,24 +15,24 @@ import { toast } from 'react-toastify';
 
 interface Props {
     onBack: () => void;
+    onSuccess: () => void;
 }
 
-const LOCATION_ID = 'LRGDT46XWP65E';
 
-export function CheckoutStep({ onBack }: Props) {
+
+export function CheckoutStep({ onBack, onSuccess }: Props) {
     const [agreed, setAgreed] = useState(false);
     const [contactInfo, setContactInfo] = useState({ firstName: '', lastName: '', phone: '', email: '', note: '' });
     const [paymentInfo, setPaymentInfo] = useState({ cardNumber: '', expiry: '', cvv: '' });
     const searchParams = useSearchParams();
-    const router = useRouter();
-    const { selectedServices } = useBooking();
+    const { selectedServices, selectedLocation } = useBooking();
+    const LOCATION_ID = selectedLocation;
     const { theme } = useTheme();
     const isDark = theme === 'dark';
     const { checkout, loading: checkoutLoading } = useCheckout();
     const { lockToken, lock, release } = useBookingLock();
 
-    const dateParam = searchParams.get('date');
-    const teamMemberId = searchParams.get('teamMemberId') || 'TMJ05qjLA76pqIAf';
+    const teamMemberId = searchParams.get('teamMemberId') || '';
     const startAt = searchParams.get('startAt') || '';
 
     useEffect(() => {
@@ -43,6 +43,19 @@ export function CheckoutStep({ onBack }: Props) {
             if (lockToken) release(LOCATION_ID, startAt);
         };
     }, []);
+
+    useEffect(() => {
+        const handleBeforeUnload = () => {
+            if (lockToken) {
+                navigator.sendBeacon(
+                    `${process.env.NEXT_PUBLIC_API_BASE_URL}/appointments/lock/release`,
+                    JSON.stringify({ locationId: LOCATION_ID, startAt, lockToken })
+                );
+            }
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    }, [lockToken, startAt]);
 
     const handleBack = () => {
         if (lockToken) release(LOCATION_ID, startAt);
@@ -64,7 +77,7 @@ export function CheckoutStep({ onBack }: Props) {
             customerEmail: contactInfo.email, customerPhone: contactInfo.phone,
             customerNote: contactInfo.note, vehicle: 'Not specified',
         });
-        if (success) router.push('/booking?step=confirmed');
+        if (success) onSuccess();
     };
 
     return (

@@ -8,6 +8,7 @@ export interface ServiceData {
     duration: string;
     image: string;
     variationId: string;
+    locationId: string;
 }
 
 export function transformService(apiService: ApiService): ServiceData {
@@ -24,5 +25,6 @@ export function transformService(apiService: ApiService): ServiceData {
             : `${variation.durationMinutes} min`,
         image: apiService.images[0] || variation.images[0] || '/images/service.png',
         variationId: variation.id,
+        locationId: '',
     };
 }

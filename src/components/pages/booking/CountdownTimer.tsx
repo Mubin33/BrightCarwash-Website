@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useState, useEffect, useCallback } from 'react';
 
 const LOCK_DURATION_MINUTES = 10;
 
@@ -9,21 +10,27 @@ interface Props {
 }
 
 export function CountdownTimer({ onExpire }: Props) {
+    const router = useRouter();
     const [timeLeft, setTimeLeft] = useState(LOCK_DURATION_MINUTES * 60);
+
+    const handleExpire = useCallback(() => {
+        onExpire?.();
+        router.push('/booking?step=cart');
+    }, [onExpire, router]);
 
     useEffect(() => {
         const interval = setInterval(() => {
             setTimeLeft((prev) => {
                 if (prev <= 1) {
                     clearInterval(interval);
-                    onExpire?.();
+                    handleExpire();
                     return 0;
                 }
                 return prev - 1;
             });
         }, 1000);
         return () => clearInterval(interval);
-    }, [onExpire]);
+    }, [handleExpire]);
 
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;

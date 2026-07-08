@@ -4,9 +4,11 @@ import { ThemeProvider } from '@/contexts/ThemeContext';
 import './globals.css';
 import { Footer } from '@/components/layout/Footer';
 import { Navbar } from '@/components/layout/Navbar';
-import { FaqSection } from '@/components/pages/home/all-sections/FaqSection';
 import { BookingProvider } from '@/contexts/BookingContext';
 import { ConditionalFaq } from '@/components/layout/ConditionalFaq';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const bebasNeue = Bebas_Neue({
   weight: '400',
@@ -30,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <ConditionalFaq />
             <Footer />
           </BookingProvider>
+          <ToastContainer position="top-right" autoClose={1500} hideProgressBar={false} />
         </ThemeProvider>
       </body>
     </html>

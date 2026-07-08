@@ -40,7 +40,7 @@ export function CartStep({ onProceed }: Props) {
                             }`}
                     >
                         <div className="flex justify-between items-center self-stretch">
-                            <h3 className={`font-bebas-neue text-[32px] leading-[100%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
+                            <h3 className={`font-bebas text-[32px] leading-[100%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
                                 {service.name}
                             </h3>
                             <button
@@ -85,7 +85,8 @@ export function CartStep({ onProceed }: Props) {
                 </Link>
                 <Button
                     onClick={onProceed}
-                    className="flex-1 py-[14px] px-5 justify-center rounded bg-[#0098E8] text-white font-inter text-sm"
+                    disabled={selectedServices.length === 0}
+                    className="flex-1 py-[14px] px-5 justify-center rounded bg-[#0098E8] text-white font-inter text-sm disabled:opacity-50"
                 >
                     Proceed to Date & Time
                 </Button>

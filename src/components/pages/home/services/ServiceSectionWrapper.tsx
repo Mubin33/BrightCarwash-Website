@@ -16,9 +16,11 @@ export function ServicesSectionWrapper() {
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const { theme } = useTheme();
     const isDark = theme === 'dark';
-    const { services, loading } = useServices();
+
     const router = useRouter();
     const { addService } = useBooking();
+    const { selectedLocation } = useBooking();
+    const { services, loading } = useServices(selectedLocation || undefined);
 
     const handleConfirmBooking = (service: ServiceData) => {
         addService(service);

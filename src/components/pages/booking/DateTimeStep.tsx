@@ -17,8 +17,6 @@ interface Props {
     onBack: () => void;
 }
 
-const LOCATION_ID = 'LRGDT46XWP65E';
-
 function groupSlotsByPeriod(slots: AvailabilitySlot[]): Record<string, AvailabilitySlot[]> {
     const groups: Record<string, AvailabilitySlot[]> = { Morning: [], Afternoon: [], Evening: [] };
     slots.forEach((slot) => {
@@ -38,10 +36,9 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
 
     const [date, setDate] = useState<Date | undefined>(dateParam ? new Date(dateParam) : undefined);
     const [selectedTime, setSelectedTime] = useState<string | null>(timeParam || null);
-    const [selectedSlot, setSelectedSlot] = useState<AvailabilitySlot | null>(null);
-    const { selectedServices } = useBooking();
+    const { selectedServices, selectedLocation } = useBooking();
     const { slots, loading: slotsLoading } = useAvailability(
-        LOCATION_ID,
+        selectedLocation,
         selectedServices.map((s) => s.variationId),
         date
     );
@@ -59,14 +56,12 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
     const handleDateChange = (newDate: Date) => {
         setDate(newDate);
         setSelectedTime(null);
-        setSelectedSlot(null);
         updateParams({ date: newDate.toISOString().split('T')[0] });
     };
 
     const handleTimeChange = (slot: AvailabilitySlot) => {
         const time = format(new Date(slot.startAt), 'hh:mm a');
         setSelectedTime(time);
-        setSelectedSlot(slot);
         updateParams({
             time,
             teamMemberId: slot.appointmentSegments[0]?.teamMemberId || '',
