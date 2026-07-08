@@ -5,11 +5,12 @@ import { VehicleCard } from './VehicleCard';
 import { Button } from '@/components/ui/Button';
 import { DatePicker } from '@/components/ui/DatePicker';
 import { useQuote } from '@/hooks/useQuote';
+import { toast } from 'react-toastify';
 
 const vehicles = [
     { name: 'Sedan', doors: '2-4 doors', image: '/images/Sedan.png' },
     { name: 'SUV', doors: '5+ doors', image: '/images/SUV.png' },
-    { name: 'Truck', doors: 'For Work or Cargo', image: '/images/Truck.png' },
+    { name: 'Truck/Van', doors: 'For Work or Cargo', image: '/images/Truck.png' },
 ];
 
 export function QuoteForm() {
@@ -20,16 +21,23 @@ export function QuoteForm() {
     const [phone, setPhone] = useState('');
     const { sendQuote, loading } = useQuote();
 
+    const isFormValid = name && email && phone && selectedVehicle && date;
+
     const handleSubmit = async () => {
-        if (!name || !email || !phone || !selectedVehicle) {
-            return;
-        }
-        await sendQuote({
+        if (!isFormValid) return;
+        const success = await sendQuote({
             full_name: name,
             email,
             phone,
             vehicle_type: selectedVehicle,
         });
+        if (success) {
+            setName('');
+            setEmail('');
+            setPhone('');
+            setSelectedVehicle(null);
+            setDate(undefined);
+        }
     };
 
     return (
@@ -90,15 +98,17 @@ export function QuoteForm() {
                 </div>
 
                 {/* Submit */}
-                <Button
-                    onClick={handleSubmit}
-                    disabled={!name || !email || !phone || !selectedVehicle}
-                    isLoading={loading}
-                    loadingText="Submitting..."
-                    className="w-full py-4 px-6 rounded bg-[#B23730] text-white font-inter text-base font-medium hover:bg-[#9A2E28] transition-colors"
-                >
-                    Get my quote
-                </Button>
+                <div onClick={() => !isFormValid && toast.warning('Please fill all required fields')} className="w-full">
+                    <Button
+                        onClick={handleSubmit}
+                        disabled={!isFormValid}
+                        isLoading={loading}
+                        loadingText="Submitting..."
+                        className="w-full py-4 px-6 rounded bg-[#B23730] text-white font-inter text-base font-medium hover:bg-[#9A2E28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        Get my quote
+                    </Button>
+                </div>
             </div>
         </div>
     );
