@@ -34,5 +34,8 @@ export function useAvailability(
             .finally(() => setLoading(false));
     }, [locationId, serviceVariationIds.join(','), date?.toISOString().split('T')[0]]);
 
+
+
+
     return { slots, loading };
 }
