@@ -28,7 +28,7 @@ export function HeroSectionWrapper() {
                         </div>
 
                         {/* Headline */}
-                        <h1 className="font-bebas w-full text-5xl sm:text-6xl md:text-7xl lg:text-[72px] xl:text-[80px] 2xl:text-[88px] font-normal leading-[110%] sm:leading-[120%] tracking-[1px] sm:tracking-[2px]">
+                        <h1 className="font-bebas w-full text-5xl sm:text-6xl md:text-7xl lg:text-[72px] xl:text-[80px] 2xl:text-[80px] font-normal leading-[110%] sm:leading-[120%] tracking-[1px] sm:tracking-[2px]">
                             <span className="text-white">YOUR </span>
                             <span className="text-[#B23730]">CAR DESERVES A</span>
                             <br />
