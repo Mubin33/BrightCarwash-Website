@@ -19,9 +19,9 @@ export function AppointmentSummary() {
     const dateDisplay = date ? format(date, 'MMMM d, yyyy') : '';
 
     const subtotal = selectedServices.reduce((sum, s) => sum + s.price, 0);
-    const tax = Math.round(subtotal * 0.0875 * 100) / 100;
+    const tax = Math.round(subtotal * 0 * 100) / 100;
     const total = subtotal + tax;
-    const deposit = Math.round(total * 0.25 * 100) / 100;
+    const deposit = Math.round(total * 0 * 100) / 100;
     const dueAtAppointment = total - deposit;
 
     return (
