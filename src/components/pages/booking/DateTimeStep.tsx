@@ -70,7 +70,7 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
     };
 
     return (
-        <div className={`flex flex-col lg:flex-row w-full p-4 sm:p-6 items-start gap-6 rounded-lg border ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#DFE1E7] bg-[#F8FAFB]'}`}>
+        <div className={`whitespace-nowrap flex flex-col lg:flex-row w-full p-4 sm:p-6 items-start gap-6 rounded-lg border ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#DFE1E7] bg-[#F8FAFB]'}`}>
             <div className={`flex p-4 flex-col items-center gap-3 self-stretch flex-1 rounded-xl border ${isDark ? 'border-white/10 bg-white/[0.04]' : 'border-[#D2D2D5] bg-white'}`}>
                 <Calendar value={date} onChange={handleDateChange} isDark={isDark} />
                 <div className="w-full h-px bg-[#DFE1E7] dark:bg-white/20" />
@@ -100,11 +100,17 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
                                 periodSlots.length > 0 ? (
                                     <div key={period} className="flex flex-col items-start gap-3 self-stretch">
                                         <span className={`font-inter text-base font-semibold leading-[150%] tracking-[0.16px] ${isDark ? 'text-white' : 'text-[#070707]'}`}>{period}</span>
-                                        <div className="flex items-start gap-[15px] self-stretch flex-wrap">
+                                        <div className="flex items-start gap-2 sm:gap-[15px] self-stretch flex-wrap">
                                             {periodSlots.map((slot) => {
                                                 const time = format(new Date(slot.startAt), 'hh:mm a');
                                                 return (
-                                                    <TimeSlotButton key={slot.startAt} time={time} selected={selectedTime === time} isDark={isDark} onClick={() => handleTimeChange(slot)} />
+                                                    <TimeSlotButton
+                                                        key={slot.startAt}
+                                                        time={time}
+                                                        selected={selectedTime === time}
+                                                        isDark={isDark}
+                                                        onClick={() => handleTimeChange(slot)}
+                                                    />
                                                 );
                                             })}
                                         </div>

@@ -91,15 +91,15 @@ export function Calendar({ value, onChange, isDark = false }: Props) {
                             type="button"
                             disabled={!valid || past}
                             onClick={() => valid && !past && handleSelect(day)}
-                            className={`w-20 h-10 flex items-center justify-center text-sm font-inter rounded-4xl transition-colors mx-auto ${selected
-                                ? 'bg-[#B23730] text-white'
-                                : todayCell
-                                    ? 'border-2 border-[#B23730] text-[#B23730]'
-                                    : past || !valid
-                                        ? `${isDark ? 'text-white/20' : 'text-[#D2D2D5]'} cursor-not-allowed`
-                                        : isDark
-                                            ? 'text-white hover:bg-white/10'
-                                            : 'text-[#1D1F2C] hover:bg-[#F8FAFB]'
+                            className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-xs sm:text-sm font-inter rounded-full transition-colors mx-auto ${selected
+                                    ? 'bg-[#B23730] text-white'
+                                    : todayCell
+                                        ? 'border-2 border-[#B23730] text-[#B23730]'
+                                        : past || !valid
+                                            ? `${isDark ? 'text-white/20' : 'text-[#D2D2D5]'} cursor-not-allowed`
+                                            : isDark
+                                                ? 'text-white hover:bg-white/10'
+                                                : 'text-[#1D1F2C] hover:bg-[#F8FAFB]'
                                 }`}
                         >
                             {valid ? day : ''}

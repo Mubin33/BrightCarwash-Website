@@ -22,7 +22,7 @@ export function BookingSteps({ currentStep, onStepChange }: Props) {
     const currentIndex = stepOrder.indexOf(currentStep);
 
     return (
-        <div className="flex justify-center items-center self-stretch">
+        <div className="flex justify-center items-center self-stretch whitespace-nowrap">
             <div
                 className={`flex w-full max-w-[872px] p-3 items-center gap-0.5 rounded-full border ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#DFE1E7] bg-[#F8FAFB]'
                     }`}
@@ -34,7 +34,7 @@ export function BookingSteps({ currentStep, onStepChange }: Props) {
                             key={s.key}
                             type="button"
                             onClick={() => isAccessible && onStepChange(s.key)}
-                            className={`flex py-2 px-3 justify-center items-center gap-3 flex-1 self-stretch rounded-full font-inter text-sm font-medium transition-colors ${currentStep === s.key
+                            className={`flex py-1.5 sm:py-2 px-2 sm:px-3 justify-center items-center gap-1.5 sm:gap-3 flex-1 self-stretch rounded-full font-inter text-xs sm:text-sm font-medium transition-colors ${currentStep === s.key
                                 ? 'bg-[#B23730] text-white'
                                 : isDark
                                     ? 'text-white/60 hover:text-white'
@@ -43,8 +43,9 @@ export function BookingSteps({ currentStep, onStepChange }: Props) {
                         >
                             <Icon
                                 name={s.icon}
-                                width={16}
-                                height={16}
+                                width={14}
+                                height={14}
+                                className="sm:w-4 sm:h-4"
                                 color={currentStep === s.key ? '#FFFFFF' : isDark ? '#FFFFFF' : '#777980'}
                             />
                             {s.label}
