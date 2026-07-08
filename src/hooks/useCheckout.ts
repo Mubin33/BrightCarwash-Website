@@ -24,7 +24,9 @@ export function useCheckout() {
             toast.success('Booking confirmed!');
             return true;
         } catch (error: any) {
-            toast.error(error.response?.data?.message || 'Payment failed');
+            const message = error.response?.data?.message;
+            const errorMsg = Array.isArray(message) ? message.join(', ') : message || 'Payment failed';
+            toast.error(errorMsg);
             return false;
         } finally {
             setLoading(false);

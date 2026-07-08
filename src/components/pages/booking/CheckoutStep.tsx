@@ -70,6 +70,18 @@ export function CheckoutStep({ onBack, onSuccess }: Props) {
 
     const handleCheckout = async () => {
         if (!isFormValid) { toast.warning('Please fill all required fields'); return; }
+
+
+        const phoneDigits = contactInfo.phone.replace(/\D/g, '');
+        if (phoneDigits.length < 10) {
+            toast.warning('Please enter a valid phone number');
+            return;
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(contactInfo.email)) {
+            toast.warning('Please enter a valid email address');
+            return;
+        }
         const success = await checkout({
             locationId: LOCATION_ID, startAt, lockToken: lockToken || '',
             cartItems: selectedServices.map((s) => ({ serviceVariationId: s.variationId, teamMemberId })),

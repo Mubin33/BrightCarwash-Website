@@ -29,10 +29,10 @@ export function ServiceCard({ service, selected, onSelect, onConfirmBooking }: P
         <div
             onClick={() => onSelect(service.id)}
             className={`flex w-full p-4 sm:p-6 flex-col items-start gap-6 sm:gap-8 rounded-lg border transition-all cursor-pointer ${selected
-                    ? 'border-[#0098E8] bg-[#092544]'
-                    : isDark
-                        ? 'border-white/20 bg-white/[0.06] hover:bg-white/[0.12] hover:border-[#0098E8]/30'
-                        : 'border-[#DFE1E7] bg-white hover:bg-[#F0F8FF] hover:border-[#0098E8]/30'
+                ? 'border-[#0098E8] bg-[#092544]'
+                : isDark
+                    ? 'border-white/20 bg-white/[0.06] hover:bg-white/[0.12] hover:border-[#0098E8]/30'
+                    : 'border-[#DFE1E7] bg-white hover:bg-[#F0F8FF] hover:border-[#0098E8]/30'
                 }`}
         >
             {/* Image */}
@@ -78,29 +78,14 @@ export function ServiceCard({ service, selected, onSelect, onConfirmBooking }: P
                 </div>
             </div>
 
-            {/* Expandable Details */}
-            <button
-                type="button"
-                onClick={(e) => { e.stopPropagation(); setExpanded(!expanded); }}
-                className={`flex w-full py-3 px-4 flex-col items-start gap-4 rounded-md border ${isDark && !selected ? 'border-white/20 bg-white/[0.08]' : 'border-[#DFE1E7] bg-[#F8FAFB]'
-                    }`}
-            >
-                <div className="flex justify-between items-center self-stretch">
-                    <span className={`font-inter text-sm ${isDark && !selected ? 'text-white' : 'text-[#1D1F2C]'}`}>
-                        {expanded ? 'Hide details' : 'Show details'}
-                    </span>
-                    {expanded ? (
-                        <ChevronUp size={16} className="text-[#777980]" />
-                    ) : (
-                        <ChevronDown size={16} className="text-[#777980]" />
-                    )}
-                </div>
-                {expanded && (
-                    <p className={`font-inter text-start text-sm leading-[150%] ${isDark && !selected ? 'text-white/60' : 'text-[#777980]'}`}>
-                        {service.description}
-                    </p>
-                )}
-            </button>
+            {/* Description */}
+            <div className={`flex w-full py-3 px-4 flex-col items-start gap-4 rounded-md border ${isDark && !selected ? 'border-white/20 bg-white/[0.08]' : 'border-[#DFE1E7] bg-[#F8FAFB]'
+                }`}>
+                <p className={`font-inter text-start text-sm leading-[150%] ${isDark && !selected ? 'text-white/60' : 'text-[#777980]'
+                    }`}>
+                    {service.description}
+                </p>
+            </div>
 
             {/* Button */}
             <div className="w-full mt-auto">
