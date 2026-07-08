@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useTheme } from '@/contexts/ThemeContext';
 import { NavItems } from './navbar/NavItems';
 import { ThemeToggle } from './navbar/ThemeToggle';
 import { BookNowButton } from './navbar/BookNowButton';
@@ -12,7 +11,6 @@ import { CartButton } from './navbar/CartButton';
 import { Icon } from '@/components/ui/Icon';
 
 export function Navbar() {
-    const { theme } = useTheme();
     const pathname = usePathname();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -25,12 +23,7 @@ export function Navbar() {
 
     return (
         <>
-            <header
-                className={`sticky top-0 flex w-full px-4 md:px-6 lg:px-8 xl:px-20 2xl:px-[300px] py-3 md:py-4 items-center gap-3 md:gap-4 z-50 border-b ${theme === 'dark'
-                        ? 'border-white/20 bg-[#363636]/[0.12] backdrop-blur-md'
-                        : 'border-[#DFE1E7] bg-white'
-                    }`}
-            >
+            <header className="sticky top-0 flex w-full px-4 md:px-6 lg:px-8 xl:px-20 2xl:px-[300px] py-3 md:py-4 items-center gap-3 md:gap-4 z-50 border-b border-[#DFE1E7] bg-white dark:border-white/20 dark:bg-[#363636]/[0.12] dark:backdrop-blur-md">
                 <div className="flex justify-between items-center flex-1 gap-4">
                     {/* Logo */}
                     <Link href="/" onClick={handleLogoClick} className="shrink-0">
@@ -76,10 +69,7 @@ export function Navbar() {
                         className="absolute inset-0 bg-black/40 backdrop-blur-sm"
                         onClick={() => setMobileMenuOpen(false)}
                     />
-                    <div
-                        className={`absolute top-0 right-0 h-full w-[300px] max-w-[80vw] shadow-xl transition-transform duration-300 flex flex-col p-6 gap-6 ${theme === 'dark' ? 'bg-[#1A1A1A]' : 'bg-white'
-                            }`}
-                    >
+                    <div className="absolute top-0 right-0 h-full w-[300px] max-w-[80vw] shadow-xl transition-transform duration-300 flex flex-col p-6 gap-6 bg-white dark:bg-[#1A1A1A]">
                         <div className="flex justify-between items-center">
                             <span className="font-bebas-neue text-2xl text-[#1D1F2C] dark:text-white">Menu</span>
                             <button

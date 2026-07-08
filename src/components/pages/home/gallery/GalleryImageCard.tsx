@@ -1,14 +1,14 @@
 import Image from 'next/image';
 import type { GalleryImage } from '@/data/gallery';
 
-function getFlexGrow(seed: string, idx: number, colIndex: number) {
+function getCardHeight(seed: string, idx: number, colIndex: number) {
     let hash = 0;
     for (let i = 0; i < seed.length; i++) {
         hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
     }
-    const jitter = (hash % 25) / 100;
+    const jitter = hash % 40;
     const phase = (idx + colIndex) % 2;
-    const base = phase === 0 ? 2.0 : 1.0;
+    const base = phase === 0 ? 340 : 220; // tall vs short alternation
     return base + jitter;
 }
 
@@ -20,11 +20,11 @@ interface Props {
 }
 
 export function GalleryImageCard({ image, seed, idx, colIndex = 0 }: Props) {
-    const grow = getFlexGrow(seed ?? image.id, idx, colIndex);
+    const height = getCardHeight(seed ?? image.id, idx, colIndex);
     return (
         <div
-            className="relative w-full min-h-[200px] overflow-hidden rounded-xl group"
-            style={{ flexGrow: grow, flexBasis: 0 }}
+            className="relative w-full overflow-hidden rounded-xl group"
+            style={{ height: `${height}px` }}
         >
             <Image
                 src={image.src}

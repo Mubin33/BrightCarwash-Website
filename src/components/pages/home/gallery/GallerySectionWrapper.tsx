@@ -50,11 +50,11 @@ export function GallerySectionWrapper() {
 
             <div className="flex justify-center w-full">
                 <div className={`grid gap-4 w-full ${columns.length === 1 ? 'grid-cols-1 max-w-[424px]' :
-                        columns.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-[872px]' :
-                            'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-[1320px]'
+                    columns.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-[872px]' :
+                        'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-[1320px]'
                     }`}>
                     {columns.map((col, colIndex) => (
-                        <div key={colIndex} className="flex flex-col gap-4 h-auto md:h-[600px] lg:h-[800px]">
+                        <div key={colIndex} className="flex flex-col gap-4">
                             {col.map((img, idx) => (
                                 <GalleryImageCard
                                     key={`${img.id}-${idx}`}

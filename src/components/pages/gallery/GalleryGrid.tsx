@@ -30,15 +30,19 @@ export function GalleryGrid() {
         >
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-[1320px]">
                 {columns.map((col, colIndex) => (
-                    <div key={colIndex} className="flex flex-col gap-4 h-auto md:h-[600px] lg:h-[800px]">
+                    <div key={colIndex} className="flex flex-col gap-4">
                         {col.map((img, idx) => (
-                            <GalleryImageCard
-                                key={`${img.id}-${idx}`}
-                                image={img}
-                                seed={`${img.id}-${idx}`}
-                                idx={idx}
-                                colIndex={colIndex}
-                            />
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-[1320px] auto-rows-[10px]"
+                                style={{ gridAutoFlow: 'dense' }}>
+                                {images.map((img, idx) => (
+                                    <GalleryImageCard
+                                        key={`${img.id}-${idx}`}
+                                        image={img}
+                                        seed={`${img.id}-${idx}`}
+                                        idx={idx}
+                                    />
+                                ))}
+                            </div>
                         ))}
                     </div>
                 ))}
