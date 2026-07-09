@@ -7,10 +7,11 @@ interface Props {
     badgeIcon: string;
     badgeText: string;
     heading: React.ReactNode;
-    subheading: string;
+    subheading: React.ReactNode;
     forceDark?: boolean;
     className?: string;
     align?: 'center' | 'start';
+
 }
 
 export function SectionHeader({ badgeIcon, badgeText, heading, subheading, forceDark, align = 'center', className }: Props) {

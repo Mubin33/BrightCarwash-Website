@@ -39,11 +39,11 @@ export function BookingPageWrapper() {
         <div>
             <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Booking', href: '/booking' }]} />
             <section
-                className={`flex py-16 sm:py-20 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40 2xl:px-[300px] flex-col justify-center items-center gap-8 sm:gap-12 self-stretch border rounded-lg ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-white'
+                className={`flex py-16 sm:py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-8 sm:gap-12 self-stretch border rounded-lg ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-white'
                     }`}
             >
-                <div className="flex flex-col justify-between items-center self-stretch w-full max-w-[1320px]">
-                    <div className="flex flex-col items-start gap-4 sm:gap-6 self-stretch">
+                <div className="flex flex-col justify-between items-center w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]">
+                    <div className="flex flex-col items-center gap-4 sm:gap-6 w-full">
                         <BookingSteps currentStep={visibleStep} onStepChange={updateStep} />
                         {step === 'cart' && <CartStep onProceed={() => updateStep('datetime')} />}
                         {step === 'datetime' && (

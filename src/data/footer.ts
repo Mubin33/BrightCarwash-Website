@@ -1,13 +1,10 @@
 export const footerData = {
     description:
         "Veteran-owned and family-operated, Brightside Car Wash is Naperville's trusted car care destination. Built on integrity, service, and community — one wash at a time.",
-    pages: ['Home', 'Services', 'Gallery', 'News & Events', 'FAQ'],
+    pages: ['Home', 'Services', 'Gallery', 'News & Events'],
     utilityPages: [
         'Privacy Policy',
-        'Help',
-        'Licence',
-        'Contact',
-        'Chanel Log',
+        'Terms & Conditions',
     ],
     contact: {
         email: 'hello@brightsidecarwash.com',

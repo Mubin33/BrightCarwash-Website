@@ -86,7 +86,7 @@ export function CheckoutStep({ onBack, onSuccess }: Props) {
             locationId: LOCATION_ID, startAt, lockToken: lockToken || '',
             cartItems: selectedServices.map((s) => ({ serviceVariationId: s.variationId, teamMemberId })),
             customerName: `${contactInfo.firstName} ${contactInfo.lastName}`,
-            customerEmail: contactInfo.email, customerPhone: contactInfo.phone,
+            customerEmail: contactInfo.email, customerPhone: `+1${contactInfo.phone.replace(/\D/g, '')}`,
             customerNote: contactInfo.note, vehicle: 'Not specified',
         });
         if (success) onSuccess();

@@ -1,22 +1,21 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import { Icon } from '@/components/ui/Icon';
 import { Button } from '@/components/ui/Button';
-import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import type { ServiceData } from '@/data/services';
 
 interface Props {
     service: ServiceData;
     selected?: boolean;
-    onSelect: (id: string) => void;
+    onSelect?: (id: string) => void;
     onConfirmBooking?: (service: ServiceData) => void;
+    onAddToCart?: (service: ServiceData) => void;
+    onRemoveFromCart?: (service: ServiceData) => void;
 }
 
-export function ServiceCard({ service, selected, onSelect, onConfirmBooking }: Props) {
-    const [expanded, setExpanded] = useState(true);
+export function ServiceCard({ service, selected, onSelect, onConfirmBooking, onAddToCart, onRemoveFromCart }: Props) {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
 
@@ -25,9 +24,19 @@ export function ServiceCard({ service, selected, onSelect, onConfirmBooking }: P
         if (onConfirmBooking) onConfirmBooking(service);
     };
 
+    const handleAddToCartClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (onAddToCart) onAddToCart(service);
+    };
+
+    const handleRemoveFromCartClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (onRemoveFromCart) onRemoveFromCart(service);
+    };
+
     return (
         <div
-            onClick={() => onSelect(service.id)}
+            onClick={() => onSelect?.(service.id)}
             className={`flex w-full p-4 sm:p-6 flex-col items-start gap-6 sm:gap-8 rounded-lg border transition-all cursor-pointer ${selected
                 ? 'border-[#0098E8] bg-[#092544]'
                 : isDark
@@ -79,24 +88,38 @@ export function ServiceCard({ service, selected, onSelect, onConfirmBooking }: P
             </div>
 
             {/* Description */}
-            <div className={`flex w-full py-3 px-4 flex-col items-start gap-4 rounded-md border ${isDark && !selected ? 'border-white/20 bg-white/[0.08]' : 'border-[#DFE1E7] bg-[#F8FAFB]'
+            <div className={`flex w-full py-3 px-4 flex-col items-start gap-4 rounded-md border-3 ${isDark && !selected ? 'border-white/20 bg-white/[0.04]' : 'border-gray-400/20 bg-gray-400/[0.04]'
                 }`}>
-                <p className={`font-inter text-start text-sm leading-[150%] ${isDark && !selected ? 'text-white/60' : 'text-[#777980]'
-                    }`}>
-                    {service.description}
-                </p>
+                <div
+                    className={`font-inter text-start text-sm leading-[150%] leading-loose ${!selected
+                        ? 'text-gray-700 dark:text-gray-300' // Dark/shaded color for unselected
+                        : isDark
+                            ? 'text-gray-900'
+                            : 'text-white'
+                        }`}
+                    dangerouslySetInnerHTML={{ __html: service.descriptionHtml }}
+                />
             </div>
 
             {/* Button */}
-            <div className="w-full mt-auto">
+            <div className="w-full mt-auto flex flex-col gap-2">
                 {selected ? (
-                    <Button onClick={handleConfirmBooking} className="w-full py-[14px] px-5 justify-center items-center gap-2 rounded-lg bg-[#0098E8] text-white font-inter text-sm">
-                        Confirm booking - pay deposit
-                    </Button>
+                    <>
+                        <Button onClick={handleConfirmBooking} className="w-full py-[14px] px-5 justify-center items-center gap-2 rounded-lg bg-[#0098E8] text-white font-inter text-sm">
+                            Confirm booking - pay deposit
+                        </Button>
+                        <Button
+                            variant="outline"
+                            onClick={handleRemoveFromCartClick}
+                            className="w-full py-[14px] px-5 justify-center items-center gap-2 rounded-lg font-inter text-sm border-[#FF4345] text-[#FF4345] hover:bg-[#FFE6E6]"
+                        >
+                            Remove from cart
+                        </Button>
+                    </>
                 ) : (
                     <Button
                         variant="outline"
-                        onClick={(e) => { e.stopPropagation(); onSelect(service.id); }}
+                        onClick={handleAddToCartClick}
                         className={`w-full py-[14px] px-5 justify-center items-center gap-2 rounded-lg font-inter text-sm ${isDark ? 'border-white/20 bg-white/[0.08] text-white hover:bg-white/[0.16]' : 'bg-white hover:bg-[#F8FAFB]'
                             }`}
                     >

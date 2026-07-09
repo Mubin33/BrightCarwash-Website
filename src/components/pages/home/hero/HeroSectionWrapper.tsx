@@ -10,12 +10,12 @@ import Link from 'next/link';
 export function HeroSectionWrapper() {
     return (
         <section
-            className="flex pt-24 sm:pt-28 md:pt-32 lg:pt-36 pb-10 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40 2xl:px-[300px] flex-col justify-center items-center gap-[10px] self-stretch min-h-screen"
+            className="flex pt-10 pb-10 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-[10px] self-stretch"
             style={{
                 background: `linear-gradient(0deg, rgba(0, 0, 0, 0.60) 0%, rgba(0, 0, 0, 0.60) 100%), url('/images/hero-image.png') lightgray 50% / cover no-repeat`,
             }}
         >
-            <div className="flex flex-col lg:flex-row items-center gap-8 md:gap-10 lg:gap-12 xl:gap-14 self-stretch">
+            <div className="flex flex-col lg:flex-row items-center gap-8 md:gap-10 lg:gap-12 xl:gap-14 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]">
                 {/* Left Content */}
                 <div className="flex flex-col items-start gap-6 sm:gap-8 lg:gap-12 flex-1 w-full">
                     <div className="flex flex-col items-start gap-3 sm:gap-4">
@@ -28,7 +28,7 @@ export function HeroSectionWrapper() {
                         </div>
 
                         {/* Headline */}
-                        <h1 className="font-bebas w-full text-5xl sm:text-6xl md:text-7xl lg:text-[72px] xl:text-[80px] 2xl:text-[80px] font-normal leading-[110%] sm:leading-[120%] tracking-[1px] sm:tracking-[2px]">
+                        <h1 className="font-bebas w-full text-5xl sm:text-6xl md:text-7xl lg:text-[56px] xl:text-[64px] 2xl:text-[90px] font-normal leading-[110%] sm:leading-[120%] tracking-[1px] sm:tracking-[2px]">
                             <span className="text-white">YOUR </span>
                             <span className="text-[#B23730]">CAR DESERVES A</span>
                             <br />
@@ -37,7 +37,7 @@ export function HeroSectionWrapper() {
                         </h1>
 
                         {/* Subtitle */}
-                        <p className="w-full lg:w-[453px] xl:w-[500px] text-white/80 font-inter text-sm sm:text-base lg:text-lg font-normal leading-[140%] sm:leading-[150%]">
+                        <p className="w-full lg:w-[453px] xl:w-[500px] text-white/80 font-inter text-sm sm:text-base lg:text-md xl:text-lg font-normal leading-[140%] sm:leading-[150%]">
                             Book online in 60 seconds. Pay a small deposit to lock in your spot — and we&apos;ll handle the rest.
                         </p>
                     </div>
@@ -70,7 +70,7 @@ export function HeroSectionWrapper() {
                 </div>
 
                 {/* Right Form */}
-                <div className="w-full lg:max-w-[600px] xl:max-w-[648px]">
+                <div className="w-full lg:max-w-[500px] xl:max-w-[648px]">
                     <QuoteForm />
                 </div>
             </div>

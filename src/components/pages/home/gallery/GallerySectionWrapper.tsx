@@ -19,8 +19,8 @@ export function GallerySectionWrapper() {
 
     if (loading) {
         return (
-            <section className={`flex py-20 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40 2xl:px-[300px] flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-white'}`}>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-[1320px]">
+            <section className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-white'}`}>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]">
                     {[...Array(6)].map((_, i) => (
                         <div key={i} className="h-[300px] sm:h-[500px] bg-gray-100 animate-pulse rounded-lg" />
                     ))}
@@ -33,7 +33,7 @@ export function GallerySectionWrapper() {
 
     return (
         <section
-            className={`flex py-20 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40 2xl:px-[300px] flex-col justify-center items-center gap-12 self-stretch border ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-white'}`}
+            className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch border ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-white'}`}
         >
             <SectionHeader
                 badgeIcon="car"
@@ -49,9 +49,9 @@ export function GallerySectionWrapper() {
             />
 
             <div className="flex justify-center w-full">
-                <div className={`grid gap-4 w-full ${columns.length === 1 ? 'grid-cols-1 max-w-[424px]' :
-                    columns.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-[872px]' :
-                        'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-[1320px]'
+                <div className={`grid gap-4 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px] ${columns.length === 1 ? 'grid-cols-1' :
+                        columns.length === 2 ? 'grid-cols-1 md:grid-cols-2' :
+                            'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
                     }`}>
                     {columns.map((col, colIndex) => (
                         <div key={colIndex} className="flex flex-col gap-4">

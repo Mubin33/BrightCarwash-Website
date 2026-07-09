@@ -5,7 +5,7 @@ import { footerData } from '@/data/footer';
 
 export function Footer() {
     return (
-        <footer className="relative flex py-16 sm:py-20 lg:py-[86px] px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40 2xl:px-[300px] pb-10 flex-col justify-center items-center gap-5 overflow-hidden">
+        <footer className="relative flex py-16 sm:py-20 lg:py-[86px] px-4 md:px-6 lg:px-10 pb-10 flex-col justify-center items-center gap-5 overflow-hidden">
             <Image
                 src="/images/Footer.png"
                 alt="Footer background"
@@ -14,31 +14,31 @@ export function Footer() {
             />
             <div className="absolute inset-0 bg-[#092544]/90 z-[1]" />
 
-            <div className="relative z-10 grid grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 w-full max-w-[1320px] pb-12">
+            <div className="relative z-10 grid grid-cols-2 lg:grid-cols-[1fr_auto_auto_1fr] gap-8 sm:gap-10 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px] pb-12">
                 {/* Brand */}
-                <div className="col-span-2 lg:col-span-1 flex flex-col items-center lg:items-start gap-5 text-center lg:text-left">
-                    <Image
-                        src="/images/logo.png"
-                        alt="Brightside Car Wash"
-                        width={57}
-                        height={64}
-                        className="shrink-0"
-                        style={{ aspectRatio: '57/64' }}
-                    />
+                <div className="col-span-2 lg:col-span-1 flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left">
+                    <div className="w-32 h-[150px] sm:w-32 sm:h-[150px] relative shrink-0">
+                        <Image
+                            src="/images/logo.png"
+                            alt="Brightside Car Wash"
+                            fill
+                            className="object-contain"
+                        />
+                    </div>
                     <p className="text-[#F7EBEA] font-inter text-sm sm:text-base lg:text-lg font-normal leading-[160%]">
                         {footerData.description}
                     </p>
                 </div>
 
                 {/* Pages */}
-                <div className="flex flex-col items-center lg:items-start gap-3 sm:gap-4 text-center lg:text-left">
+                <div className="flex flex-col items-start lg:items-start gap-3 sm:gap-4 text-start lg:text-start w-fit mx-auto lg:mx-0">
                     <h4 className="text-white font-inter text-base sm:text-lg lg:text-xl font-normal leading-[130%] tracking-[0.1px]">Pages</h4>
-                    <div className="flex flex-col items-center lg:items-start gap-2 sm:gap-3">
+                    <div className="flex flex-col items-start lg:items-start gap-2 sm:gap-3">
                         {footerData.pages.map((page) => (
                             <Link
                                 key={page}
                                 href={page === 'Home' ? '/' : `/${page.toLowerCase().replace(/\s&\s/g, '-').replace(/\s/g, '-')}`}
-                                className="text-white/70 font-inter text-xs sm:text-sm lg:text-base font-normal leading-[100%] hover:text-white transition-colors"
+                                className="text-white/70 font-inter text-xs sm:text-sm lg:text-base font-normal leading-[100%] hover:text-white transition-colors whitespace-nowrap"
                             >
                                 {page}
                             </Link>
@@ -46,26 +46,23 @@ export function Footer() {
                     </div>
                 </div>
 
-                {/* Utility Pages */}
-                <div className="flex flex-col items-center lg:items-start gap-3 sm:gap-4 text-center lg:text-left">
-                    <h4 className="text-white font-inter text-base sm:text-lg lg:text-xl font-normal leading-[130%] tracking-[0.1px]">Utility Pages</h4>
+                {/* Legal */}
+                <div className="flex flex-col items-start lg:items-start gap-3 sm:gap-4 text-start lg:text-left w-fit mx-auto lg:mx-0">
+                    <h4 className="text-white font-inter text-base sm:text-lg lg:text-xl font-normal leading-[130%] tracking-[0.1px]">Legal</h4>
                     <div className="flex flex-col items-center lg:items-start gap-2 sm:gap-3">
-                        {footerData.utilityPages.map((page) => (
-                            <Link
-                                key={page}
-                                href={`/${page.toLowerCase().replace(/\s/g, '-')}`}
-                                className="text-white/70 font-inter text-xs sm:text-sm lg:text-base font-normal leading-[100%] hover:text-white transition-colors"
-                            >
-                                {page}
-                            </Link>
-                        ))}
+                        <Link href="/terms" className="text-white/70 font-inter text-xs sm:text-sm lg:text-base font-normal leading-[100%] hover:text-white transition-colors whitespace-nowrap">
+                            Terms & Conditions
+                        </Link>
+                        <Link href="/privacy" className="text-white/70 font-inter text-xs sm:text-sm lg:text-base font-normal leading-[100%] hover:text-white transition-colors whitespace-nowrap">
+                            Privacy Policy
+                        </Link>
                     </div>
                 </div>
 
                 {/* Contact */}
-                <div className="col-span-2 lg:col-span-1 flex flex-col items-center lg:items-start gap-3 sm:gap-4 text-center lg:text-left">
+                <div className="col-span-2 lg:col-span-1 flex flex-col items-start lg:items-start gap-3 sm:gap-4 text-start lg:text-left">
                     <h4 className="text-white font-inter text-base sm:text-lg lg:text-xl font-normal leading-[130%] tracking-[0.1px]">Contact Us</h4>
-                    <div className="flex flex-col items-center lg:items-start gap-2 sm:gap-3">
+                    <div className="flex flex-col items-start lg:items-start gap-2 sm:gap-3">
                         <div className="flex items-center gap-2">
                             <Icon name="email" width={14} height={14} color="#FFFFFF" className="sm:w-4 sm:h-4" />
                             <span className="text-white/70 font-inter text-xs sm:text-sm lg:text-base">{footerData.contact.email}</span>
@@ -77,8 +74,13 @@ export function Footer() {
                     </div>
                     <div className="flex items-center justify-center lg:justify-start gap-3 sm:gap-4 mt-1 sm:mt-2">
                         {footerData.socialLinks.map((social) => (
-                            <Link key={social.name} href={social.href} aria-label={social.name}>
-                                <Icon name={social.icon} width={16} height={16} color="#FFFFFF" className="p-1.5 sm:p-2 bg-[#0098E8]/10 rounded-full sm:w-5 sm:h-5" />
+                            <Link
+                                key={social.name}
+                                href={social.href}
+                                aria-label={social.name}
+                                className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/10 hover:bg-[#0098E8]/30 transition-colors"
+                            >
+                                <Icon name={social.icon} width={24} height={24} color="#FFFFFF" className="sm:w-[18px] sm:h-[18px]" />
                             </Link>
                         ))}
                     </div>

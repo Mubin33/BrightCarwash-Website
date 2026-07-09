@@ -23,7 +23,7 @@ export function NewsSectionWrapper() {
 
     return (
         <section
-            className={`flex py-20 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40 2xl:px-[300px] flex-col justify-center items-center gap-12 self-stretch border ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-[#ECEFF3]'}`}
+            className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch border ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-[#ECEFF3]'}`}
         >
             <SectionHeader
                 badgeIcon="car"
@@ -38,7 +38,7 @@ export function NewsSectionWrapper() {
                 subheading="Car care tips, local news, exclusive offers, and behind-the-scenes stories from Naperville's favorite car wash."
             />
 
-            <div className="flex flex-col lg:flex-row items-stretch gap-6 self-stretch">
+            <div className="flex flex-col lg:flex-row items-stretch gap-6 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]">
                 {/* Featured Article */}
                 <div
                     className={`flex-1 flex-col items-start rounded-xl border overflow-hidden ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#ECEFF3] bg-white'}`}

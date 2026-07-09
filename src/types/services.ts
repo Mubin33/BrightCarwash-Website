@@ -12,6 +12,7 @@ export interface ApiService {
     id: string;
     name: string;
     description: string;
+    descriptionHtml: string | null;
     variations: ServiceVariation[];
     images: string[];
 }

@@ -10,20 +10,19 @@ export function LocationsSectionWrapper() {
     const isDark = theme === 'dark';
     return (
         <section
-            className={`flex py-10 sm:py-14 lg:py-20 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40 2xl:px-[300px] flex-col justify-center items-center gap-8 sm:gap-10 lg:gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-[#F5F5F5]'}`}
+            className={`flex py-10 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-[#F5F5F5]'}`}
         >
             <LocationsHeader />
-            <div className="flex flex-col gap-4 max-w-[1320px] w-full">
-                <div className="flex flex-col lg:flex-row w-full items-stretch gap-4 sm:gap-6 max-w-[1320px]">
+            <div className="flex flex-col gap-6 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]">
+                <div className="flex flex-col lg:flex-row w-full items-stretch gap-6">
                     {locations.map((loc) => (
                         <LocationCard key={loc.name} location={loc} />
                     ))}
                 </div>
-                <div className="w-full max-w-[1320px]">
+                <div className="w-full">
                     <LocationHours hours={hours} />
                 </div>
             </div>
-
         </section>
     );
 }

@@ -1,9 +1,10 @@
-import type { ApiService, ServiceVariation } from '@/types/services';
+import type { ApiService } from '@/types/services';
 
 export interface ServiceData {
     id: string;
     name: string;
     description: string;
+    descriptionHtml: string;
     price: number;
     duration: string;
     image: string;
@@ -12,13 +13,16 @@ export interface ServiceData {
 }
 
 export function transformService(apiService: ApiService): ServiceData {
-    const variation: ServiceVariation = apiService.variations[0] || {
+    const variation = apiService.variations[0] || {
         id: '', version: '', name: '', durationMinutes: 0, priceInCents: 0, currency: 'USD', images: [],
     };
+    const cleanHtml = (apiService.descriptionHtml || apiService.description)
+        .replace(/<p>\s*(<br\s*\/?>\s*)*\s*<\/p>/gi, '');
     return {
         id: apiService.id,
         name: apiService.name,
         description: apiService.description,
+        descriptionHtml: cleanHtml,
         price: variation.priceInCents / 100,
         duration: variation.durationMinutes >= 60
             ? `${Math.floor(variation.durationMinutes / 60)} hours${variation.durationMinutes % 60 > 0 ? ` ${variation.durationMinutes % 60} min` : ''}`

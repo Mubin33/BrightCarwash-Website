@@ -23,19 +23,21 @@ export function Navbar() {
 
     return (
         <>
-            <header className="sticky top-0 flex w-full px-4 md:px-6 lg:px-8 xl:px-20 2xl:px-[300px] py-3 md:py-4 items-center gap-3 md:gap-4 z-50 border-b border-[#DFE1E7] bg-white dark:border-white/20 dark:bg-[#363636]/[0.12] dark:backdrop-blur-md">
-                <div className="flex justify-between items-center flex-1 gap-4">
+            <header className="whitespace-nowrap sticky top-0 flex w-full px-4 md:px-6 lg:px-10 py-3 md:py-4 items-center gap-3 md:gap-4 z-50 border-b border-[#DFE1E7] bg-white dark:border-white/20 dark:bg-[#363636]/[0.12] dark:backdrop-blur-md">
+                <div className="flex mx-auto w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px] justify-between items-center gap-4">
                     {/* Logo */}
-                    <Link href="/" onClick={handleLogoClick} className="shrink-0">
-                        <Image
-                            src="/images/logo.png"
-                            alt="Bright Carwash"
-                            width={71}
-                            height={80}
-                            priority
-                            className="w-10 h-auto sm:w-12 md:w-14 lg:w-[71px]"
-                        />
-                    </Link>
+                    <div className="flex-1">
+                        <Link href="/" onClick={handleLogoClick} className="shrink-0 inline-block">
+                            <Image
+                                src="/images/logo.png"
+                                alt="Bright Carwash"
+                                width={71}
+                                height={80}
+                                priority
+                                className="w-10 h-auto sm:w-12 md:w-14 lg:w-[71px]"
+                            />
+                        </Link>
+                    </div>
 
                     {/* Desktop Navigation */}
                     <div className="hidden lg:block">
@@ -43,7 +45,7 @@ export function Navbar() {
                     </div>
 
                     {/* Right Section */}
-                    <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+                    <div className="flex items-center gap-2 sm:gap-3 shrink-0 flex-1 justify-end">
                         <ThemeToggle />
                         <div className="hidden lg:block">
                             <BookNowButton />

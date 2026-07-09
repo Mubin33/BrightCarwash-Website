@@ -8,7 +8,7 @@ export function LocationHours({ hours }: Props) {
     const isDark = theme === 'dark';
     return (
         <div
-            className={`flex p-4 sm:p-6 items-center gap-6 self-stretch rounded-lg border ${isDark ? 'border-white/20 bg-white/[0.12]' : 'border-[#DFE1E7] bg-white'
+            className={`flex p-6 sm:p-6  items-center gap-6 self-stretch rounded-lg  ${isDark ? ' bg-white/[0.12]' : ' bg-white'
                 }`}
         >
             <div className="flex flex-wrap justify-around items-center gap-4 sm:gap-6 flex-1">

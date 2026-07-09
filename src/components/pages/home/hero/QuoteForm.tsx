@@ -41,14 +41,14 @@ export function QuoteForm() {
     };
 
     return (
-        <div className="flex w-full lg:w-[600px] p-4 sm:p-5 flex-col items-center gap-6 rounded-xl bg-white">
+        <div className="flex w-full  p-4 sm:p-5 flex-col items-center gap-6 rounded-xl bg-white">
             <div className="flex flex-col items-start gap-6 self-stretch">
                 {/* Header */}
-                <div className="flex flex-col justify-center items-center gap-3 self-stretch rounded-lg bg-[#092544] p-4 sm:p-6">
-                    <span className="font-bebas text-white font-bebas-neue text-2xl sm:text-[32px] leading-[100%] self-stretch text-start">
+                <div className="flex flex-col justify-center items-center gap-3 self-stretch rounded-lg bg-[#092544] p-4 sm:p-4">
+                    <span className="font-bebas text-white font-bebas-neue text-2xl sm:text-[32px] lg:text-[24px] xl:text-[32px] leading-[100%] self-stretch text-start">
                         Get Your Free Quote
                     </span>
-                    <span className="font-inter! text-white/80 text-md sm:text-base leading-[160%] self-stretch text-start">
+                    <span className="font-inter! text-white/80 text-md sm:text-base lg:text-xs xl:text-base leading-[160%] self-stretch text-start">
                         Fill in your details and we&apos;ll get back to you with the best offer for your vehicle.
                     </span>
                 </div>

@@ -2,8 +2,8 @@ export const howItWorksData = {
     badgeText: "How it's work",
     heading: {
         prefix: 'Book, pay, and',
-        accent: 'shine',
-        suffix: 'in just',
+        accent: 'shine in',
+        suffix: 'just',
         muted: 'four simple',
         end: 'steps!',
     },

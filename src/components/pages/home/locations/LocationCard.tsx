@@ -18,7 +18,7 @@ export function LocationCard({ location }: Props) {
     const isDark = theme === 'dark';
     return (
         <div
-            className={`flex p-4 sm:p-6 flex-col justify-center items-start gap-4 sm:gap-6 flex-1 rounded-lg border ${isDark ? 'border-white/20 bg-white/[0.12]' : 'border-[#DFE1E7] bg-white'
+            className={`flex p-6 sm:p-6 flex-col justify-center items-start gap-4 sm:gap-6 flex-1 rounded-lg  ${isDark ? ' bg-white/[0.12]' : 'border-[#DFE1E7] bg-white'
                 }`}
         >
             {/* Header */}
@@ -29,7 +29,7 @@ export function LocationCard({ location }: Props) {
                 <a href={location.directionsUrl} target="_blank" rel="noopener noreferrer" className="sm:shrink-0">
                     <Button className="flex py-2.5 sm:py-3 px-4 sm:px-5 justify-center items-center gap-2 rounded-lg bg-[#B23730] text-white font-inter text-xs sm:text-sm hover:bg-[#9A2E28]">
                         Get Directions
-                        <Icon name="book" width={16} height={16} color="white" />
+                        <Icon name="book" width={24} height={24} color="white" />
                     </Button>
                 </a>
             </div>
@@ -48,13 +48,13 @@ export function LocationCard({ location }: Props) {
             {/* Contact Info */}
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
                 <div className="flex items-start gap-2">
-                    <Icon name="location" width={18} height={18} color="#0098E8" className="sm:w-5 sm:h-5" />
+                    <Icon name="location" width={24} height={24} color="#0098E8" className="sm:w-5 sm:h-5" />
                     <span className={`font-inter text-sm sm:text-base ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
                         {location.address}
                     </span>
                 </div>
                 <div className="flex items-start gap-2">
-                    <Icon name="phone" width={18} height={18} color="#0098E8" className="sm:w-5 sm:h-5" />
+                    <Icon name="phone" width={24} height={24} color="#0098E8" className="sm:w-5 sm:h-5" />
                     <span className={`font-inter text-sm sm:text-base ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
                         {location.phone}
                     </span>

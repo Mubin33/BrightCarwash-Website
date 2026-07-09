@@ -7,6 +7,7 @@ interface Props {
     value: Date | undefined;
     onChange: (date: Date) => void;
     isDark?: boolean;
+    availableDates?: string[];
 }
 
 const MONTHS = [
@@ -28,7 +29,7 @@ function isSameDay(a: Date, b: Date): boolean {
     return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 }
 
-export function Calendar({ value, onChange, isDark = false }: Props) {
+export function Calendar({ value, onChange, isDark = false, availableDates = [] }: Props) {
     const today = new Date();
     const [viewDate, setViewDate] = useState(value || today);
 
@@ -84,6 +85,8 @@ export function Calendar({ value, onChange, isDark = false }: Props) {
                     const selected = valid && value && isSameDay(new Date(year, month, day), value);
                     const todayCell = valid && isSameDay(new Date(year, month, day), today);
                     const past = valid && isPast(day);
+                    const dateStr = valid ? `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}` : '';
+                    const hasSlots = availableDates.includes(dateStr);
 
                     return (
                         <button
@@ -91,7 +94,7 @@ export function Calendar({ value, onChange, isDark = false }: Props) {
                             type="button"
                             disabled={!valid || past}
                             onClick={() => valid && !past && handleSelect(day)}
-                            className={`w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-xs sm:text-sm font-inter rounded-full transition-colors mx-auto ${selected
+                            className={`relative w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-xs sm:text-sm font-inter rounded-full transition-colors mx-auto ${selected
                                     ? 'bg-[#B23730] text-white'
                                     : todayCell
                                         ? 'border-2 border-[#B23730] text-[#B23730]'
@@ -103,6 +106,9 @@ export function Calendar({ value, onChange, isDark = false }: Props) {
                                 }`}
                         >
                             {valid ? day : ''}
+                            {hasSlots && !selected && (
+                                <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#0098E8]" />
+                            )}
                         </button>
                     );
                 })}
