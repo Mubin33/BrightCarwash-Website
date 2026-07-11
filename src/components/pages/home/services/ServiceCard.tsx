@@ -88,13 +88,13 @@ export function ServiceCard({ service, selected, onSelect, onConfirmBooking, onA
             </div>
 
             {/* Description */}
-            <div className={`flex w-full py-3 px-4 flex-col items-start gap-4 rounded-md border-3 ${isDark && !selected ? 'border-white/20 bg-white/[0.04]' : 'border-gray-400/20 bg-gray-400/[0.04]'
+            <div className={`flex w-full py-3 px-4 flex-col items-start gap-4 rounded-md border-3 ${isDark && !selected ? 'border-white/20 bg-white/[0.04]' : 'border-gray-400/20 bg-gray-400/[0.04] '
                 }`}>
                 <div
                     className={`font-inter text-start text-sm leading-[150%] leading-loose ${!selected
-                        ? 'text-gray-700 dark:text-gray-300' // Dark/shaded color for unselected
+                        ? 'text-gray-700 dark:text-gray-300'
                         : isDark
-                            ? 'text-gray-900'
+                            ? 'text-gray-300'
                             : 'text-white'
                         }`}
                     dangerouslySetInnerHTML={{ __html: service.descriptionHtml }}

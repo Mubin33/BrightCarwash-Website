@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@square/web-sdk": "^2.2.0",
     "axios": "^1.18.1",
     "date-fns": "^4.4.0",
     "lucide-react": "^1.23.0",
@@ -16,13 +17,15 @@
     "react": "19.2.4",
     "react-day-picker": "^10.0.1",
     "react-dom": "19.2.4",
-    "react-toastify": "^11.1.0"
+    "react-toastify": "^11.1.0",
+    "uuid": "^14.0.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/uuid": "^10.0.0",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",

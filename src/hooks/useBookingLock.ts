@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { lockSlot, releaseLock } from '@/services/booking.api';
 import { toast } from 'react-toastify';
+import { getCartId } from '@/lib/cart-id';
 
 export function useBookingLock() {
     const [lockToken, setLockToken] = useState<string | null>(null);
@@ -15,7 +16,7 @@ export function useBookingLock() {
                 locationId,
                 startAt,
                 serviceVariationIds,
-                cartId: `cart_${Date.now()}`,
+                cartId: getCartId(),
             });
             setLockToken(result.lockToken);
             return result;

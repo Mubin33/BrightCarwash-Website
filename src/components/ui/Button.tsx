@@ -18,7 +18,7 @@ export function Button({
     const variantClass = {
         primary: 'bg-[#0098E8] text-white hover:bg-[#0088D8] rounded-lg py-[14px] px-5',
         secondary: 'bg-[#F8FAFB] text-[#1B1B1B] hover:bg-[#F1F1F1] rounded-lg py-2.5 px-4',
-        outline: 'border border-[#DFE1E7] text-[#1B1B1B] hover:bg-[#F8FAFB] rounded-lg py-2.5 px-4',
+        outline: 'border border-[#DFE1E7] text-[#1B1B1B] rounded-lg py-2.5 px-4',
         icon: 'text-[#777980] hover:text-[#1B1B1B]',
     }[variant];
 
