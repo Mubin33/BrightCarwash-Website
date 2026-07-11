@@ -21,15 +21,37 @@ export function QuoteForm() {
     const [phone, setPhone] = useState('');
     const { sendQuote, loading } = useQuote();
 
-    const isFormValid = name && email && phone && selectedVehicle && date;
+    const handlePhoneChange = (value: string) => {
+        const digits = value.replace(/\D/g, '').slice(0, 10);
+        let formatted = digits;
+        if (digits.length > 3) formatted = `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+        if (digits.length > 6) formatted = `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+        setPhone(formatted);
+    };
+
+    const validate = (): string | null => {
+        if (!name.trim()) return 'Please enter your full name';
+        if (!email.trim()) return 'Please enter your email address';
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Please enter a valid email address';
+        if (!phone.trim()) return 'Please enter your phone number';
+        if (phone.replace(/\D/g, '').length < 10) return 'Please enter a valid phone number';
+        if (!selectedVehicle) return 'Please select a vehicle type';
+        if (!date) return 'Please select a date';
+        return null;
+    };
 
     const handleSubmit = async () => {
-        if (!isFormValid) return;
+        const error = validate();
+        if (error) {
+            toast.warning(error);
+            return;
+        }
+
         const success = await sendQuote({
             full_name: name,
             email,
-            phone,
-            vehicle_type: selectedVehicle,
+            phone: `+1${phone.replace(/\D/g, '')}`,
+            vehicle_type: selectedVehicle!,
         });
         if (success) {
             setName('');
@@ -41,9 +63,8 @@ export function QuoteForm() {
     };
 
     return (
-        <div className="flex w-full  p-4 sm:p-5 flex-col items-center gap-6 rounded-xl bg-white">
+        <div className="flex w-full p-4 sm:p-5 flex-col items-center gap-6 rounded-xl bg-white">
             <div className="flex flex-col items-start gap-6 self-stretch">
-                {/* Header */}
                 <div className="flex flex-col justify-center items-center gap-3 self-stretch rounded-lg bg-[#092544] p-4 sm:p-4">
                     <span className="font-bebas text-white font-bebas-neue text-2xl sm:text-[32px] lg:text-[24px] xl:text-[32px] leading-[100%] self-stretch text-start">
                         Get Your Free Quote
@@ -53,7 +74,6 @@ export function QuoteForm() {
                     </span>
                 </div>
 
-                {/* Vehicle Selection */}
                 <div className="flex flex-col items-start gap-4 self-stretch">
                     <div>
                         <h3 className="font-bebas text-[#4A4C56] text-lg sm:text-xl leading-[100%] self-stretch">
@@ -77,7 +97,6 @@ export function QuoteForm() {
                     </div>
                 </div>
 
-                {/* Form Fields */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 self-stretch">
                     <div className="flex flex-col gap-1.5">
                         <label className="text-[#4A4C56] font-inter text-sm font-medium">Full Name</label>
@@ -89,7 +108,7 @@ export function QuoteForm() {
                     </div>
                     <div className="flex flex-col gap-1.5">
                         <label className="text-[#4A4C56] font-inter text-sm font-medium">Phone Number</label>
-                        <input type="tel" placeholder="+1 (555) 000-0000" className="px-4 py-3 border border-[#DFE1E7] rounded-lg text-sm outline-none focus:border-[#0098E8]" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                        <input type="tel" placeholder="(555) 000-0000" className="px-4 py-3 border border-[#DFE1E7] rounded-lg text-sm outline-none focus:border-[#0098E8]" value={phone} onChange={(e) => handlePhoneChange(e.target.value)} maxLength={14} />
                     </div>
                     <div className="flex flex-col gap-1.5">
                         <label className="text-[#4A4C56] font-inter text-sm font-medium">Email Address</label>
@@ -97,18 +116,9 @@ export function QuoteForm() {
                     </div>
                 </div>
 
-                {/* Submit */}
-                <div onClick={() => !isFormValid && toast.warning('Please fill all required fields')} className="w-full">
-                    <Button
-                        onClick={handleSubmit}
-                        disabled={!isFormValid}
-                        isLoading={loading}
-                        loadingText="Submitting..."
-                        className="w-full py-4 px-6 rounded bg-[#B23730] text-white font-inter text-base font-medium hover:bg-[#9A2E28] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                        Get my quote
-                    </Button>
-                </div>
+                <Button onClick={handleSubmit} isLoading={loading} loadingText="Submitting..." className="w-full py-4 px-6 rounded bg-[#B23730] text-white font-inter text-base font-medium hover:bg-[#9A2E28] transition-colors">
+                    Get my quote
+                </Button>
             </div>
         </div>
     );

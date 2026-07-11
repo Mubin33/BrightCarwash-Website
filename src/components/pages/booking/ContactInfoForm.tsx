@@ -14,9 +14,10 @@ interface ContactValues {
 interface Props {
     values: ContactValues;
     onChange: (values: ContactValues) => void;
+    disabled?: boolean;
 }
 
-export function ContactInfoForm({ values, onChange }: Props) {
+export function ContactInfoForm({ values, onChange, disabled }: Props) {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
 
@@ -66,6 +67,7 @@ export function ContactInfoForm({ values, onChange }: Props) {
                                 value={values.firstName}
                                 onChange={(e) => handleNameChange('firstName', e.target.value)}
                                 onKeyDown={handleNameKeyDown}
+                                disabled={disabled}
                             />
                         </div>
                         <div className="w-full flex flex-col items-start gap-2 flex-1">
@@ -77,6 +79,7 @@ export function ContactInfoForm({ values, onChange }: Props) {
                                 value={values.lastName}
                                 onChange={(e) => handleNameChange('lastName', e.target.value)}
                                 onKeyDown={handleNameKeyDown}
+                                disabled={disabled}
                             />
                         </div>
                     </div>
@@ -90,6 +93,7 @@ export function ContactInfoForm({ values, onChange }: Props) {
                                 value={values.phone}
                                 onChange={(e) => handlePhoneChange(e.target.value)}
                                 maxLength={14}
+                                disabled={disabled}
                             />
                         </div>
                         <div className="w-full flex flex-col items-start gap-2 flex-1">
@@ -106,6 +110,7 @@ export function ContactInfoForm({ values, onChange }: Props) {
                                         toast.warning('Please enter a valid email address');
                                     }
                                 }}
+                                disabled={disabled}
                             />
                         </div>
                     </div>
@@ -116,6 +121,7 @@ export function ContactInfoForm({ values, onChange }: Props) {
                             className={`${inputClass} h-[127px] items-start resize-none`}
                             value={values.note}
                             onChange={(e) => update('note', e.target.value)}
+                            disabled={disabled}
                         />
                     </div>
                 </div>

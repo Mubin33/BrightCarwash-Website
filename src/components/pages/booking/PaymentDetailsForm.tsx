@@ -15,6 +15,7 @@ interface Props {
     onChange: (values: PaymentValues) => void;
     agreed: boolean;
     onAgreeChange: (value: boolean) => void;
+    disabled?: boolean;
 }
 
 function formatCardNumber(value: string): string {
@@ -32,7 +33,7 @@ function formatCVV(value: string): string {
     return value.replace(/\D/g, '').slice(0, 3);
 }
 
-export function PaymentDetailsForm({ values, onChange, agreed, onAgreeChange }: Props) {
+export function PaymentDetailsForm({ values, onChange, agreed, onAgreeChange, disabled }: Props) {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
 
@@ -60,6 +61,7 @@ export function PaymentDetailsForm({ values, onChange, agreed, onAgreeChange }: 
                             value={values.cardNumber}
                             onChange={(e) => update('cardNumber', formatCardNumber(e.target.value))}
                             maxLength={19}
+                            disabled={disabled}
                         />
                     </div>
                     <div className="flex flex-col sm:flex-row items-start gap-4 self-stretch">
@@ -75,6 +77,7 @@ export function PaymentDetailsForm({ values, onChange, agreed, onAgreeChange }: 
                                 value={values.expiry}
                                 onChange={(e) => update('expiry', formatExpiry(e.target.value))}
                                 maxLength={5}
+                                disabled={disabled}
                             />
                         </div>
                         <div className="flex flex-col items-start gap-2 flex-1 w-full">
@@ -89,6 +92,7 @@ export function PaymentDetailsForm({ values, onChange, agreed, onAgreeChange }: 
                                 value={values.cvv}
                                 onChange={(e) => update('cvv', formatCVV(e.target.value))}
                                 maxLength={3}
+                                disabled={disabled}
                             />
                         </div>
                     </div>
@@ -99,6 +103,7 @@ export function PaymentDetailsForm({ values, onChange, agreed, onAgreeChange }: 
                         checked={agreed}
                         onChange={(e) => onAgreeChange(e.target.checked)}
                         className="w-4 h-4 rounded accent-[#B23730]"
+                        disabled={disabled}
                     />
                     <span className={`font-inter text-sm ${isDark ? 'text-white/70' : 'text-[#777980]'}`}>
                         I have read and agreed to the Privacy & Policy of Brightside Car Wash.

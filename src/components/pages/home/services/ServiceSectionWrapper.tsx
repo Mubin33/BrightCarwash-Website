@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
@@ -18,15 +18,20 @@ export function ServicesSectionWrapper() {
     const isDark = theme === 'dark';
 
     const router = useRouter();
-    const { addService } = useBooking();
+    const { addService, removeService, selectedServices } = useBooking();
     const { selectedLocation } = useBooking();
     const { services, loading } = useServices(selectedLocation || undefined);
-
+    const isInCart = useCallback((id: string) => selectedServices.some((s) => s.id === id), [selectedServices]);
     const handleConfirmBooking = (service: ServiceData) => {
         addService(service);
         router.push('/booking');
     };
-
+    const handleAddToCart = (service: ServiceData) => {
+        addService(service);
+    };
+    const handleRemoveFromCart = (service: ServiceData) => {
+        removeService(service.id);
+    };
     if (loading) {
         return (
             <section
@@ -63,13 +68,14 @@ export function ServicesSectionWrapper() {
                 </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px] cursor-pointer">
                 {services.slice(0, 3).map((service) => (
                     <ServiceCard
                         key={service.id}
                         service={service}
-                        selected={selectedId === service.id}
-                        onSelect={setSelectedId}
+                        selected={isInCart(service.id)}
+                        onAddToCart={handleAddToCart}
+                        onRemoveFromCart={handleRemoveFromCart}
                         onConfirmBooking={handleConfirmBooking}
                     />
                 ))}

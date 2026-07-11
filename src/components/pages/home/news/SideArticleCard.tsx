@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useTheme } from '@/contexts/ThemeContext';
 import type { NewsArticle } from '@/data/news';
+import { useRouter } from 'next/navigation';
 
 interface Props {
     article: NewsArticle;
@@ -11,10 +12,11 @@ interface Props {
 export function SideArticleCard({ article }: Props) {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
-
+    const router = useRouter();
     return (
         <div
-            className={`flex items-center gap-4 self-stretch rounded-xl border min-h-[150px] ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#ECEFF3] bg-white'
+            onClick={() => router.push(`/news/${article.slug}`)}
+            className={`cursor-pointer flex items-center gap-4 self-stretch rounded-xl border min-h-[150px] ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#ECEFF3] bg-white'
                 }`}
         >
             <div className="w-[120px] sm:w-[180px] lg:w-[246px] self-stretch relative overflow-hidden rounded-l-xl shrink-0 hidden sm:block">

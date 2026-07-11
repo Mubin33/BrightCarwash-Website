@@ -72,7 +72,11 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
             setDate(new Date());
         }
     }, [dateParam]);
-
+    useEffect(() => {
+        if (!dateParam && date) {
+            updateParams({ date: format(date, 'yyyy-MM-dd') });
+        }
+    }, []);
     const updateParams = (updates: Record<string, string>) => {
         const params = new URLSearchParams(searchParams.toString());
         Object.entries(updates).forEach(([k, v]) => params.set(k, v));

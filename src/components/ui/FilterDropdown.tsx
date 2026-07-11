@@ -9,9 +9,11 @@ interface Props {
     value: string;
     onChange: (value: string) => void;
     className?: string;
+    minWidth?: string;
+    isDark?: boolean;
 }
 
-export function FilterDropdown({ label, options, value, onChange, className = '' }: Props) {
+export function FilterDropdown({ label, options, value, onChange, className = '', minWidth = '180px', isDark = false }: Props) {
     const [open, setOpen] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
 
@@ -30,19 +32,30 @@ export function FilterDropdown({ label, options, value, onChange, className = ''
             <button
                 type="button"
                 onClick={() => setOpen(!open)}
-                className="flex py-3 px-4 items-center gap-2 rounded-lg border border-[#DFE1E7] bg-white text-sm font-inter whitespace-nowrap"
+                className={`flex py-3 px-4 items-center gap-2 rounded-lg border text-sm font-inter whitespace-nowrap ${isDark
+                        ? 'border-white/20 bg-white/[0.12] text-white'
+                        : 'border-[#DFE1E7] bg-white text-[#1B1B1B]'
+                    }`}
             >
-                <span className={value ? 'text-[#1B1B1B]' : 'text-[#777980]'}>{selectedLabel}</span>
+                <span className={value ? (isDark ? 'text-white' : 'text-[#1B1B1B]') : 'text-[#777980]'}>{selectedLabel}</span>
                 <ChevronDown size={16} className={`text-[#777980] transition-transform ${open ? 'rotate-180' : ''}`} />
             </button>
             {open && (
-                <div className="absolute top-full left-0 mt-1 w-full bg-white rounded-lg border border-[#E8E8E9] shadow-lg z-50">
+                <div
+                    className={`absolute top-full left-0 mt-1 rounded-lg border shadow-lg z-50 overflow-hidden ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#E8E8E9] bg-white'
+                        }`}
+                    style={{ minWidth }}
+                >
                     {options.map((opt) => (
                         <button
                             key={opt.value}
                             type="button"
                             onClick={() => { onChange(opt.value); setOpen(false); }}
-                            className={`w-full py-2.5 px-4 text-left text-sm font-inter hover:bg-[#F8FAFB] ${value === opt.value ? 'text-[#0098E8] bg-[#F0F8FF]' : 'text-[#1B1B1B]'
+                            className={`w-full py-2.5 px-4 text-left text-sm font-inter transition-colors whitespace-nowrap ${value === opt.value
+                                    ? 'text-[#0098E8] bg-[#F0F8FF]'
+                                    : isDark
+                                        ? 'text-white hover:bg-white/[0.08]'
+                                        : 'text-[#1B1B1B] hover:bg-[#F8FAFB]'
                                 }`}
                         >
                             {opt.label}

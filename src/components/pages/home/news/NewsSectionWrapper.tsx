@@ -8,6 +8,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { MoveUpRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export function NewsSectionWrapper() {
     const { theme } = useTheme();
@@ -17,7 +18,7 @@ export function NewsSectionWrapper() {
     if (loading || articles.length === 0) {
         return null;
     }
-
+    const router = useRouter();
     const featuredArticle = articles[0];
     const sideArticles = articles.slice(1, 4);
 
@@ -41,7 +42,8 @@ export function NewsSectionWrapper() {
             <div className="flex flex-col lg:flex-row items-stretch gap-6 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]">
                 {/* Featured Article */}
                 <div
-                    className={`flex-1 flex-col items-start rounded-xl border overflow-hidden ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#ECEFF3] bg-white'}`}
+                    onClick={() => router.push(`/news/${featuredArticle.slug}`)}
+                    className={`cursor-pointer flex-1 flex-col items-start rounded-xl border overflow-hidden ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#ECEFF3] bg-white'}`}
                 >
                     <div className="h-56 sm:h-80 lg:h-[324px] self-stretch relative">
                         <Image

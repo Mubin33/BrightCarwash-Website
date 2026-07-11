@@ -10,6 +10,7 @@ import Link from 'next/link';
 export function HeroSectionWrapper() {
     return (
         <section
+            id="hero"
             className="flex pt-10 pb-10 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-[10px] self-stretch"
             style={{
                 background: `linear-gradient(0deg, rgba(0, 0, 0, 0.60) 0%, rgba(0, 0, 0, 0.60) 100%), url('/images/hero-image.png') lightgray 50% / cover no-repeat`,
