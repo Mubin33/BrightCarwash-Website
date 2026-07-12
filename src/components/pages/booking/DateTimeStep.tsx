@@ -14,7 +14,6 @@ import { format } from 'date-fns';
 import { useBookingLock } from '@/hooks/useBookingLock';
 import { toast } from 'react-toastify';
 
-
 interface Props {
     onProceed: () => void;
     onBack: () => void;
@@ -43,6 +42,7 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
         dateParam ? new Date(dateParam) : new Date()
     );
     const [selectedTime, setSelectedTime] = useState<string | null>(timeParam || null);
+    const [dateLoading, setDateLoading] = useState(false);
     const { lock, loading: lockLoading } = useBookingLock();
     const { selectedServices, selectedLocation } = useBooking();
     const {
@@ -69,16 +69,25 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
         return availableDates[0];
     }, [availableDates, date]);
 
+    // Reset dateLoading when slots become available
+    useEffect(() => {
+        if (slots.length > 0 || !date) {
+            setDateLoading(false);
+        }
+    }, [slots, date]);
+
     useEffect(() => {
         if (!dateParam && !date) {
             setDate(new Date());
         }
     }, [dateParam]);
+
     useEffect(() => {
         if (!dateParam && date) {
             updateParams({ date: format(date, 'yyyy-MM-dd') });
         }
     }, []);
+
     const updateParams = (updates: Record<string, string>) => {
         const params = new URLSearchParams(searchParams.toString());
         Object.entries(updates).forEach(([k, v]) => params.set(k, v));
@@ -88,6 +97,7 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
     const handleDateChange = (newDate: Date) => {
         setDate(newDate);
         setSelectedTime(null);
+        setDateLoading(true);
         updateParams({ date: format(newDate, 'yyyy-MM-dd') });
     };
 
@@ -100,6 +110,7 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
             startAt: slot.startAt,
         });
     };
+
     const handleProceed = async () => {
         if (!date || !selectedTime || !selectedLocation) return;
 
@@ -174,7 +185,7 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
                     <h3 className={`self-stretch font-inter text-xl font-bold leading-normal ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
                         Select a time
                     </h3>
-                    {cacheLoading ? (
+                    {cacheLoading || dateLoading ? (
                         <div className="flex items-center justify-center py-12 self-stretch">
                             <div className="w-6 h-6 border-2 border-[#0098E8] border-t-transparent rounded-full animate-spin" />
                         </div>
@@ -215,8 +226,13 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
                         }`}>
                         Back
                     </Button>
-                    <Button onClick={handleProceed} disabled={!date || !selectedTime} className={`flex-1 py-[14px] px-5 justify-center items-center gap-2 rounded-xl  text-white font-inter text-sm disabled:opacity-50  ${isDark ? 'border-white/20 hover:bg-white/10  text-white' : 'border-[#DFE1E7] text-black'
-                        }`}>
+                    <Button
+                        onClick={handleProceed}
+                        disabled={!date || !selectedTime || lockLoading}
+                        isLoading={lockLoading}
+                        loadingText="Verifying slot..."
+                        className={`flex-1 py-[14px] px-5 justify-center items-center gap-2 rounded-xl text-white font-inter text-sm disabled:opacity-50 ${isDark ? 'border-white/20 hover:bg-white/10 text-white' : 'border-[#DFE1E7] text-black'}`}
+                    >
                         Continue to checkout
                     </Button>
                 </div>

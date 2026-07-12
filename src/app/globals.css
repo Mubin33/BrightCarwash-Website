@@ -33,3 +33,9 @@ body {
 .glr-hero-bg {
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.60) 0%, rgba(0, 0, 0, 0.60) 100%), url('/images/gallery.png') lightgray 60% / cover no-repeat;
 }
+
+#card-container .sq-card-message:empty {
+  display: none;
+  margin: 0;
+  padding: 0;
+}

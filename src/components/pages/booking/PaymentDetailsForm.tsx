@@ -25,13 +25,40 @@ function formatCardNumber(value: string): string {
 
 function formatExpiry(value: string): string {
     const digits = value.replace(/\D/g, '').slice(0, 4);
-    if (digits.length >= 1 && parseInt(digits.slice(0, 2)) > 12) {
-        return digits.slice(0, 1); // Don't allow month > 12
+
+    if (digits.length === 0) return '';
+
+    // First digit: if > 1, auto-prefix with 0
+    if (digits.length === 1) {
+        const firstDigit = parseInt(digits);
+        if (firstDigit > 1) {
+            return `0${firstDigit}/`;
+        }
+        return digits;
     }
-    if (digits.length >= 3) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+
+    // Two digits: validate month 01-12
+    if (digits.length === 2) {
+        const month = parseInt(digits);
+        if (month > 12) {
+            // If first digit > 1, it should have been 0X. Keep only first digit with slash
+            return `0${digits[0]}/${digits[1]}`;
+        }
+        return `${digits}/`;
+    }
+
+    // Three or four digits
+    if (digits.length >= 3) {
+        const month = parseInt(digits.slice(0, 2));
+        if (month > 12) {
+            // Invalid month, truncate
+            return `0${digits[0]}/${digits.slice(1, 3)}`;
+        }
+        return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+    }
+
     return digits;
 }
-
 
 function formatCVV(value: string): string {
     return value.replace(/\D/g, '').slice(0, 3);
@@ -57,7 +84,7 @@ export function PaymentDetailsForm({ values, onChange, agreed, onAgreeChange, di
                         <label className={labelClass}>Card Number</label>
                         <input
                             type="text"
-                            placeholder="1234 5678 9012 3456"
+                            placeholder="4111 1111 1111 1111"
                             className={`w-full flex py-4 px-4 justify-between items-center self-stretch rounded-lg border font-inter text-sm outline-none focus:border-[#0098E8] placeholder-[#A5A5AB] ${isDark
                                 ? 'border-white/20 bg-white/[0.08] text-white placeholder:text-white/30'
                                 : 'border-[#DFE1E7] bg-[#F8FAFB] text-[#1D1F2C]'
@@ -73,7 +100,7 @@ export function PaymentDetailsForm({ values, onChange, agreed, onAgreeChange, di
                             <label className={labelClass}>MM/YY</label>
                             <input
                                 type="text"
-                                placeholder="MM/YY"
+                                placeholder="12/28"
                                 className={`w-full flex py-4 px-4 justify-between items-center self-stretch rounded-lg border font-inter text-sm outline-none focus:border-[#0098E8] placeholder-[#A5A5AB] ${isDark
                                     ? 'border-white/20 bg-white/[0.08] text-white placeholder:text-white/30'
                                     : 'border-[#DFE1E7] bg-[#F8FAFB] text-[#1D1F2C]'
@@ -101,6 +128,9 @@ export function PaymentDetailsForm({ values, onChange, agreed, onAgreeChange, di
                         </div>
                     </div>
                 </div>
+                <p className={`font-inter text-xs ${isDark ? 'text-white/40' : 'text-[#A5A5AB]'}`}>
+                    Test cards: 4111 1111 1111 1111 (Success) | 4222 2222 2222 2222 (Declined) | 4444 4444 4444 4444 (Insufficient Funds)
+                </p>
                 <label className="flex items-center gap-2 self-stretch cursor-pointer">
                     <input
                         type="checkbox"

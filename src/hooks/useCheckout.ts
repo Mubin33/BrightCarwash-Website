@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { checkoutBooking } from '@/services/booking.api';
 import { toast } from 'react-toastify';
-import { getCardNonce } from '@/lib/card-nonce';
 
 export function useCheckout() {
     const [loading, setLoading] = useState(false);
@@ -18,12 +17,13 @@ export function useCheckout() {
         customerPhone: string;
         customerNote: string;
         vehicle: string;
+        nonce: string;
     }) => {
         setLoading(true);
         try {
             await checkoutBooking({
                 ...params,
-                sourceId: getCardNonce(),
+                sourceId: params.nonce,
             });
             toast.success('Booking confirmed!');
             return true;

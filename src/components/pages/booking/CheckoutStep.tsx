@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { ContactInfoForm } from './ContactInfoForm';
-import { PaymentDetailsForm } from './PaymentDetailsForm';
+import { SquarePaymentForm } from './SquarePaymentForm';
 import { CountdownTimer } from './CountdownTimer';
 import { AppointmentSummary } from './AppointmentSummary';
 import { useBooking } from '@/contexts/BookingContext';
@@ -21,7 +21,6 @@ interface Props {
 export function CheckoutStep({ onBack, onSuccess }: Props) {
     const [agreed, setAgreed] = useState(false);
     const [contactInfo, setContactInfo] = useState({ firstName: '', lastName: '', phone: '', email: '', note: '' });
-    const [paymentInfo, setPaymentInfo] = useState({ cardNumber: '', expiry: '', cvv: '' });
     const searchParams = useSearchParams();
     const { selectedServices, selectedLocation, lockToken, clearServices } = useBooking();
     const LOCATION_ID = selectedLocation;
@@ -33,7 +32,6 @@ export function CheckoutStep({ onBack, onSuccess }: Props) {
     const teamMemberId = searchParams.get('teamMemberId') || '';
     const startAt = searchParams.get('startAt') || '';
 
-    // Only lock if not already locked
     useEffect(() => {
         if (startAt && selectedServices.length > 0 && !lockToken) {
             lock(LOCATION_ID, startAt, selectedServices.map((s) => s.variationId));
@@ -60,9 +58,7 @@ export function CheckoutStep({ onBack, onSuccess }: Props) {
 
     const isFormValid =
         contactInfo.firstName.trim() && contactInfo.lastName.trim() &&
-        contactInfo.phone.trim() && contactInfo.email.trim() &&
-        paymentInfo.cardNumber.replace(/\s/g, '').length === 16 &&
-        paymentInfo.expiry.length === 5 && paymentInfo.cvv.length === 3 && agreed;
+        contactInfo.phone.trim() && contactInfo.email.trim() && agreed;
 
     const handleCheckout = async () => {
         if (!isFormValid) { toast.warning('Please fill all required fields'); return; }
@@ -78,12 +74,25 @@ export function CheckoutStep({ onBack, onSuccess }: Props) {
             return;
         }
 
+        const tokenize = (window as any).__tokenizeCard;
+        if (!tokenize) {
+            toast.warning('Payment system not ready');
+            return;
+        }
+
+        const nonce = await tokenize();
+        if (!nonce) {
+            toast.warning('Please enter valid card details');
+            return;
+        }
+
         const success = await checkout({
             locationId: LOCATION_ID, startAt, lockToken: lockToken || '',
             cartItems: selectedServices.map((s) => ({ serviceVariationId: s.variationId, teamMemberId })),
             customerName: `${contactInfo.firstName} ${contactInfo.lastName}`,
             customerEmail: contactInfo.email, customerPhone: `+1${contactInfo.phone.replace(/\D/g, '')}`,
             customerNote: contactInfo.note, vehicle: 'Not specified',
+            nonce,
         });
 
         if (success) {
@@ -111,7 +120,13 @@ export function CheckoutStep({ onBack, onSuccess }: Props) {
             <div className="flex flex-col lg:flex-row items-start gap-4 self-stretch">
                 <div className="flex flex-col justify-center items-start gap-4 flex-1">
                     <ContactInfoForm values={contactInfo} onChange={setContactInfo} disabled={checkoutLoading} />
-                    <PaymentDetailsForm values={paymentInfo} onChange={setPaymentInfo} agreed={agreed} onAgreeChange={setAgreed} disabled={checkoutLoading} />
+                    <SquarePaymentForm
+                        locationId={LOCATION_ID}
+                        onNonceReady={() => { }}
+                        disabled={checkoutLoading}
+                        agreed={agreed}
+                        onAgreeChange={setAgreed}
+                    />
                 </div>
                 <div className="flex flex-col items-start gap-4 flex-1 lg:max-w-[400px] self-stretch">
                     <CountdownTimer onExpire={() => lockToken && release(LOCATION_ID, startAt)} />
