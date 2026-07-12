@@ -34,9 +34,9 @@ export function Footer() {
             />
             <div className="absolute inset-0 bg-[#092544]/80 z-[1]" />
 
-            <div className="relative z-10 flex flex-col lg:flex-row gap-8 sm:gap-10 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px] pb-12">
-                {/* Brand - 40% */}
-                <div className="w-full lg:w-[50%] flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left">
+            <div className="relative z-10 flex flex-col lg:flex-row justify-between gap-8 sm:gap-10 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px] pb-12">
+                {/* Brand */}
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left lg:max-w-[40%]">
                     <Link href="/#hero" onClick={handleLogoClick} className="w-32 h-[150px] sm:w-32 sm:h-[150px] relative shrink-0 cursor-pointer">
                         <Image
                             src="/images/logo.png"
@@ -50,8 +50,8 @@ export function Footer() {
                     </p>
                 </div>
 
-                {/* Links - 60% */}
-                <div className="w-full lg:w-[50%] grid grid-cols-3 gap-8 sm:gap-10">
+                {/* Pages + Legal + Contact */}
+                <div className="flex flex-wrap justify-between gap-8 sm:gap-10 lg:max-w-[55%] w-full">
                     {/* Pages */}
                     <div className="flex flex-col items-start gap-3 sm:gap-4">
                         <h4 className="text-white font-inter text-base sm:text-lg lg:text-xl font-normal leading-[130%] tracking-[0.1px]">Pages</h4>
@@ -70,7 +70,7 @@ export function Footer() {
 
                     {/* Legal */}
                     <div className="flex flex-col items-start gap-3 sm:gap-4">
-                        <h4 className="text-white font-inter text-base sm:text-lg lg:text-xl font-normal leading-[130%] tracking-[0.1px] p-1">Legal</h4>
+                        <h4 className="text-white font-inter text-base sm:text-lg lg:text-xl font-normal leading-[130%] tracking-[0.1px]">Legal</h4>
                         <div className="flex flex-col items-start gap-2 sm:gap-3">
                             <Link href="/terms" className="text-white/70 font-inter text-xs sm:text-sm lg:text-base font-normal leading-[100%] hover:text-white transition-colors whitespace-nowrap p-1">
                                 Terms & Conditions
@@ -94,7 +94,7 @@ export function Footer() {
                                 <span className="text-white/70 font-inter text-xs sm:text-sm lg:text-base">{footerData.contact.phone}</span>
                             </div>
                         </div>
-                        <div className="flex items-center justify-start gap-3 sm:gap-4 mt-1 sm:mt-2">
+                        <div className="flex items-center gap-3 sm:gap-4 mt-1 sm:mt-2">
                             {footerData.socialLinks.map((social) => (
                                 <Link
                                     key={social.name}

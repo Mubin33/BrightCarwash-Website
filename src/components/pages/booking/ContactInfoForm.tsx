@@ -22,8 +22,8 @@ export function ContactInfoForm({ values, onChange, disabled }: Props) {
     const isDark = theme === 'dark';
 
     const inputClass = `flex py-4 px-4 justify-between items-center self-stretch rounded-lg border font-inter text-sm outline-none focus:border-[#0098E8] placeholder-[#A5A5AB] ${isDark
-            ? 'border-white/20 bg-white/[0.08] text-white placeholder:text-white/30'
-            : 'border-[#DFE1E7] bg-[#F8FAFB] text-[#1D1F2C]'
+        ? 'border-white/20 bg-white/[0.08] text-white placeholder:text-white/30'
+        : 'border-[#DFE1E7] bg-[#F8FAFB] text-[#1D1F2C]'
         }`;
     const labelClass = "text-[#777980] dark:text-white/60 font-inter text-base font-normal leading-[130%]";
 

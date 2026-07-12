@@ -44,7 +44,7 @@ export function BookingPageWrapper() {
             >
                 <div className="flex flex-col justify-between items-center w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]">
                     <div className="flex flex-col items-center gap-4 sm:gap-6 w-full">
-                        <BookingSteps currentStep={visibleStep} onStepChange={updateStep} />
+                        {step !== 'confirmed' && <BookingSteps currentStep={visibleStep} onStepChange={updateStep} />}
                         {step === 'cart' && <CartStep onProceed={() => updateStep('datetime')} />}
                         {step === 'datetime' && (
                             <DateTimeStep
@@ -58,7 +58,11 @@ export function BookingPageWrapper() {
                                 onSuccess={() => updateStep('confirmed')}
                             />
                         )}
-                        {step === 'confirmed' && <BookingSuccess />}
+                        {step === 'confirmed' && (
+                            <div className="flex justify-center w-full">
+                                <BookingSuccess />
+                            </div>
+                        )}
                     </div>
                 </div>
             </section>
