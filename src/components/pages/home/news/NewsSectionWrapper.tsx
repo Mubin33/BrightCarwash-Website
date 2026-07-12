@@ -14,11 +14,12 @@ export function NewsSectionWrapper() {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
     const { articles, loading } = useNewsList(1, 4);
+    const router = useRouter();
 
     if (loading || articles.length === 0) {
         return null;
     }
-    const router = useRouter();
+
     const featuredArticle = articles[0];
     const sideArticles = articles.slice(1, 4);
 

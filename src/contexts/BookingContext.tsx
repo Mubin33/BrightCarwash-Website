@@ -6,6 +6,8 @@ import type { ServiceData } from '@/data/services';
 interface BookingContextType {
     selectedServices: ServiceData[];
     selectedLocation: string;
+    lockToken: string | null;
+    setLockToken: (token: string | null) => void;
     addService: (service: ServiceData) => void;
     removeService: (id: string) => void;
     clearServices: () => void;
@@ -17,6 +19,7 @@ const BookingContext = createContext<BookingContextType | null>(null);
 export function BookingProvider({ children }: { children: React.ReactNode }) {
     const [selectedServices, setSelectedServices] = useState<ServiceData[]>([]);
     const [selectedLocation, setSelectedLocation] = useState('');
+    const [lockToken, setLockToken] = useState<string | null>(null);
 
     useEffect(() => {
         const stored = localStorage.getItem('bookingServices');
@@ -58,12 +61,18 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
     const clearServices = useCallback(() => {
         setSelectedServices([]);
         setSelectedLocation('');
+        setLockToken(null);
         localStorage.removeItem('bookingServices');
         localStorage.removeItem('bookingLocation');
     }, []);
 
     return (
-        <BookingContext.Provider value={{ selectedServices, selectedLocation, addService, removeService, clearServices, setSelectedLocation }}>
+        <BookingContext.Provider value={{
+            selectedServices, selectedLocation,
+            lockToken, setLockToken,
+            addService, removeService, clearServices,
+            setSelectedLocation,
+        }}>
             {children}
         </BookingContext.Provider>
     );

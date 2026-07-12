@@ -11,6 +11,9 @@ import { useAvailableDates } from '@/hooks/useAvailableDates';
 import type { AvailabilitySlot } from '@/services/booking.api';
 import { useTheme } from '@/contexts/ThemeContext';
 import { format } from 'date-fns';
+import { useBookingLock } from '@/hooks/useBookingLock';
+import { toast } from 'react-toastify';
+
 
 interface Props {
     onProceed: () => void;
@@ -36,13 +39,12 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
     const router = useRouter();
     const dateParam = searchParams.get('date');
     const timeParam = searchParams.get('time');
-
     const [date, setDate] = useState<Date | undefined>(
         dateParam ? new Date(dateParam) : new Date()
     );
     const [selectedTime, setSelectedTime] = useState<string | null>(timeParam || null);
+    const { lock, loading: lockLoading } = useBookingLock();
     const { selectedServices, selectedLocation } = useBooking();
-
     const {
         availableDates,
         getSlotsForDate,
@@ -97,6 +99,23 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
             teamMemberId: slot.appointmentSegments[0]?.teamMemberId || '',
             startAt: slot.startAt,
         });
+    };
+    const handleProceed = async () => {
+        if (!date || !selectedTime || !selectedLocation) return;
+
+        const startAt = searchParams.get('startAt') || '';
+        const result = await lock(
+            selectedLocation,
+            startAt,
+            selectedServices.map((s) => s.variationId)
+        );
+
+        if (result) {
+            onProceed();
+        } else {
+            setSelectedTime(null);
+            toast.error('This time slot is no longer available. Please select another.');
+        }
     };
 
     const goToNextAvailable = () => {
@@ -196,7 +215,7 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
                         }`}>
                         Back
                     </Button>
-                    <Button onClick={onProceed} disabled={!date || !selectedTime} className={`flex-1 py-[14px] px-5 justify-center items-center gap-2 rounded-xl  text-white font-inter text-sm disabled:opacity-50  ${isDark ? 'border-white/20 hover:bg-white/10  text-white' : 'border-[#DFE1E7] text-black'
+                    <Button onClick={handleProceed} disabled={!date || !selectedTime} className={`flex-1 py-[14px] px-5 justify-center items-center gap-2 rounded-xl  text-white font-inter text-sm disabled:opacity-50  ${isDark ? 'border-white/20 hover:bg-white/10  text-white' : 'border-[#DFE1E7] text-black'
                         }`}>
                         Continue to checkout
                     </Button>

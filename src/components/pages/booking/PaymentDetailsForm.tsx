@@ -25,9 +25,13 @@ function formatCardNumber(value: string): string {
 
 function formatExpiry(value: string): string {
     const digits = value.replace(/\D/g, '').slice(0, 4);
+    if (digits.length >= 1 && parseInt(digits.slice(0, 2)) > 12) {
+        return digits.slice(0, 1); // Don't allow month > 12
+    }
     if (digits.length >= 3) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
     return digits;
 }
+
 
 function formatCVV(value: string): string {
     return value.replace(/\D/g, '').slice(0, 3);
@@ -55,8 +59,8 @@ export function PaymentDetailsForm({ values, onChange, agreed, onAgreeChange, di
                             type="text"
                             placeholder="1234 5678 9012 3456"
                             className={`w-full flex py-4 px-4 justify-between items-center self-stretch rounded-lg border font-inter text-sm outline-none focus:border-[#0098E8] placeholder-[#A5A5AB] ${isDark
-                                    ? 'border-white/20 bg-white/[0.08] text-white placeholder:text-white/30'
-                                    : 'border-[#DFE1E7] bg-[#F8FAFB] text-[#1D1F2C]'
+                                ? 'border-white/20 bg-white/[0.08] text-white placeholder:text-white/30'
+                                : 'border-[#DFE1E7] bg-[#F8FAFB] text-[#1D1F2C]'
                                 }`}
                             value={values.cardNumber}
                             onChange={(e) => update('cardNumber', formatCardNumber(e.target.value))}
@@ -71,8 +75,8 @@ export function PaymentDetailsForm({ values, onChange, agreed, onAgreeChange, di
                                 type="text"
                                 placeholder="MM/YY"
                                 className={`w-full flex py-4 px-4 justify-between items-center self-stretch rounded-lg border font-inter text-sm outline-none focus:border-[#0098E8] placeholder-[#A5A5AB] ${isDark
-                                        ? 'border-white/20 bg-white/[0.08] text-white placeholder:text-white/30'
-                                        : 'border-[#DFE1E7] bg-[#F8FAFB] text-[#1D1F2C]'
+                                    ? 'border-white/20 bg-white/[0.08] text-white placeholder:text-white/30'
+                                    : 'border-[#DFE1E7] bg-[#F8FAFB] text-[#1D1F2C]'
                                     }`}
                                 value={values.expiry}
                                 onChange={(e) => update('expiry', formatExpiry(e.target.value))}
@@ -86,8 +90,8 @@ export function PaymentDetailsForm({ values, onChange, agreed, onAgreeChange, di
                                 type="text"
                                 placeholder="123"
                                 className={`w-full flex py-4 px-4 justify-between items-center self-stretch rounded-lg border font-inter text-sm outline-none focus:border-[#0098E8] placeholder-[#A5A5AB] ${isDark
-                                        ? 'border-white/20 bg-white/[0.08] text-white placeholder:text-white/30'
-                                        : 'border-[#DFE1E7] bg-[#F8FAFB] text-[#1D1F2C]'
+                                    ? 'border-white/20 bg-white/[0.08] text-white placeholder:text-white/30'
+                                    : 'border-[#DFE1E7] bg-[#F8FAFB] text-[#1D1F2C]'
                                     }`}
                                 value={values.cvv}
                                 onChange={(e) => update('cvv', formatCVV(e.target.value))}

@@ -23,23 +23,21 @@ export function CheckoutStep({ onBack, onSuccess }: Props) {
     const [contactInfo, setContactInfo] = useState({ firstName: '', lastName: '', phone: '', email: '', note: '' });
     const [paymentInfo, setPaymentInfo] = useState({ cardNumber: '', expiry: '', cvv: '' });
     const searchParams = useSearchParams();
-    const { selectedServices, selectedLocation } = useBooking();
+    const { selectedServices, selectedLocation, lockToken, clearServices } = useBooking();
     const LOCATION_ID = selectedLocation;
     const { theme } = useTheme();
     const isDark = theme === 'dark';
     const { checkout, loading: checkoutLoading } = useCheckout();
-    const { lockToken, lock, release } = useBookingLock();
+    const { lock, release } = useBookingLock();
 
     const teamMemberId = searchParams.get('teamMemberId') || '';
     const startAt = searchParams.get('startAt') || '';
 
+    // Only lock if not already locked
     useEffect(() => {
-        if (startAt && selectedServices.length > 0) {
+        if (startAt && selectedServices.length > 0 && !lockToken) {
             lock(LOCATION_ID, startAt, selectedServices.map((s) => s.variationId));
         }
-        return () => {
-            if (lockToken) release(LOCATION_ID, startAt);
-        };
     }, []);
 
     useEffect(() => {
@@ -89,9 +87,9 @@ export function CheckoutStep({ onBack, onSuccess }: Props) {
         });
 
         if (success) {
+            clearServices();
             onSuccess();
         } else {
-            // Payment failed - release old lock and get a new one
             if (lockToken) {
                 await release(LOCATION_ID, startAt);
             }
@@ -100,8 +98,16 @@ export function CheckoutStep({ onBack, onSuccess }: Props) {
     };
 
     return (
-        <div className={`flex flex-col w-full p-4 sm:p-6 items-start gap-6 rounded-lg border ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#DFE1E7] bg-[#F8FAFB]'
+        <div className={`relative overflow-hidden flex flex-col w-full p-4 sm:p-6 items-start gap-6 rounded-lg border ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#DFE1E7] bg-[#F8FAFB]'
             }`}>
+            {checkoutLoading && (
+                <div className="absolute inset-0 bg-white/60 dark:bg-[#1A1A1A]/60 z-10 flex flex-col items-center justify-center gap-4 rounded-lg">
+                    <div className="w-8 h-8 border-2 border-[#0098E8] border-t-transparent rounded-full animate-spin" />
+                    <p className={`font-inter text-sm font-medium ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
+                        Processing your booking, please wait...
+                    </p>
+                </div>
+            )}
             <div className="flex flex-col lg:flex-row items-start gap-4 self-stretch">
                 <div className="flex flex-col justify-center items-start gap-4 flex-1">
                     <ContactInfoForm values={contactInfo} onChange={setContactInfo} disabled={checkoutLoading} />
