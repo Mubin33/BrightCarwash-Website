@@ -14,6 +14,5 @@ export const footerData = {
         { name: 'Facebook', href: '#', icon: 'facebook' },
         { name: 'Instagram', href: '#', icon: 'instagram' },
         { name: 'Twitter', href: '#', icon: 'twitter' },
-        { name: 'LinkedIn', href: '#', icon: 'linkedin' },
     ],
 };

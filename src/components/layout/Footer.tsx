@@ -109,6 +109,12 @@ export function Footer() {
                     </div>
                 </div>
             </div>
+            {/* Copyright */}
+            <div className="relative z-10 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px] pt-6 border-t border-white/10">
+                <p className="text-white/40 font-inter text-xs sm:text-sm text-start">
+                    © {new Date().getFullYear()} Brightside Car Wash. All rights reserved.
+                </p>
+            </div>
         </footer>
     );
 }
