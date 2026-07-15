@@ -39,7 +39,7 @@ export function CartStep({ onProceed }: Props) {
                         className={`flex p-4 sm:p-6 flex-col items-start gap-6 sm:gap-8 rounded-lg border min-w-0 ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#DFE1E7] bg-[#F8FAFB]'
                             }`}
                     >
-                        <div className="flex justify-between items-center self-stretch">
+                        <div className="flex justify-between items-center self-stretch ">
                             <h3 className={`font-bebas text-2xl sm:text-[32px] leading-[100%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
                                 {service.name}
                             </h3>

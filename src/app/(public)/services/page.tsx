@@ -1,4 +1,3 @@
-"use client"
 
 import { ServicesHero } from '@/components/pages/services/ServicesHero';
 import { ServicesList } from '@/components/pages/services/ServicesList';

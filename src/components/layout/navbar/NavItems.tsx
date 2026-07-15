@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 const NAV_LINKS = [
     { label: 'Home', href: '/' },
     { label: 'About Us', href: '/about-us' },
-    { label: 'Service', href: '/services' },
+    { label: 'Services', href: '/services' },
     { label: 'Gallery', href: '/gallery' },
     { label: 'News & Events', href: '/news' },
     { label: 'Store', href: 'https://brightsidecw.qbstores.com/' },

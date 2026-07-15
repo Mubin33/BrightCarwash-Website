@@ -1,4 +1,3 @@
-import { Icon } from '@/components/ui/Icon';
 
 interface Props {
     value: string;

@@ -54,7 +54,7 @@ export function LeadershipSection() {
                 <div className={`flex p-6 flex-col items-start gap-8 flex-1 rounded-lg ${isDark ? 'bg-white/[0.04]' : 'bg-white'}`}>
                     <div className="flex h-80 sm:h-[450px] lg:h-[548px] p-4 flex-col justify-end items-start gap-2.5 self-stretch rounded-lg relative overflow-hidden">
                         <Image
-                            src="/images/elizabeth.jpg"
+                            src="/images/elizabeth.png"
                             alt="Brightside Leadership Team"
                             fill
                             className="object-cover"

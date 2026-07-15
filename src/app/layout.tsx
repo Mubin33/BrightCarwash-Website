@@ -43,7 +43,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${inter.variable} ${bebasNeue.variable}`} suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider>
-
           <BookingProvider>
             <Navbar />
             {children}
@@ -51,7 +50,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Footer />
           </BookingProvider>
           <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
-
         </ThemeProvider>
       </body>
     </html>

@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MoveUpRight } from 'lucide-react';
 import { Icon } from '@/components/ui/Icon';
 
 export function BookNowButton() {

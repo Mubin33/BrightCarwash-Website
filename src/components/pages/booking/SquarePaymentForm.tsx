@@ -88,7 +88,6 @@ export function SquarePaymentForm({ locationId, onNonceReady, disabled, agreed, 
             }
         }
 
-        // Case 1: Square SDK is already available (e.g., after a re-render or hot reload)
         if (window.Square) {
             initSquare();
             return;

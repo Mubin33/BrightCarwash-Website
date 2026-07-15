@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'psychiatry-assists-discovered-fraction.trycloudflare.com',
+        hostname: 'bridge-decent-operational-power.trycloudflare.com',
       },
       {
         protocol: 'https',
