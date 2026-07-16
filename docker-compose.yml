@@ -3,8 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: app-frontend
-    container_name: app-frontend
+    image: frontend-car-wash-website
+    container_name: frontend-car-wash-website
     ports:
       - "3000:3000"
     env_file:
