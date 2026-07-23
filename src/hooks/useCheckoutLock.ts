@@ -6,8 +6,8 @@ interface Params {
     selectedServices: ServiceData[];
     lockToken: string | null;
     locationId: string;
-    lock: (locationId: string, startAt: string, ids: string[]) => void;
-    release: (locationId: string, startAt: string) => void;
+    lock: (locationId: string, startAt: string, ids: string[]) => Promise<any>;
+    release: (locationId: string, startAt: string) => Promise<void>;
 }
 
 export function useCheckoutLock({ startAt, selectedServices, lockToken, locationId, lock, release }: Params) {

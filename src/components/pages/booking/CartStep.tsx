@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { useBooking } from '@/contexts/BookingContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Props {
     onProceed: () => void;
@@ -39,7 +40,7 @@ export function CartStep({ onProceed }: Props) {
                         className={`flex p-4 sm:p-6 flex-col items-start gap-6 sm:gap-8 rounded-lg border min-w-0 ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#DFE1E7] bg-[#F8FAFB]'
                             }`}
                     >
-                        <div className="flex justify-between items-center self-stretch ">
+                        <div className="flex justify-between items-center self-stretch">
                             <h3 className={`font-bebas text-2xl sm:text-[32px] leading-[100%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
                                 {service.name}
                             </h3>
@@ -51,6 +52,18 @@ export function CartStep({ onProceed }: Props) {
                                 <Icon name="delete" width={14} height={14} color="#FF4345" className="sm:w-4 sm:h-4" />
                             </button>
                         </div>
+
+                        {/* Service Image */}
+                        <div className="w-full h-48 sm:h-56 rounded-lg overflow-hidden relative">
+                            <Image
+                                src={service.image || '/images/service.png'}
+                                alt={service.name}
+                                fill
+                                className="object-cover"
+                                unoptimized={service.image?.startsWith('http')}
+                            />
+                        </div>
+
                         <div
                             className={`flex py-2 sm:py-3 px-3 sm:px-4 flex-col items-start gap-4 self-stretch rounded-md border ${isDark ? 'border-white/20 bg-white/[0.08]' : 'border-[#DFE1E7] bg-white'
                                 }`}
@@ -77,8 +90,8 @@ export function CartStep({ onProceed }: Props) {
                     <Button
                         variant="outline"
                         className={`w-full py-[14px] px-5 justify-center rounded border font-inter text-sm ${isDark
-                                ? 'border-white/20 bg-white/[0.08] text-white hover:bg-white/[0.16] hover:text-white'
-                                : 'border-[#DFE1E7] bg-[#F8FAFB] text-[#1B1B1B] hover:bg-[#F1F1F1]'
+                            ? 'border-white/20 bg-white/[0.08] text-white hover:bg-white/[0.16] hover:text-white'
+                            : 'border-[#DFE1E7] bg-[#F8FAFB] text-[#1B1B1B] hover:bg-[#F1F1F1]'
                             }`}
                     >
                         Add another service

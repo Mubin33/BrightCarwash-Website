@@ -40,10 +40,10 @@ export function MembershipSectionWrapper() {
                     </p>
 
                     {/* Button */}
-                    <Button className="flex py-[14px] px-5 justify-center items-center gap-2 rounded-lg bg-white text-[#B23730]! text-lg hover:bg-gray-100 mt-8">
+                    {/* <Button className="flex py-[14px] px-5 justify-center items-center gap-2 rounded-lg bg-white text-[#B23730]! text-lg hover:bg-gray-100 mt-8">
                         {membershipData.buttonText}
                         <Icon name="book" width={20} height={20} color="#B23730" />
-                    </Button>
+                    </Button> */}
                 </div>
             </div>
         </section>

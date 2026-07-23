@@ -47,11 +47,12 @@ export function ServiceCard({ service, selected, onSelect, onConfirmBooking, onA
             {/* Image */}
             <div className="flex h-52 sm:h-64 lg:h-[276px] p-4 flex-col justify-end items-center gap-2.5 self-stretch rounded-lg relative overflow-hidden">
                 <Image
-                    src="/images/service.png"
+                    src={service.image || '/images/service.png'}
                     alt={service.name}
                     fill
                     className="object-cover"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 380px, 424px"
+                    unoptimized={service.image?.startsWith('https')}
                 />
                 {selected && (
                     <span className="absolute top-3 right-3 bg-[#006F1F] text-white text-xs px-2 py-1 rounded-full font-inter z-10">

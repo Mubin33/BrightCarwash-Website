@@ -28,6 +28,8 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
         }
         const storedLocation = localStorage.getItem('bookingLocation');
         if (storedLocation) setSelectedLocation(storedLocation);
+        const storedLockToken = localStorage.getItem('bookingLockToken');
+        if (storedLockToken) setLockToken(storedLockToken);
     }, []);
 
     useEffect(() => {
@@ -37,6 +39,14 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         if (selectedLocation) localStorage.setItem('bookingLocation', selectedLocation);
     }, [selectedLocation]);
+
+    useEffect(() => {
+        if (lockToken) {
+            localStorage.setItem('bookingLockToken', lockToken);
+        } else {
+            localStorage.removeItem('bookingLockToken');
+        }
+    }, [lockToken]);
 
     const addService = useCallback((service: ServiceData) => {
         setSelectedServices((prev) => {
@@ -64,6 +74,7 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
         setLockToken(null);
         localStorage.removeItem('bookingServices');
         localStorage.removeItem('bookingLocation');
+        localStorage.removeItem('bookingLockToken');
     }, []);
 
     return (

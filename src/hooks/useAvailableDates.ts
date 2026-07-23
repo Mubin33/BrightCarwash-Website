@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { getAvailability, type AvailabilitySlot } from '@/services/booking.api';
 import { format, addDays, startOfDay, endOfDay } from 'date-fns';
 
-const BATCH_SIZE = 1;
+const BATCH_SIZE = 29;
 const BATCH_DELAY = 500;
 const TOTAL_DAYS = 30;
 const CACHE_MAX_AGE_MS = 5 * 60 * 1000; // 5 minutes

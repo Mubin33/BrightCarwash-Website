@@ -22,7 +22,7 @@ export function CheckoutStep({ onBack, onSuccess }: Props) {
     const [agreed, setAgreed] = useState(false);
     const [contactInfo, setContactInfo] = useState({ firstName: '', lastName: '', phone: '', email: '', note: '' });
     const searchParams = useSearchParams();
-    const { selectedServices, selectedLocation, lockToken, clearServices } = useBooking();
+    const { selectedServices, selectedLocation, lockToken, clearServices, setLockToken } = useBooking();
     const { theme } = useTheme();
     const isDark = theme === 'dark';
     const { checkout, loading: checkoutLoading } = useCheckout();
@@ -54,7 +54,11 @@ export function CheckoutStep({ onBack, onSuccess }: Props) {
                     <SquarePaymentForm locationId={selectedLocation} onNonceReady={() => { }} disabled={checkoutLoading} agreed={agreed} onAgreeChange={setAgreed} />
                 </div>
                 <div className="flex flex-col items-start gap-4 flex-1 lg:max-w-[400px] self-stretch">
-                    <CountdownTimer onExpire={() => lockToken && release(selectedLocation, startAt)} />
+                    <CountdownTimer onExpire={() => {
+                        if (lockToken) release(selectedLocation, startAt);
+                        setLockToken(null);
+                        localStorage.removeItem('bookingLockToken');
+                    }} />
                     <AppointmentSummary />
                     <CheckoutButtons onBack={onBack} isFormValid={isFormValid} lockToken={lockToken} checkoutLoading={checkoutLoading} isDark={isDark} onCheckout={handleCheckout} release={release} locationId={selectedLocation} startAt={startAt} />
                 </div>

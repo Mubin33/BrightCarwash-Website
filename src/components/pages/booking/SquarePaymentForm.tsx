@@ -178,8 +178,6 @@ export function SquarePaymentForm({ locationId, onNonceReady, disabled, agreed, 
                     Payment Details
                 </h3>
 
-                {error && <p className="text-[#FF4345] font-inter text-sm">{error}</p>}
-
                 {!loaded && !error && (
                     <div className="w-full h-12 bg-gray-100 dark:bg-white/10 animate-pulse rounded-lg" />
                 )}
@@ -199,7 +197,11 @@ export function SquarePaymentForm({ locationId, onNonceReady, disabled, agreed, 
                         disabled={disabled}
                     />
                     <span className={`font-inter text-sm ${isDark ? 'text-white/70' : 'text-[#777980]'}`}>
-                        I have read and agreed to the Privacy &amp; Policy of Brightside Car Wash.
+                        I have read and agreed to the{' '}
+                        <a href="/privacy-policy" target="_blank" className="text-[#0098E8] underline hover:text-[#0088D8] transition-colors">
+                            Privacy &amp; Policy
+                        </a>
+                        {' '}of Brightside Car Wash.
                     </span>
                 </label>
             </div>

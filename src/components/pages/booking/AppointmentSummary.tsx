@@ -24,7 +24,7 @@ export function AppointmentSummary() {
         selectedServices.map((s) => s.variationId)
     );
 
-   
+
     const tax = summary ? summary.taxInCents / 100 : 0;
     const total = summary ? summary.totalInCents / 100 : 0;
 
@@ -37,19 +37,16 @@ export function AppointmentSummary() {
             </h3>
 
             {/* Date & Time */}
-            <div className={`flex flex-col sm:flex-row py-2 px-2 sm:px-3 justify-between items-start sm:items-center gap-2 self-stretch rounded-lg border ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#DFE1E7] bg-[#F8FAFB]'
-                }`}>
-                <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className={`flex flex-col sm:flex-row py-2 px-2 sm:px-3 justify-between items-start sm:items-center gap-2 self-stretch rounded-lg border ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#DFE1E7] bg-[#F8FAFB]'}`}>
+                <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
                     <Icon name="calendar" width={14} height={14} color="#0098E8" className="sm:w-4 sm:h-4 shrink-0" />
-                    <span className={`font-inter text-xs sm:text-sm lg:text-base font-normal leading-[150%] whitespace-nowrap ${isDark ? 'text-white/80' : 'text-[#4A4C56]'
-                        }`}>
+                    <span className={`font-inter text-xs sm:text-sm lg:text-base font-normal leading-[150%] truncate ${isDark ? 'text-white/80' : 'text-[#4A4C56]'}`}>
                         {dayName}, {dateDisplay}
                     </span>
                 </div>
-                <div className="flex items-center gap-1.5 sm:gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
                     <Icon name="clock" width={14} height={14} color="#0098E8" className="sm:w-4 sm:h-4 shrink-0" />
-                    <span className={`font-inter text-xs sm:text-sm lg:text-base font-normal leading-[150%] whitespace-nowrap ${isDark ? 'text-white/80' : 'text-[#4A4C56]'
-                        }`}>
+                    <span className={`font-inter text-xs sm:text-sm lg:text-base font-normal leading-[150%] truncate ${isDark ? 'text-white/80' : 'text-[#4A4C56]'}`}>
                         {timeParam || '—'}
                     </span>
                 </div>

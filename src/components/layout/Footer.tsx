@@ -19,13 +19,15 @@ export function Footer() {
             }
         }
     };
+
     const getPageHref = (page: string) => {
         if (page === 'Home') return '/';
         if (page === 'News & Events') return '/news';
         return `/${page.toLowerCase().replace(/\s/g, '-')}`;
     };
+
     return (
-        <footer className="relative flex py-16 sm:py-20 lg:py-[86px] px-4 md:px-6 lg:px-10 pb-10 flex-col justify-center items-center gap-5 overflow-hidden">
+        <footer className="relative flex pt-16 sm:pt-20 lg:pt-[86px] px-4 md:px-6 lg:px-10  flex-col justify-center items-center gap-5 overflow-hidden">
             <Image
                 src="/images/footer.jpg"
                 alt="Footer background"
@@ -72,12 +74,15 @@ export function Footer() {
                     <div className="flex flex-col items-start gap-3 sm:gap-4">
                         <h4 className="text-white font-inter text-base sm:text-lg lg:text-xl font-normal leading-[130%] tracking-[0.1px]">Legal</h4>
                         <div className="flex flex-col items-start gap-2 sm:gap-3">
-                            <Link href="/terms" className="text-white/70 font-inter text-xs sm:text-sm lg:text-base font-normal leading-[100%] hover:text-white transition-colors whitespace-nowrap p-1">
-                                Terms & Conditions
-                            </Link>
-                            <Link href="/privacy" className="text-white/70 font-inter text-xs sm:text-sm lg:text-base font-normal leading-[100%] hover:text-white transition-colors whitespace-nowrap p-1">
-                                Privacy Policy
-                            </Link>
+                            {footerData.legalPages.map((page) => (
+                                <Link
+                                    key={page.label}
+                                    href={page.href}
+                                    className="text-white/70 font-inter text-xs sm:text-sm lg:text-base font-normal leading-[100%] hover:text-white transition-colors whitespace-nowrap p-1"
+                                >
+                                    {page.label}
+                                </Link>
+                            ))}
                         </div>
                     </div>
 
@@ -109,10 +114,11 @@ export function Footer() {
                     </div>
                 </div>
             </div>
+
             {/* Copyright */}
-            <div className="relative z-10 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px] pt-6 border-t border-white/10">
+            <div className="relative z-10 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]  pb-2 pt-6 border-t border-white/10">
                 <p className="text-white/40 font-inter text-xs sm:text-sm text-start">
-                    © {new Date().getFullYear()} Brightside Car Wash. All rights reserved.
+                    {footerData.copyright}
                 </p>
             </div>
         </footer>
