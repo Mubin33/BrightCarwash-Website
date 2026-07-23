@@ -27,13 +27,16 @@ export function CheckoutStep({ onBack, onSuccess }: Props) {
     const isDark = theme === 'dark';
     const { checkout, loading: checkoutLoading } = useCheckout();
     const { lock, release } = useBookingLock();
-    const { isFormValid, validateCheckout } = useCheckoutValidation(contactInfo, agreed);
+    const { isFormValid, errors } = useCheckoutValidation(contactInfo, agreed);
     const teamMemberId = searchParams.get('teamMemberId') || '';
     const startAt = searchParams.get('startAt') || '';
     useCheckoutLock({ startAt, selectedServices, lockToken, locationId: selectedLocation, lock, release });
 
     const handleCheckout = async () => {
-        if (!validateCheckout()) return;
+        if (!isFormValid) {
+            toast.warning('Please fill all required fields');
+            return;
+        }
         const tokenize = (window as any).__tokenizeCard;
         if (!tokenize) {
             toast.warning('Payment system not ready. Please try again.');
@@ -50,8 +53,8 @@ export function CheckoutStep({ onBack, onSuccess }: Props) {
             <CheckoutProcessingOverlay isLoading={checkoutLoading} isDark={isDark} />
             <div className="flex flex-col lg:flex-row items-start gap-4 self-stretch">
                 <div className="flex flex-col justify-center items-start gap-4 flex-1">
-                    <ContactInfoForm values={contactInfo} onChange={setContactInfo} disabled={checkoutLoading} />
-                    <SquarePaymentForm locationId={selectedLocation} onNonceReady={() => { }} disabled={checkoutLoading} agreed={agreed} onAgreeChange={setAgreed} />
+                    <ContactInfoForm values={contactInfo} onChange={setContactInfo} disabled={checkoutLoading} errors={errors} />
+                    <SquarePaymentForm locationId={selectedLocation} onNonceReady={() => { }} disabled={checkoutLoading} agreed={agreed} onAgreeChange={setAgreed} errors={errors} />
                 </div>
                 <div className="flex flex-col items-start gap-4 flex-1 lg:max-w-[400px] self-stretch">
                     <CountdownTimer onExpire={() => {

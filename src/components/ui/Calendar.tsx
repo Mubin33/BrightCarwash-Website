@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Props {
@@ -33,6 +33,12 @@ export function Calendar({ value, onChange, isDark = false, availableDates = [] 
     const today = new Date();
     const [viewDate, setViewDate] = useState(value || today);
 
+    useEffect(() => {
+        if (value) {
+            setViewDate(value);
+        }
+    }, [value]);
+
     const year = viewDate.getFullYear();
     const month = viewDate.getMonth();
     const daysInMonth = getDaysInMonth(year, month);
@@ -55,7 +61,6 @@ export function Calendar({ value, onChange, isDark = false, availableDates = [] 
 
     return (
         <div className="flex flex-col items-center gap-3 self-stretch">
-            {/* Month Navigation */}
             <div className="flex items-center justify-between self-stretch">
                 <button type="button" onClick={handlePrevMonth} className="p-1 hover:bg-gray-100 dark:hover:bg-white/10 rounded transition-colors">
                     <ChevronLeft size={20} className={isDark ? 'text-white' : 'text-[#1D1F2C]'} />
@@ -68,7 +73,6 @@ export function Calendar({ value, onChange, isDark = false, availableDates = [] 
                 </button>
             </div>
 
-            {/* Day Names */}
             <div className="grid grid-cols-7 w-full">
                 {DAY_NAMES.map((d) => (
                     <div key={d} className={`text-center font-inter text-xs font-medium py-2 ${isDark ? 'text-white/50' : 'text-[#777980]'}`}>
@@ -77,7 +81,6 @@ export function Calendar({ value, onChange, isDark = false, availableDates = [] 
                 ))}
             </div>
 
-            {/* Days */}
             <div className="grid grid-cols-7 gap-y-4 w-full">
                 {Array.from({ length: totalCells }).map((_, i) => {
                     const day = i - firstDay + 1;
@@ -87,22 +90,23 @@ export function Calendar({ value, onChange, isDark = false, availableDates = [] 
                     const past = valid && isPast(day);
                     const dateStr = valid ? `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}` : '';
                     const hasSlots = availableDates.includes(dateStr);
+                    const noSlotsAvailable = valid && !past && !hasSlots && availableDates.length > 0;
 
                     return (
                         <button
                             key={i}
                             type="button"
-                            disabled={!valid || past}
-                            onClick={() => valid && !past && handleSelect(day)}
+                            disabled={!valid || past || noSlotsAvailable}
+                            onClick={() => valid && !past && !noSlotsAvailable && handleSelect(day)}
                             className={`relative w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-xs sm:text-sm font-inter rounded-full transition-colors mx-auto ${selected
-                                    ? 'bg-[#B23730] text-white'
-                                    : todayCell
-                                        ? 'border-2 border-[#B23730] text-[#B23730]'
-                                        : past || !valid
-                                            ? `${isDark ? 'text-white/20' : 'text-[#D2D2D5]'} cursor-not-allowed`
-                                            : isDark
-                                                ? 'text-white hover:bg-white/10'
-                                                : 'text-[#1D1F2C] hover:bg-[#F8FAFB]'
+                                ? 'bg-[#B23730] text-white'
+                                : todayCell
+                                    ? 'border-2 border-[#B23730] text-[#B23730]'
+                                    : past || !valid || noSlotsAvailable
+                                        ? `${isDark ? 'text-white/20' : 'text-[#D2D2D5]'} cursor-not-allowed`
+                                        : isDark
+                                            ? 'text-white hover:bg-white/10'
+                                            : 'text-[#1D1F2C] hover:bg-[#F8FAFB]'
                                 }`}
                         >
                             {valid ? day : ''}

@@ -9,6 +9,7 @@ interface Props {
     disabled?: boolean;
     agreed: boolean;
     onAgreeChange: (value: boolean) => void;
+    errors?: { agreed?: string };
 }
 
 declare global {
@@ -23,7 +24,7 @@ const APP_ID = process.env.NEXT_PUBLIC_SQUARE_APP_ID || '';
 let squareScriptLoading = false;
 let squareScriptLoaded = false;
 
-export function SquarePaymentForm({ locationId, onNonceReady, disabled, agreed, onAgreeChange }: Props) {
+export function SquarePaymentForm({ locationId, onNonceReady, disabled, agreed, onAgreeChange, errors = {} }: Props) {
     const [loaded, setLoaded] = useState(false);
     const [error, setError] = useState('');
     const cardRef = useRef<HTMLDivElement>(null);
@@ -189,6 +190,7 @@ export function SquarePaymentForm({ locationId, onNonceReady, disabled, agreed, 
                 </p>
 
                 <label className="flex items-center gap-2 self-stretch cursor-pointer">
+                    {errors?.agreed && <span className="text-[#FF4345] font-inter text-xs mt-1">{errors.agreed}</span>}
                     <input
                         type="checkbox"
                         checked={agreed}

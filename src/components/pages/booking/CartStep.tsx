@@ -31,30 +31,17 @@ export function CartStep({ onProceed }: Props) {
         );
     }
 
+    const total = selectedServices.reduce((sum, s) => sum + s.price, 0);
+
     return (
-        <div className="flex flex-col items-center gap-12 w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 w-full">
+        <div className="flex flex-col items-center gap-8 w-full">
+            <div className="flex flex-col gap-3 w-full">
                 {selectedServices.map((service) => (
                     <div
                         key={service.id}
-                        className={`flex p-4 sm:p-6 flex-col items-start gap-6 sm:gap-8 rounded-lg border min-w-0 ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#DFE1E7] bg-[#F8FAFB]'
-                            }`}
+                        className={`flex items-center gap-4 p-4 rounded-lg border ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#DFE1E7] bg-[#F8FAFB]'}`}
                     >
-                        <div className="flex justify-between items-center self-stretch">
-                            <h3 className={`font-bebas text-2xl sm:text-[32px] leading-[100%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
-                                {service.name}
-                            </h3>
-                            <button
-                                type="button"
-                                onClick={() => removeService(service.id)}
-                                className="flex p-1.5 items-start gap-4 rounded-md border border-[#DFE1E7] bg-[#FFE6E6] shrink-0"
-                            >
-                                <Icon name="delete" width={14} height={14} color="#FF4345" className="sm:w-4 sm:h-4" />
-                            </button>
-                        </div>
-
-                        {/* Service Image */}
-                        <div className="w-full h-48 sm:h-56 rounded-lg overflow-hidden relative">
+                        <div className="w-20 h-16 rounded-lg overflow-hidden relative shrink-0">
                             <Image
                                 src={service.image || '/images/service.png'}
                                 alt={service.name}
@@ -63,45 +50,40 @@ export function CartStep({ onProceed }: Props) {
                                 unoptimized={service.image?.startsWith('http')}
                             />
                         </div>
-
-                        <div
-                            className={`flex py-2 sm:py-3 px-3 sm:px-4 flex-col items-start gap-4 self-stretch rounded-md border ${isDark ? 'border-white/20 bg-white/[0.08]' : 'border-[#DFE1E7] bg-white'
-                                }`}
-                        >
-                            <p className={`font-inter text-xs sm:text-sm leading-[150%] ${isDark ? 'text-white/60' : 'text-[#777980]'}`}>
-                                {service.description}
-                            </p>
-                        </div>
-                        <div className="flex justify-between items-center self-stretch flex-wrap gap-2">
-                            <span className="text-[#B23730] font-inter text-2xl sm:text-[32px] font-bold">${service.price}</span>
-                            <div className="flex py-1 sm:py-1.5 px-2 items-center gap-2 rounded-lg border border-[#DFE1E7]">
-                                <Icon name="clock" width={12} height={12} color="#0098E8" className="sm:w-3.5 sm:h-3.5" />
-                                <span className={`font-inter text-xs sm:text-sm ${isDark ? 'text-white/60' : 'text-[#777980]'}`}>
+                        <div className="flex-1 min-w-0">
+                            <h4 className={`font-inter text-sm font-semibold truncate ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
+                                {service.name}
+                            </h4>
+                            <div className="flex items-center gap-3 mt-1">
+                                <span className="text-[#B23730] font-inter text-sm font-bold">${service.price}</span>
+                                <span className={`font-inter text-xs ${isDark ? 'text-white/50' : 'text-[#777980]'}`}>
                                     {service.duration}
                                 </span>
                             </div>
                         </div>
+                        <button
+                            type="button"
+                            onClick={() => removeService(service.id)}
+                            className="p-2 rounded-lg hover:bg-[#FFE6E6] transition-colors shrink-0"
+                        >
+                            <Icon name="delete" width={16} height={16} color="#FF4345" />
+                        </button>
                     </div>
                 ))}
             </div>
 
-            <div className="flex flex-col sm:flex-row w-full max-w-[648px] justify-center items-center gap-3 sm:gap-4">
+            <div className={`flex justify-between items-center self-stretch p-4 rounded-lg border ${isDark ? 'border-white/20 bg-white/[0.08]' : 'border-[#DFE1E7] bg-white'}`}>
+                <span className={`font-inter text-base font-medium ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>Total</span>
+                <span className="text-[#B23730] font-inter text-lg font-bold">${total}</span>
+            </div>
+
+            <div className="flex flex-col sm:flex-row w-full justify-center items-center gap-3 sm:gap-4">
                 <Link href="/services" className="w-full sm:flex-1">
-                    <Button
-                        variant="outline"
-                        className={`w-full py-[14px] px-5 justify-center rounded border font-inter text-sm ${isDark
-                            ? 'border-white/20 bg-white/[0.08] text-white hover:bg-white/[0.16] hover:text-white'
-                            : 'border-[#DFE1E7] bg-[#F8FAFB] text-[#1B1B1B] hover:bg-[#F1F1F1]'
-                            }`}
-                    >
+                    <Button variant="outline" className={`w-full py-[14px] px-5 justify-center rounded border font-inter text-sm ${isDark ? 'border-white/20 bg-white/[0.08] text-white hover:bg-white/[0.16] hover:text-white' : 'border-[#DFE1E7] bg-[#F8FAFB] text-[#1B1B1B] hover:bg-[#F1F1F1]'}`}>
                         Add another service
                     </Button>
                 </Link>
-                <Button
-                    onClick={onProceed}
-                    disabled={selectedServices.length === 0}
-                    className="w-full sm:flex-1 py-[14px] px-5 justify-center rounded bg-[#0098E8] text-white font-inter text-sm disabled:opacity-50"
-                >
+                <Button onClick={onProceed} disabled={selectedServices.length === 0} className="w-full sm:flex-1 py-[14px] px-5 justify-center rounded bg-[#0098E8] text-white font-inter text-sm disabled:opacity-50">
                     Proceed to Date & Time
                 </Button>
             </div>

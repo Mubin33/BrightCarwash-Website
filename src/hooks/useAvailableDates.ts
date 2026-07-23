@@ -7,9 +7,9 @@ import { format, addDays, startOfDay, endOfDay } from 'date-fns';
 const BATCH_SIZE = 29;
 const BATCH_DELAY = 500;
 const TOTAL_DAYS = 30;
-const CACHE_MAX_AGE_MS = 5 * 60 * 1000; // 5 minutes
+const CACHE_MAX_AGE_MS = 5 * 60 * 1000;
+const POLL_INTERVAL_MS = 30000;
 
-// ---------- cache helpers ----------
 function getCacheKey(locationId: string, serviceVariationIds: string[]): string {
     return `avail_${locationId}_${serviceVariationIds.join(',')}`;
 }
@@ -45,7 +45,6 @@ function writeCache<T>(key: string, data: T) {
     } catch { }
 }
 
-// ---------- hook ----------
 export function useAvailableDates(
     locationId: string,
     serviceVariationIds: string[]
@@ -54,30 +53,27 @@ export function useAvailableDates(
     const [allSlots, setAllSlots] = useState<AvailabilitySlot[]>([]);
     const [loading, setLoading] = useState(false);
     const cancelledRef = useRef(false);
+    const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const fetchIdRef = useRef(0);
 
-    useEffect(() => {
+    const fetchAllSlots = useCallback(() => {
         if (!locationId || serviceVariationIds.length === 0) return;
 
+        const currentFetchId = ++fetchIdRef.current;
         const dateCacheKey = getCacheKey(locationId, serviceVariationIds);
         const slotCacheKey = getSlotsCacheKey(locationId, serviceVariationIds);
 
         const cachedDates = readCache<string[]>(dateCacheKey) || [];
         const cachedSlots = readCache<AvailabilitySlot[]>(slotCacheKey) || [];
 
-        if (cachedDates.length > 0) setAvailableDates(cachedDates);
-        if (cachedSlots.length > 0) {
-            const uniqueCachedSlots = cachedSlots.filter(
-                (slot, index, self) => self.findIndex((s) => s.startAt === slot.startAt) === index
-            );
-            setAllSlots(uniqueCachedSlots);
+        if (cachedDates.length > 0 && currentFetchId === fetchIdRef.current) setAvailableDates(cachedDates);
+        if (cachedSlots.length > 0 && currentFetchId === fetchIdRef.current) setAllSlots(cachedSlots);
+
+        if (cachedDates.length === 0 && cachedSlots.length === 0 && currentFetchId === fetchIdRef.current) {
+            setLoading(true);
         }
 
         cancelledRef.current = false;
-
-        // Only show loading when there's absolutely no cached data
-        if (cachedDates.length === 0 && cachedSlots.length === 0) {
-            setLoading(true);
-        }
 
         const now = new Date();
         const allDates: string[] = [];
@@ -90,16 +86,12 @@ export function useAvailableDates(
             batches.push(allDates.slice(i, i + BATCH_SIZE));
         }
 
-        // Always start accumulation fresh — never seed with cached slots.
-        // Cached data is shown immediately for display (setAllSlots above),
-        // but the fetch pipeline builds its own clean set so stale slots
-        // (e.g. old 12AM–4AM entries) are never mixed into the new results.
         const accumulatedDates: Set<string> = new Set();
         const accumulatedSlots: AvailabilitySlot[] = [];
 
         const fetchBatch = async (index: number) => {
-            if (cancelledRef.current || index >= batches.length) {
-                setLoading(false);
+            if (cancelledRef.current || index >= batches.length || currentFetchId !== fetchIdRef.current) {
+                if (currentFetchId === fetchIdRef.current) setLoading(false);
                 return;
             }
 
@@ -123,34 +115,52 @@ export function useAvailableDates(
                     }
                 });
 
-                const sortedDates = [...accumulatedDates].sort();
-                setAvailableDates(sortedDates);
-                setAllSlots(accumulatedSlots);
-                writeCache(dateCacheKey, sortedDates);
-                writeCache(slotCacheKey, accumulatedSlots);
+                if (currentFetchId === fetchIdRef.current) {
+                    const sortedDates = [...accumulatedDates].sort();
+                    setAvailableDates(sortedDates);
+                    setAllSlots(accumulatedSlots);
+                    writeCache(dateCacheKey, sortedDates);
+                    writeCache(slotCacheKey, accumulatedSlots);
+                }
             } catch { }
 
-            // Stop loading after the first batch (user can see today's slots immediately)
-            if (index === 0) {
+            if (index === 0 && currentFetchId === fetchIdRef.current) {
                 setLoading(false);
             }
 
-            if (!cancelledRef.current && index + 1 < batches.length) {
+            if (!cancelledRef.current && index + 1 < batches.length && currentFetchId === fetchIdRef.current) {
                 setTimeout(() => fetchBatch(index + 1), BATCH_DELAY);
             }
         };
 
         fetchBatch(0);
+    }, [locationId, serviceVariationIds.join(',')]);
+
+    useEffect(() => {
+        fetchAllSlots();
+
+        pollIntervalRef.current = setInterval(() => {
+            fetchAllSlots();
+        }, POLL_INTERVAL_MS);
+
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'visible') {
+                fetchAllSlots();
+            }
+        };
+        document.addEventListener('visibilitychange', handleVisibilityChange);
 
         return () => {
             cancelledRef.current = true;
+            if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
         };
-    }, [locationId, serviceVariationIds.join(',')]);
+    }, [fetchAllSlots]);
 
     const getSlotsForDate = useCallback(
         (dateStr: string) => allSlots.filter((s) => s.startAt.startsWith(dateStr)),
         [allSlots]
     );
 
-    return { availableDates, allSlots, getSlotsForDate, loading };
+    return { availableDates, allSlots, getSlotsForDate, loading, refetch: fetchAllSlots };
 }

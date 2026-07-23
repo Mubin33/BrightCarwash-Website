@@ -9,14 +9,16 @@ interface Props {
     checkoutLoading: boolean;
     isDark: boolean;
     onCheckout: () => void;
-    release: (locationId: string, startAt: string) => void;
+    release: (locationId: string, startAt: string) => Promise<void>;
     locationId: string;
     startAt: string;
 }
 
 export function CheckoutButtons({ onBack, isFormValid, lockToken, checkoutLoading, isDark, onCheckout, release, locationId, startAt }: Props) {
-    const handleBack = () => {
-        if (lockToken) release(locationId, startAt);
+    const handleBack = async () => {
+        if (lockToken) {
+            await release(locationId, startAt);
+        }
         onBack();
     };
 

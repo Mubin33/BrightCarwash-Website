@@ -26,8 +26,8 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
     const [selectedTime, setSelectedTime] = useState<string | null>(timeParam || null);
     const [dateLoading, setDateLoading] = useState(false);
     const { lock, loading: lockLoading } = useBookingLock();
-    const { selectedServices, selectedLocation } = useBooking();
-    const { availableDates, getSlotsForDate, loading: cacheLoading } = useAvailableDates(selectedLocation, selectedServices.map(s => s.variationId));
+    const { selectedServices, selectedLocation, lockToken } = useBooking();
+    const { availableDates, getSlotsForDate, loading: cacheLoading, refetch } = useAvailableDates(selectedLocation, selectedServices.map(s => s.variationId));
     const { theme } = useTheme();
     const isDark = theme === 'dark';
     const dateStr = date ? format(date, 'yyyy-MM-dd') : '';
@@ -35,14 +35,25 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
     const timeSlots = useSlotGrouping(slots);
     const nextAvailable = useNextAvailableDate(date, availableDates);
 
+    useEffect(() => {
+        if (!lockToken && timeParam) {
+            const params = new URLSearchParams(searchParams.toString());
+            params.delete('time');
+            params.delete('startAt');
+            params.delete('teamMemberId');
+            router.push(`/booking?${params.toString()}`, { scroll: false });
+            setSelectedTime(null);
+        }
+    }, []);
+
     useEffect(() => { if (slots.length > 0 || !date) setDateLoading(false); }, [slots, date]);
     useEffect(() => { if (!dateParam && !date) setDate(new Date()); }, [dateParam]);
     useEffect(() => { if (!dateParam && date) updateParams({ date: format(date, 'yyyy-MM-dd') }); }, []);
 
     const updateParams = (updates: Record<string, string>) => { const params = new URLSearchParams(searchParams.toString()); Object.entries(updates).forEach(([k, v]) => params.set(k, v)); router.push(`/booking?${params.toString()}`, { scroll: false }); };
     const handleDateChange = (newDate: Date) => { setDate(newDate); setSelectedTime(null); setDateLoading(true); updateParams({ date: format(newDate, 'yyyy-MM-dd') }); };
-    const handleProceed = async () => { if (!date || !selectedTime || !selectedLocation) return; const startAt = searchParams.get('startAt') || ''; const result = await lock(selectedLocation, startAt, selectedServices.map(s => s.variationId)); if (result) onProceed(); else { setSelectedTime(null); toast.error('This time slot is no longer available.'); } };
-    const goToNextAvailable = () => { if (nextAvailable) { setDate(new Date(nextAvailable + 'T00:00:00')); setSelectedTime(null); updateParams({ date: nextAvailable }); } };
+    const handleProceed = async () => { if (!date || !selectedTime || !selectedLocation) return; const startAt = searchParams.get('startAt') || ''; const result = await lock(selectedLocation, startAt, selectedServices.map(s => s.variationId)); if (result && !result.alreadyLocked) { onProceed(); } else { setSelectedTime(null); refetch(); toast.error('This time slot is no longer available. Please select another time.'); } };
+    const goToNextAvailable = () => { if (nextAvailable) { const nextDate = new Date(nextAvailable + 'T00:00:00'); setDate(nextDate); setSelectedTime(null); updateParams({ date: nextAvailable }); } };
 
     if (!selectedLocation || selectedServices.length === 0) return <div className="flex items-center justify-center py-12"><div className="w-6 h-6 border-2 border-[#0098E8] border-t-transparent rounded-full animate-spin" /></div>;
 
