@@ -86,7 +86,7 @@ export function NewsSectionWrapper() {
                 </div>
             </div>
             <Link href="/news">
-                <Button className="flex py-[14px] px-5 justify-center items-center gap-2 rounded-lg bg-[#0098E8] text-white font-inter text-base sm:text-lg hover:bg-[#0088D8]">
+                <Button className="flex py-[14px] px-5 justify-center items-center gap-2 rounded-lg bg-[#FEC300] text-black font-inter text-base sm:text-lg hover:bg-[#0088D8]">
                     Read All
                     <MoveUpRight size={16} />
                 </Button>

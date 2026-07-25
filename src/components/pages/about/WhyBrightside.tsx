@@ -25,7 +25,7 @@ export function WhyBrightside() {
                 subheading=""
             />
 
-            <div className="flex flex-col lg:flex-row items-start gap-6 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]">
+            <div className="flex flex-col lg:flex-row items-start gap-6 w-full max-w-[1280px] xl:max-w-[1320px] ">
                 {/* Left Cards Column */}
                 <div className="flex flex-col items-start gap-6 w-full h-full lg:w-[312px]">
                     <FeatureCard {...whyBrightsideCards[0]} />

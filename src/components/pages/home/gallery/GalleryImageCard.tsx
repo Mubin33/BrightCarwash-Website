@@ -1,30 +1,17 @@
 import Image from 'next/image';
 import type { GalleryImage } from '@/data/gallery';
 
-function getCardHeight(seed: string, idx: number, colIndex: number) {
-    let hash = 0;
-    for (let i = 0; i < seed.length; i++) {
-        hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
-    }
-    const jitter = hash % 40;
-    const phase = (idx + colIndex) % 2;
-    const base = phase === 0 ? 340 : 220;
-    return base + jitter;
-}
-
 interface Props {
     image: GalleryImage;
-    seed?: string;
     idx: number;
-    colIndex?: number;
+    height?: number;
 }
 
-export function GalleryImageCard({ image, seed, idx, colIndex = 0 }: Props) {
-    const height = getCardHeight(seed ?? image.id, idx, colIndex);
+export function GalleryImageCard({ image, height }: Props) {
     return (
         <div
-            className="relative w-full overflow-hidden rounded-xl group"
-            style={{ height: `${height}px` }}
+            className="relative w-full h-full overflow-hidden rounded-xl group"
+            style={height ? { height: `${height}px` } : undefined}
         >
             <Image
                 src={image.src}

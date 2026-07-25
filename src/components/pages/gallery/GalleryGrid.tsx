@@ -38,7 +38,7 @@ export function GalleryGrid() {
 
     if (loading) {
         return (
-            <section className={`flex py-20 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40 2xl:px-[300px] flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-[#F5F5F5]'}`}>
+            <section className={`flex py-20 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40  flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-[#F5F5F5]'}`}>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-[1320px]">
                     {[...Array(6)].map((_, i) => (
                         <div key={i} className="h-[400px] sm:h-[500px] bg-gray-100 animate-pulse rounded-lg" />
@@ -52,12 +52,12 @@ export function GalleryGrid() {
 
     return (
         <section
-            className={`flex py-20 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40 2xl:px-[300px] flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-[#F5F5F5]'}`}
+            className={`flex py-20 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40 flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-[#F5F5F5]'}`}
         >
             <div className="flex justify-center w-full">
                 <div className={`grid gap-4 w-full ${nonEmptyColumns.length === 1 ? 'grid-cols-1 max-w-[424px]' :
-                        nonEmptyColumns.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-[872px]' :
-                            'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-[1320px]'
+                    nonEmptyColumns.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-[872px]' :
+                        'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-[1320px]'
                     }`}>
                     {nonEmptyColumns.map((col, colIndex) => (
                         <div key={colIndex} className="flex flex-col gap-4">
@@ -65,9 +65,8 @@ export function GalleryGrid() {
                                 <GalleryImageCard
                                     key={`${item.image.id}-${item.idx}`}
                                     image={item.image}
-                                    seed={`${item.image.id}-${item.idx}`}
                                     idx={item.idx}
-                                    colIndex={item.colIndex}
+                                    height={item.height}
                                 />
                             ))}
                         </div>
