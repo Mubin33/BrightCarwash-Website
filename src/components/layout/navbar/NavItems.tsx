@@ -25,8 +25,8 @@ export function NavItems() {
                         key={link.href}
                         href={link.href}
                         className={`font-inter text-base font-normal leading-[100%] transition-colors whitespace-nowrap ${isActive
-                            ? 'underline decoration-[#B23730] decoration-[11%] underline-offset-[25%] text-[#1D1F2C] dark:text-white'
-                            : 'no-underline text-[#777980] dark:text-white/80'
+                            ? 'underline decoration-[#B23730] decoration-[11%] underline-offset-[25%] text-white dark:text-white'
+                            : 'no-underline text-[#E9E9EA]'
                             }`}
                     >
                         {link.label}

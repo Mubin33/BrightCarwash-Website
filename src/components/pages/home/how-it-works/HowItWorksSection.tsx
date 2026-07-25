@@ -11,7 +11,7 @@ export function HowItWorksSectionWrapper() {
 
     return (
         <section
-            className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch border ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-white'}`}
+            className={`flex py-10 lg:py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch border ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-white'}`}
         >
             <SectionHeader
                 badgeIcon="car"
@@ -21,11 +21,11 @@ export function HowItWorksSectionWrapper() {
                         <span className={isDark ? 'text-white' : 'text-[#1D1F2C]'}>
                             {howItWorksData.heading.prefix}{' '}
                         </span>
-                        <span className="text-[#B23730]">{howItWorksData.heading.accent}</span>{' '}<br />
+                        <span className="">{howItWorksData.heading.accent}</span>{' '}<br />
                         <span className={isDark ? 'text-white' : 'text-[#1D1F2C]'}>
                             {howItWorksData.heading.suffix}{' '}
                         </span>
-                        <span className={isDark ? 'text-white/40' : 'text-[#1D1F2C]/40'}>
+                        <span className={isDark ? 'text-[#0098E8]' : 'text-[#0098E8]'}>
                             {howItWorksData.heading.muted}
                         </span>{' '}
                         <span className={isDark ? 'text-white' : 'text-[#1D1F2C]'}>
@@ -36,7 +36,7 @@ export function HowItWorksSectionWrapper() {
                 subheading={howItWorksData.subheading}
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-[1280px] xl:max-w-[1320px]">
                 {howItWorksData.steps.map((step) => (
                     <StepCard key={step.number} step={step} />
                 ))}

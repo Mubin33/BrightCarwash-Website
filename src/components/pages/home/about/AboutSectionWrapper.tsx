@@ -1,63 +1,115 @@
-import Image from 'next/image';
-import { SectionHeader } from '@/components/ui/SectionHeader';
-import { aboutData } from '@/data/about';
-import { FounderCard } from './FounderCard';
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import Image from "next/image";
+import CarIcon from "../../../../../public/icons/custom/CarIcon";
+import StarIcon from "../../../../../public/icons/custom/StarIcon";
+import { Icon } from "@/components/ui/Icon";
+import BatchIcon from "../../../../../public/icons/custom/BatchIcon";
 
 export function AboutSectionWrapper() {
-    return (
-        <section className="flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch bg-[#092544]">
-            <div className="flex flex-col lg:flex-row items-start gap-6 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]">
-                {/* Left Content */}
-                <div className="flex w-full lg:w-[648px] flex-col items-start gap-6 self-stretch">
-                    <SectionHeader
-                        badgeIcon="car"
-                        badgeText={aboutData.badgeText}
-                        align="start"
-                        heading={
-                            <>
-                                <span className="text-[#FFFFFF]">{aboutData.heading.prefix} </span>
-                                <span className="text-[#B23730]">{aboutData.heading.accent}</span>{' '}
-                                <span className="text-[#FFFFFF]">{aboutData.heading.prefix2} </span>
-                                <span className="text-[#A5A5AB]">{aboutData.heading.suffix}</span>
-                            </>
-                        }
-                        subheading=""
-                    />
+  const data = [
+    {
+      icon: <CarIcon />,
+      title: "12,000+",
+      subtitle: "Cars Washed",
+    },
+    {
+      icon: <StarIcon />,
+      title: "4.9",
+      subtitle: "Average rating",
+    },
+    {
+      icon: <CarIcon />,
+      title: "95%",
+      subtitle: "Customer satisfaction",
+    },
+    {
+      icon: <StarIcon />,
+      title: "500+",
+      subtitle: "Repeat customers",
+    },
+  ];
+  return (
+    <section className="bg-[#092544] py-10 xl:py-20 px-4">
+      <div className="max-w-350 mx-auto flex flex-col xl:flex-row gap-6 xl:gap-12">
+        {/* Fixed: Added wrapper div with proper sizing */}
+        <div className="w-full xl:w-125 shrink-0 relative h-164 p-4">
+          <Image
+            src="/images/CEO-image.png"
+            alt="Brightside car wash service"
+            fill
+            className="object-cover rounded-xl"
+          />
 
-                    {aboutData.paragraphs.map((text, i) => (
-                        <p
-                            key={i}
-                            className="text-white/80 font-inter text-sm sm:text-base font-normal leading-[160%] self-stretch"
-                        >
-                            {text}
-                        </p>
-                    ))}
-
-                    <div className="flex p-4 flex-col justify-end items-center gap-2.5 flex-1 self-stretch rounded-lg relative overflow-hidden min-h-[250px] sm:min-h-[300px]">
-                        <Image
-                            src="/images/about-us-service-image.jpg"
-                            alt="Brightside car wash service"
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 1024px) 100vw, 648px"
-                        />
-                    </div>
-                </div>
-
-                {/* Right Content */}
-                <div className="flex w-full lg:flex-1 flex-col justify-between! items-start gap-6 self-stretch">
-                    <div className="flex h-60 sm:h-80 lg:h-[548px] p-4 flex-col justify-end items-start gap-2.5 self-stretch rounded-lg relative overflow-hidden">
-                        <Image
-                            src="/images/CEO-image.png"
-                            alt="Jonathan Roldan - Founder"
-                            fill
-                            className="object-fit"
-                            sizes="(max-width: 1024px) 100vw, 50vw"
-                        />
-                    </div>
-                    <FounderCard />
-                </div>
+          <div className="w-[94%] absolute bottom-4 left-4 right-0 flex flex-col items-center justify-center bg-[#092544] border-b-3  border-l-3 border-t border-r border-[#FEC300] rounded-lg p-6">
+            <div className="flex justify-between items-center gap-4 w-full">
+              <div>
+                <h1 className="text-2xl lg:text-[2rem] uppercase font-bebas text-white tracking-[0.64px]">
+                  Jonathan Roldan
+                </h1>
+                <p className="text-xs lg:text-sm text-[#FEC300]">
+                  Founder & Naperville Resident
+                </p>
+              </div>
+              <p className="text-xs lg:text-sm px-3 py-1.5 text-white font-semibold bg-[#B23730] uppercase rounded-full leading-[112%] tracking-[2px]">
+                US. ARMY veteran
+              </p>
             </div>
-        </section>
-    );
+          </div>
+          <div className="h-14 w-14 flex items-center justify-center absolute -top-6 -left-6 bg-[#FEC300] rounded-full border-4 border-[#092544]">
+            <BatchIcon />
+          </div>
+        </div>
+        <div className="lg:w-full xl:w-full">
+          <div>
+            <div className="w-fit flex flex-wrap py-1.5 px-3 mb-4 items-center gap-2 sm:gap-3 rounded-lg border text-white border-[#DCA3A0] bg-[#B23730]">
+              <Icon
+                name="car"
+                width={20}
+                height={20}
+                color="#fff"
+                className="sm:w-4 sm:h-4"
+              />
+              <span className="w-fit font-inter text-[10px] xs:text-xs sm:text-sm font-normal leading-[112%] uppercase">
+                THE FOUNDER'S STORY
+              </span>
+            </div>
+            <h1 className="font-bebas text-3xl sm:text-4xl lg:text-5xl font-normal leading-[116%] text-white mb-4">
+              BUILT ON INTEGRITY, <br className="hidden lg:block" /> DISCIPLINE
+              & SERVICE.
+            </h1>
+            <p className="text-white/80 font-inter text-sm sm:text-lg dark:text-white/80 font-normal leading-[160%] self-stretch">
+              At Brightside Car Wash, we're more than just a car wash we're a
+              locally owned, community-focused business committed to providing
+              exceptional full-service car care in Naperville. As a
+              veteran-owned and family-operated company, we take pride in
+              delivering outstanding service, treating every customer with
+              respect, and creating a welcoming experience for families,
+              commuters, and businesses alike. <br /> <br /> With two convenient
+              Naperville locations, Brightside offers professional full-service
+              washes, unlimited membership options, detailing services, and
+              fleet solutions designed to keep vehicles looking their best. Our
+              goal is simple: provide quality service, build lasting
+              relationships, and become the car wash our community trusts most.
+            </p>
+          </div>
+          <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-2 xl:gap-3">
+            {data.map((item) => (
+              <div
+                key={item.title}
+                className="flex flex-col items-center gap-3 bg-[#252019] rounded-xl py-5 px-4"
+              >
+                {item.icon}
+                <h2 className="text-xl lg:text-2xl  xl:text-[2rem] font-bebas text-white">
+                  {item.title}
+                </h2>
+                <p className="text-[10px] xl:text-sm text-white/80 text-center">
+                  {item.subtitle}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }

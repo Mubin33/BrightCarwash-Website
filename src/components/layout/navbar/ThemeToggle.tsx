@@ -21,9 +21,9 @@ export function ThemeToggle() {
                     }`}
             >
                 {isDark ? (
-                    <Icon name="moon" width={16} height={16} />
+                    <Icon name="moon" width={16} height={16} color="#fec300" />
                 ) : (
-                    <Icon name="sun" width={16} height={16} />
+                    <Icon name="sun" width={16} height={16} color="#0098e8" />
                 )}
             </div>
         </button>
