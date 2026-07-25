@@ -69,7 +69,7 @@ export function QuoteForm() {
   return (
     <div className="flex w-full p-4 sm:p-5 flex-col items-center gap-6 rounded-xl bg-white">
       <div className="flex flex-col items-start gap-6 self-stretch">
-        <div className="flex flex-col justify-center items-center gap-3 self-stretch rounded-lg bg-[#092544] p-4 sm:p-4">
+        <div className="flex flex-col justify-center items-center gap-3 self-stretch rounded-lg bg-[#b23730] p-4 sm:p-4">
           <span className="font-bebas text-white font-bebas-neue text-2xl sm:text-[32px] lg:text-[24px] xl:text-[32px] leading-[100%] self-stretch text-start">
             Get Your Free Quote
           </span>
