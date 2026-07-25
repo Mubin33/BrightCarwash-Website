@@ -37,7 +37,7 @@ export function ServiceCard({ service, selected, onSelect, onConfirmBooking, onA
     return (
         <div
             onClick={() => onSelect?.(service.id)}
-            className={`flex w-full p-4 sm:p-6 flex-col items-start gap-6 sm:gap-8 rounded-lg border transition-all cursor-pointer ${selected
+            className={`flex w-full p-4 sm:p-6 flex-col items-start gap-6 sm:gap-8 rounded-lg border transition-all ${selected
                 ? 'border-[#0098E8] bg-[#092544]'
                 : isDark
                     ? 'border-white/20 bg-white/[0.06] hover:bg-white/[0.12] hover:border-[#0098E8]/30'

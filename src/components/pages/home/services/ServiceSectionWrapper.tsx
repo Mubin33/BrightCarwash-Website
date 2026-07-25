@@ -68,7 +68,7 @@ export function ServicesSectionWrapper() {
                 </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px] cursor-pointer">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px] ">
                 {services.slice(0, 3).map((service) => (
                     <ServiceCard
                         key={service.id}

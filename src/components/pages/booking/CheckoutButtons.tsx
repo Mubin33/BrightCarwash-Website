@@ -20,10 +20,12 @@ export function CheckoutButtons({ onBack, isFormValid, lockToken, checkoutLoadin
     const searchParams = useSearchParams();
 
     const handleBack = () => {
+        // Release the lock in the background – don't block navigation
         if (lockToken) {
             release(locationId, startAt);
         }
 
+        // Remove time-related query params so the datetime step starts fresh
         const params = new URLSearchParams(searchParams.toString());
         params.delete('time');
         params.delete('startAt');
