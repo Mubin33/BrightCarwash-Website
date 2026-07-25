@@ -25,7 +25,6 @@ const getFullImageUrl = (imagePath: string) => {
 
     const baseUrl = process.env.NEXT_PUBLIC_IMAGEURL || 'https://bridge-decent-operational-power.trycloudflare.com';
 
-    // Remove /public/ from the path
     let cleanPath = imagePath;
     if (cleanPath.startsWith('/public/')) {
         cleanPath = cleanPath.replace('/public/', '/');
@@ -54,10 +53,10 @@ export function HeroSectionWrapper() {
     }
 
     const alignment = alignmentClasses[data.text_alignment] || alignmentClasses.left;
+    const isCentered = data.text_alignment === 'center';
 
     const showForm = data.status === 'form';
     const showBanner = data.status === 'banner';
-    const isHidden = data.status === 'hidden';
     const showRightColumn = showForm || showBanner;
 
     const backgroundImageUrl = data.backgroundImageUrl ? getFullImageUrl(data.backgroundImageUrl) : '';
@@ -102,7 +101,7 @@ export function HeroSectionWrapper() {
                 <div className={`flex flex-col ${showRightColumn ? 'lg:flex-row' : ''} items-center gap-8 md:gap-10 lg:gap-12 xl:gap-14 w-full ${showRightColumn ? '' : alignment}`}>
                     <div className={`flex flex-col ${alignment} gap-6 sm:gap-8 lg:gap-12 ${showRightColumn ? 'flex-1' : 'w-full'}`}>
                         <div className={`flex flex-col ${alignment} gap-3 sm:gap-4`}>
-                            <div className="flex flex-wrap py-[6px] px-3 items-center gap-2 sm:gap-3 rounded-lg border border-[#DCA3A0] bg-[#F7EBEA]">
+                            <div className={`flex flex-wrap py-[6px] px-3 items-center gap-2 sm:gap-3 rounded-lg border border-[#DCA3A0] bg-[#F7EBEA] ${isCentered ? 'justify-center' : ''}`}>
                                 <Icon name="car" width={14} height={14} color="#B23730" className="sm:w-4 sm:h-4" />
                                 <span className="text-[#B23730] font-inter text-[10px] xs:text-xs sm:text-sm font-normal leading-[112%]">
                                     {data.eyebrow_text}
@@ -124,7 +123,8 @@ export function HeroSectionWrapper() {
                             </p>
                         </div>
 
-                        <div className={`flex flex-col sm:flex-row flex-wrap items-center gap-3 sm:gap-4 ${showRightColumn ? 'w-full sm:w-auto' : 'w-full'}`}>
+                        {/* Buttons */}
+                        <div className={`flex flex-col sm:flex-row flex-wrap items-center gap-3 sm:gap-4 ${showRightColumn ? 'w-full sm:w-auto' : 'w-full'} ${isCentered ? 'justify-center' : ''}`}>
                             <Link href="#services" onClick={(e) => { e.preventDefault(); document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }); }} className="w-full sm:w-auto">
                                 <Button className="w-full sm:w-auto flex py-[14px] px-5 justify-center items-center gap-2 rounded bg-[#0098E8] text-white font-inter text-sm font-medium hover:bg-[#0088D8]">
                                     Book my wash
@@ -138,7 +138,10 @@ export function HeroSectionWrapper() {
                             </Link>
                         </div>
 
-                        <HeroStats starRating={data.star_rating} carsWashed={data.cars_washed} avgTime={data.avg_time} />
+                        {/* Stats */}
+                        <div className={isCentered ? 'flex justify-center' : ''}>
+                            <HeroStats starRating={data.star_rating} carsWashed={data.cars_washed} avgTime={data.avg_time} />
+                        </div>
                     </div>
 
                     {showRightColumn && (
