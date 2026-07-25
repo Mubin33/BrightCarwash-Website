@@ -54,7 +54,7 @@ export function ServicesSectionWrapper() {
   return (
     <section
       id="services"
-      className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center  self-stretch ${isDark ? "bg-[#1A1A1A]" : "bg-[#ECEFF3]"}`}
+      className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center  self-stretch ${isDark ? "bg-[#1a1712]" : "bg-[#fff8ee]"}`}
     >
       <div className="pb-12">
         <ServicesHeader />

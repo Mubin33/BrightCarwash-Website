@@ -5,6 +5,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
 import { useTheme } from "@/contexts/ThemeContext";
 import type { ServiceData } from "@/data/services";
+import CheckIcon from "../../../../../public/icons/custom/CheckIcon";
 
 interface Props {
   service: ServiceData;
@@ -46,7 +47,7 @@ export function ServiceCard({
       onClick={() => onSelect?.(service.id)}
       className={`flex w-full p-4 sm:p-6 flex-col items-start gap-6 sm:gap-8 rounded-lg border transition-all cursor-pointer ${
         selected
-          ? "border-[#0098E8] bg-[#092544]"
+          ? "border-3 border-[#FEC300] bg-[#092544]"
           : isDark
             ? "border-white/20 bg-white/6 hover:bg-white/12 hover:border-[#0098E8]/30"
             : "border-[#DFE1E7] bg-white hover:bg-[#F0F8FF] hover:border-[#0098E8]/30"
@@ -80,7 +81,7 @@ export function ServiceCard({
 
       {/* Price & Duration */}
       <div className="font-inter flex justify-between items-center self-stretch flex-wrap gap-2">
-        <span className="font-inter text-[#B23730] text-[42px] font-bold leading-[100%]">
+        <span className="font-inter text-[#FEC300] text-[42px] font-bold leading-[100%]">
           ${service.price}
         </span>
         <div
@@ -134,8 +135,9 @@ export function ServiceCard({
           <>
             <Button
               onClick={handleConfirmBooking}
-              className="w-full py-3.5 px-5 justify-center items-center gap-2 rounded-lg bg-[#0098E8] text-white font-inter text-sm"
+              className="w-full py-3.5 px-5 justify-center items-center gap-2 rounded-lg bg-[#FEC300] text-black font-inter text-sm uppercase"
             >
+              <CheckIcon />
               Confirm booking - pay deposit
             </Button>
             <Button

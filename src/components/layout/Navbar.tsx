@@ -24,7 +24,7 @@ export function Navbar() {
     return (
         <>
             <header className="whitespace-nowrap sticky top-0 flex w-full px-4 md:px-6 lg:px-10 py-3 md:py-4 items-center gap-3 md:gap-4 z-50 border-b border-[#DFE1E7]  bg-[#092544] dark:backdrop-blur-md">
-                <div className="flex mx-auto w-full max-w-[1280px] xl:max-w-[1320px]  justify-between items-center gap-4">
+                <div className="flex mx-auto w-full max-w-[1280px] xl:max-w-[1320px] justify-between items-center gap-4">
                     {/* Logo */}
                     <div className="flex-1">
                         <Link href="/" onClick={handleLogoClick} className="shrink-0 inline-block">
