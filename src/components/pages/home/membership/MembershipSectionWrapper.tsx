@@ -6,7 +6,7 @@ import { membershipData } from '@/data/membership';
 export function MembershipSectionWrapper() {
     return (
         <section className="flex py-16 sm:py-20 px-4 md:px-6 lg:px-10 justify-center items-center gap-6 self-stretch bg-[#092544]">
-            <div className="flex flex-col lg:flex-row items-center gap-6 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]">
+            <div className="flex flex-col lg:flex-row items-center gap-6 w-full max-w-[1280px] xl:max-w-[1320px]">
                 {/* Left Image */}
                 <div className="hidden lg:flex w-[300px] xl:w-[397px] self-stretch rounded-lg relative overflow-hidden shrink-0">
                     <Image

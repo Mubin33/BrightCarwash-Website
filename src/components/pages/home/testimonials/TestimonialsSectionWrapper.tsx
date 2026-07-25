@@ -13,7 +13,7 @@ export function TestimonialsSectionWrapper() {
     if (loading) {
         return (
             <section className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch border ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-white'}`}>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-[1280px] xl:max-w-[1320px]">
                     {[...Array(6)].map((_, i) => (
                         <div key={i} className="h-[300px] sm:h-[500px] bg-gray-100 animate-pulse rounded-lg" />
                     ))}
@@ -39,7 +39,7 @@ export function TestimonialsSectionWrapper() {
                 subheading="Our clients rave about the exceptional service and attention to detail they receive at every visit. Join them today!"
             />
 
-            <div className="columns-1 md:columns-2 lg:columns-3 gap-1 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px] [&_>_*]:mb-0">
+            <div className="columns-1 md:columns-2 lg:columns-3 gap-1 w-full max-w-[1280px] xl:max-w-[1320px] [&_>_*]:mb-0">
                 {testimonials.map((t, i) => {
                     const isLast = i === testimonials.length - 1;
                     const cardData = {

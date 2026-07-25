@@ -41,7 +41,7 @@ export function HeroSectionWrapper() {
                     : `linear-gradient(0deg, rgba(0, 0, 0, 0.60) 0%, rgba(0, 0, 0, 0.60) 100%), url('/images/hero-image.png') lightgray 50% / cover no-repeat`,
             }}
         >
-            <div className={`flex flex-col ${showRightColumn ? 'lg:flex-row' : ''} items-center gap-8 md:gap-10 lg:gap-12 xl:gap-14 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px] ${showRightColumn ? '' : alignment}`}>
+            <div className={`flex flex-col ${showRightColumn ? 'lg:flex-row' : ''} items-center gap-8 md:gap-10 lg:gap-12 xl:gap-14 w-full max-w-[1280px] xl:max-w-[1320px]  ${showRightColumn ? '' : alignment}`}>
                 {/* Left Content */}
                 <div className={`flex flex-col ${alignment} gap-6 sm:gap-8 lg:gap-12 ${showRightColumn ? 'flex-1' : 'w-full'}`}>
                     <div className={`flex flex-col ${alignment} gap-3 sm:gap-4`}>
@@ -54,7 +54,7 @@ export function HeroSectionWrapper() {
                         </div>
 
                         {/* Headline */}
-                        <h1 className="font-bebas w-full text-5xl sm:text-6xl md:text-7xl lg:text-[56px] xl:text-[64px] 2xl:text-[90px] font-normal leading-[110%] sm:leading-[120%] tracking-[1px] sm:tracking-[2px]">
+                        <h1 className="font-bebas w-full text-5xl sm:text-6xl md:text-7xl lg:text-[56px] xl:text-[64px]  font-normal leading-[110%] sm:leading-[120%] tracking-[1px] sm:tracking-[2px]">
                             <span className="text-white">{data.main_headline.split('\n')[0] || ''}</span>
                             {data.main_headline.includes('\n') && (
                                 <>

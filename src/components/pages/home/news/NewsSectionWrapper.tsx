@@ -40,7 +40,7 @@ export function NewsSectionWrapper() {
                 subheading="Car care tips, local news, exclusive offers, and behind-the-scenes stories from Naperville's favorite car wash."
             />
 
-            <div className="flex flex-col lg:flex-row items-stretch gap-6 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]">
+            <div className="flex flex-col lg:flex-row items-stretch gap-6 w-full max-w-[1280px] xl:max-w-[1320px]! ">
                 {/* Featured Article */}
                 <div
                     onClick={() => router.push(`/news/${featuredArticle.slug}`)}

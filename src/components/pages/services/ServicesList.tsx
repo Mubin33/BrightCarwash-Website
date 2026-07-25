@@ -37,7 +37,7 @@ export function ServicesList() {
     if (loading) {
         return (
             <section className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-[#F5F5F5]'}`}>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-[1280px] xl:max-w-[1320px] ">
                     {[...Array(6)].map((_, i) => (
                         <div key={i} className="h-[400px] sm:h-[500px] bg-gray-100 animate-pulse rounded-lg" />
                     ))}
@@ -54,7 +54,7 @@ export function ServicesList() {
                 <LocationFilter />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-[1280px] xl:max-w-[1320px] ">
                 {services.map((service) => (
                     <ServiceCard
                         key={service.id}

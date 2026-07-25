@@ -36,7 +36,7 @@ export function Footer() {
             />
             <div className="absolute inset-0 bg-[#092544]/80 z-[1]" />
 
-            <div className="relative z-10 flex flex-col lg:flex-row justify-between gap-8 sm:gap-10 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px] pb-12">
+            <div className="relative z-10 flex flex-col lg:flex-row justify-between gap-8 sm:gap-10 w-full max-w-[1280px] xl:max-w-[1320px]  pb-12">
                 {/* Brand */}
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left lg:max-w-[40%]">
                     <Link href="/#hero" onClick={handleLogoClick} className="w-32 h-[150px] sm:w-32 sm:h-[150px] relative shrink-0 cursor-pointer">
@@ -116,7 +116,7 @@ export function Footer() {
             </div>
 
             {/* Copyright */}
-            <div className="relative z-10 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]  pb-2 pt-6 border-t border-white/10">
+            <div className="relative z-10 w-full max-w-[1280px] xl:max-w-[1320px]  pb-2 pt-6 border-t border-white/10">
                 <p className="text-white/40 font-inter text-xs sm:text-sm text-start">
                     {footerData.copyright}
                 </p>
