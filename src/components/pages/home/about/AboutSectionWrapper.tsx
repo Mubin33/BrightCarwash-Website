@@ -3,6 +3,7 @@ import Image from "next/image";
 import CarIcon from "../../../../../public/icons/custom/CarIcon";
 import StarIcon from "../../../../../public/icons/custom/StarIcon";
 import { Icon } from "@/components/ui/Icon";
+import BatchIcon from "../../../../../public/icons/custom/BatchIcon";
 
 export function AboutSectionWrapper() {
   const data = [
@@ -29,14 +30,35 @@ export function AboutSectionWrapper() {
   ];
   return (
     <section className="bg-[#092544] py-10 xl:py-20 px-4">
-      <div className="max-w-350 mx-auto flex flex-col lg:flex-row gap-6 xl:gap-12">
-        <Image
-          src="/images/CEO-image.png"
-          alt="Brightside car wash service"
-          height={656}
-          width={500}
-          className="w-full xl:w-125 object-cover rounded-xl"
-        />
+      <div className="max-w-350 mx-auto flex flex-col xl:flex-row gap-6 xl:gap-12">
+        {/* Fixed: Added wrapper div with proper sizing */}
+        <div className="w-full xl:w-125 shrink-0 relative h-164 p-4">
+          <Image
+            src="/images/CEO-image.png"
+            alt="Brightside car wash service"
+            fill
+            className="object-cover rounded-xl"
+          />
+
+          <div className="w-[94%] absolute bottom-4 left-4 right-0 flex flex-col items-center justify-center bg-[#092544] border-b-3  border-l-3 border-t border-r border-[#FEC300] rounded-lg p-6">
+            <div className="flex justify-between items-center gap-4 w-full">
+              <div>
+                <h1 className="text-2xl lg:text-[2rem] uppercase font-bebas text-white tracking-[0.64px]">
+                  Jonathan Roldan
+                </h1>
+                <p className="text-xs lg:text-sm text-[#FEC300]">
+                  Founder & Naperville Resident
+                </p>
+              </div>
+              <p className="text-xs lg:text-sm px-3 py-1.5 text-white font-semibold bg-[#B23730] uppercase rounded-full leading-[112%] tracking-[2px]">
+                US. ARMY veteran
+              </p>
+            </div>
+          </div>
+          <div className="h-14 w-14 flex items-center justify-center absolute -top-6 -left-6 bg-[#FEC300] rounded-full border-4 border-[#092544]">
+            <BatchIcon />
+          </div>
+        </div>
         <div className="lg:w-full xl:w-full">
           <div>
             <div className="w-fit flex flex-wrap py-1.5 px-3 mb-4 items-center gap-2 sm:gap-3 rounded-lg border text-white border-[#DCA3A0] bg-[#B23730]">
@@ -52,7 +74,8 @@ export function AboutSectionWrapper() {
               </span>
             </div>
             <h1 className="font-bebas text-3xl sm:text-4xl lg:text-5xl font-normal leading-[116%] text-white mb-4">
-              BUILT ON INTEGRITY, <br className="hidden lg:block" /> DISCIPLINE & SERVICE.
+              BUILT ON INTEGRITY, <br className="hidden lg:block" /> DISCIPLINE
+              & SERVICE.
             </h1>
             <p className="text-white/80 font-inter text-sm sm:text-lg dark:text-white/80 font-normal leading-[160%] self-stretch">
               At Brightside Car Wash, we're more than just a car wash we're a
@@ -79,7 +102,9 @@ export function AboutSectionWrapper() {
                 <h2 className="text-xl lg:text-2xl  xl:text-[2rem] font-bebas text-white">
                   {item.title}
                 </h2>
-                <p className="text-[10px] xl:text-sm text-white/80 text-center">{item.subtitle}</p>
+                <p className="text-[10px] xl:text-sm text-white/80 text-center">
+                  {item.subtitle}
+                </p>
               </div>
             ))}
           </div>
