@@ -37,7 +37,7 @@ export function ServicesSectionWrapper() {
   if (loading) {
     return (
       <section
-        className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch ${isDark ? "bg-[#1A1A1A]" : "bg-white"}`}
+        className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch ${isDark ? "bg-[#1A1A1A]" : "bg-[#fff8ee]"}`}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl xl:max-w-330">
           {[...Array(3)].map((_, i) => (

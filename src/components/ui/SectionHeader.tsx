@@ -23,17 +23,17 @@ export function SectionHeader({ badgeIcon, badgeText, heading, subheading, force
             <div
                 className={`flex py-[6px] px-3 items-center gap-3 rounded-lg border ${isDark
                     ? 'border-[#0098E8]/20 bg-[#0098E8]/[0.12]'
-                    : 'border-[#DCA3A0] bg-[#F7EBEA]'
+                    : 'border-[#DCA3A0] bg-[#B23730]'
                     }`}
             >
                 <Icon
                     name={badgeIcon}
                     width={16}
                     height={16}
-                    color={isDark ? '#0098E8' : '#B23730'}
+                    color={isDark ? '#FFF' : '#FFF'}
                 />
                 <span
-                    className={`font-inter text-sm font-normal leading-[112%] ${isDark ? 'text-[#0098E8]' : 'text-[#B23730]'
+                    className={`font-inter text-sm font-normal leading-[112%] ${isDark ? 'text-white' : 'text-white'
                         }`}
                 >
                     {badgeText}
