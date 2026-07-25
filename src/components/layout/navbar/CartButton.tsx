@@ -15,9 +15,9 @@ export function CartButton() {
     >
       <Icon name="cart" width={32} height={32} color="#fec300" />
       {count > 0 && (
-        <span className="flex py-[6px] px-[9px] items-center gap-2 absolute -right-[11px] -top-[11px] rounded-[99px] bg-[#B23730] text-white font-inter text-xs font-medium">
-          {count}
-        </span>
+        <div className="flex justify-center  p-2 h-8 w-8 items-center gap-2 absolute -right-3.5 -top-3.5 rounded-full bg-[#B23730] text-white font-inter text-xs lg:text-base font-medium">
+          <p>{count}</p>
+        </div>
       )}
     </Link>
   );
