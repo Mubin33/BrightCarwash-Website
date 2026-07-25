@@ -1,4 +1,3 @@
-
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -7,15 +6,18 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'bridge-decent-operational-power.trycloudflare.com',
+        hostname: 'tooth-availability-coupons-stays.trycloudflare.com',
+        pathname: '/**',
       },
       {
         protocol: 'https',
         hostname: 'items-images-sandbox.s3.us-west-2.amazonaws.com',
+        pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'items-images-sandbox.s3.us-west-2.amazonaws.com'
+        hostname: 'bridge-decent-operational-power.trycloudflare.com',
+        pathname: '/**',
       },
     ],
   },

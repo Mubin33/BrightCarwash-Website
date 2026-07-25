@@ -24,3 +24,17 @@ export interface LocationsResponse {
     message: string;
     data: ApiLocation[];
 }
+
+export interface LocationData {
+    name: string;
+    address: string;
+    phone: string;
+    mapImage: string;
+    mapEmbedUrl: string;
+    directionsUrl: string;
+}
+
+export interface HoursData {
+    days: string;
+    time: string;
+}

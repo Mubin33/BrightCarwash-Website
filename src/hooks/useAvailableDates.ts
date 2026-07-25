@@ -161,6 +161,18 @@ export function useAvailableDates(
         (dateStr: string) => allSlots.filter((s) => s.startAt.startsWith(dateStr)),
         [allSlots]
     );
+    const removeSlot = useCallback((startAt: string) => {
+        setAllSlots(prev => {
+            const filtered = prev.filter(s => s.startAt !== startAt);
+            // Also update availableDates if this date no longer has any slots
+            const dateStr = startAt.split('T')[0];
+            const hasRemainingSlots = filtered.some(s => s.startAt.startsWith(dateStr));
+            if (!hasRemainingSlots) {
+                setAvailableDates(prevDates => prevDates.filter(d => d !== dateStr));
+            }
+            return filtered;
+        });
+    }, []);
 
-    return { availableDates, allSlots, getSlotsForDate, loading, refetch: fetchAllSlots };
+    return { availableDates, allSlots, getSlotsForDate, loading, refetch: fetchAllSlots, removeSlot };
 }

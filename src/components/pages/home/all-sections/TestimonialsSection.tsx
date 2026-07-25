@@ -1,4 +1,4 @@
-import { TestimonialsSectionWrapper } from '../testimonials/TestimonialsSectionWrapper';
+import { TestimonialsSectionWrapper } from "../testimonials/TestimonialsSectionWrapper";
 
 export function TestimonialsSection() {
     return <TestimonialsSectionWrapper />;

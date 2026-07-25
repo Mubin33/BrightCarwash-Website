@@ -2,28 +2,27 @@
 import { Icon } from '@/components/ui/Icon';
 import { Button } from '@/components/ui/Button';
 import { useTheme } from '@/contexts/ThemeContext';
-interface LocationData {
-    name: string;
-    address: string;
-    phone: string;
-    mapImage: string;
-    mapEmbedUrl: string;
-    directionsUrl: string;
-}
+import { LocationData } from '@/types/locations';
+
 interface Props {
     location: LocationData;
 }
+
 export function LocationCard({ location }: Props) {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
+
     return (
         <div
-            className={`flex p-6 sm:p-6 flex-col justify-center items-start gap-4 sm:gap-6 flex-1 rounded-lg  ${isDark ? ' bg-white/[0.12]' : 'border-[#DFE1E7] bg-white'
+            className={`flex p-6 sm:p-6 flex-col justify-center items-start gap-4 sm:gap-6 flex-1 rounded-lg ${isDark ? 'bg-white/[0.12]' : 'border-[#DFE1E7] bg-white'
                 }`}
         >
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 self-stretch">
-                <h3 className={`font-bebas text-2xl sm:text-3xl lg:text-4xl font-normal leading-[121%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
+                <h3
+                    className={`font-bebas text-2xl sm:text-3xl lg:text-4xl font-normal leading-[121%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'
+                        }`}
+                >
                     {location.name}
                 </h3>
                 <a href={location.directionsUrl} target="_blank" rel="noopener noreferrer" className="sm:shrink-0">
@@ -33,6 +32,7 @@ export function LocationCard({ location }: Props) {
                     </Button>
                 </a>
             </div>
+
             {/* Map */}
             <div className="flex h-[180px] sm:h-[220px] lg:h-[250px] self-stretch rounded-lg border border-[#DFE1E7] relative overflow-hidden">
                 <iframe
@@ -45,6 +45,7 @@ export function LocationCard({ location }: Props) {
                     referrerPolicy="no-referrer-when-downgrade"
                 />
             </div>
+
             {/* Contact Info */}
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
                 <div className="flex items-start gap-2">

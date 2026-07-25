@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 
 interface Props {
@@ -15,10 +16,22 @@ interface Props {
 }
 
 export function CheckoutButtons({ onBack, isFormValid, lockToken, checkoutLoading, isDark, onCheckout, release, locationId, startAt }: Props) {
-    const handleBack = async () => {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+
+    const handleBack = () => {
+        // Release the lock in the background – don't block navigation
         if (lockToken) {
-            await release(locationId, startAt);
+            release(locationId, startAt);
         }
+
+        // Remove time-related query params so the datetime step starts fresh
+        const params = new URLSearchParams(searchParams.toString());
+        params.delete('time');
+        params.delete('startAt');
+        params.delete('teamMemberId');
+        router.push(`/booking?${params.toString()}`, { scroll: false });
+
         onBack();
     };
 

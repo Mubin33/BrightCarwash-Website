@@ -45,13 +45,13 @@ export function AboutSectionWrapper() {
                 </div>
 
                 {/* Right Content */}
-                <div className="flex w-full lg:flex-1 flex-col items-start gap-6 self-stretch">
+                <div className="flex w-full lg:flex-1 flex-col justify-between! items-start gap-6 self-stretch">
                     <div className="flex h-60 sm:h-80 lg:h-[548px] p-4 flex-col justify-end items-start gap-2.5 self-stretch rounded-lg relative overflow-hidden">
                         <Image
                             src="/images/CEO-image.png"
                             alt="Jonathan Roldan - Founder"
                             fill
-                            className="object-cover"
+                            className="object-fit"
                             sizes="(max-width: 1024px) 100vw, 50vw"
                         />
                     </div>

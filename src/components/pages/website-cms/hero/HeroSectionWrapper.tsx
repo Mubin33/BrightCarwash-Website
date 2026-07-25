@@ -2,9 +2,7 @@
 
 import { Icon } from '@/components/ui/Icon';
 import { Button } from '@/components/ui/Button';
-
 import { HeroBanner } from './HeroBanner';
-
 import { usePublicHero } from '@/hooks/usePublicHero';
 import Link from 'next/link';
 import { HeroStats } from './HeroStats';
@@ -25,6 +23,11 @@ export function HeroSectionWrapper() {
                 <div className="w-full max-w-[1280px] h-[400px] bg-gray-800 animate-pulse rounded-xl" />
             </section>
         );
+    }
+
+    // If no data is available, don't render anything
+    if (!data) {
+        return null;
     }
 
     const alignment = alignmentClasses[data.text_alignment] || alignmentClasses.left;
