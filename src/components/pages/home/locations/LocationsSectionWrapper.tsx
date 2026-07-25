@@ -10,10 +10,10 @@ export function LocationsSectionWrapper() {
     const isDark = theme === 'dark';
     return (
         <section
-            className={`flex py-10 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-[#F5F5F5]'}`}
+            className={`flex py-10 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1a1712]' : 'bg-[#fff8ee]'}`}
         >
             <LocationsHeader />
-            <div className="flex flex-col gap-6 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]">
+            <div className="flex flex-col gap-6 w-full max-w-7xl xl:max-w-330 2xl:max-w-[1600px]">
                 <div className="flex flex-col lg:flex-row w-full items-stretch gap-6">
                     {locations.map((loc) => (
                         <LocationCard key={loc.name} location={loc} />
