@@ -17,6 +17,8 @@ export function BookingPageWrapper() {
     const router = useRouter();
     const stepParam = searchParams.get('step') as Step | null;
     const [step, setStep] = useState<Step>(stepParam || 'cart');
+    const [bookingStartAt, setBookingStartAt] = useState(searchParams.get('startAt') || '');
+    const [bookingTime, setBookingTime] = useState(searchParams.get('time') || '');
     const { theme } = useTheme();
     const isDark = theme === 'dark';
 
@@ -33,6 +35,12 @@ export function BookingPageWrapper() {
         }
     }, [stepParam]);
 
+    const handleDateTimeProceed = (startAt: string, time: string) => {
+        setBookingStartAt(startAt);
+        setBookingTime(time);
+        updateStep('checkout');
+    };
+
     const visibleStep: 'cart' | 'datetime' | 'checkout' = step === 'confirmed' ? 'checkout' : step;
 
     return (
@@ -48,7 +56,7 @@ export function BookingPageWrapper() {
                         {step === 'cart' && <CartStep onProceed={() => updateStep('datetime')} />}
                         {step === 'datetime' && (
                             <DateTimeStep
-                                onProceed={() => updateStep('checkout')}
+                                onProceed={handleDateTimeProceed}
                                 onBack={() => updateStep('cart')}
                             />
                         )}
@@ -56,6 +64,8 @@ export function BookingPageWrapper() {
                             <CheckoutStep
                                 onBack={() => updateStep('datetime')}
                                 onSuccess={() => updateStep('confirmed')}
+                                bookingStartAt={bookingStartAt}
+                                bookingTime={bookingTime}
                             />
                         )}
                         {step === 'confirmed' && (

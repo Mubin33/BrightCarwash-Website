@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
@@ -15,7 +15,7 @@ import { useNextAvailableDate } from '@/hooks/useNextAvailableDate';
 import { TimeSlotList } from './TimeSlotList';
 import { useSlotGrouping } from "@/hooks/useSlotGrouping"
 
-interface Props { onProceed: () => void; onBack: () => void; }
+interface Props { onProceed: (startAt: string, time: string) => void; onBack: () => void; }
 
 export function DateTimeStep({ onProceed, onBack }: Props) {
     const searchParams = useSearchParams();
@@ -25,6 +25,8 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
     const [date, setDate] = useState<Date | undefined>(dateParam ? new Date(dateParam) : new Date());
     const [selectedTime, setSelectedTime] = useState<string | null>(timeParam || null);
     const [dateLoading, setDateLoading] = useState(false);
+    const startAtRef = useRef(searchParams.get('startAt') || '');
+    const timeRef = useRef(timeParam || '');
     const { lock, loading: lockLoading } = useBookingLock();
     const { selectedServices, selectedLocation } = useBooking();
     const { availableDates, getSlotsForDate, loading: cacheLoading, removeSlot } = useAvailableDates(selectedLocation, selectedServices.map(s => s.variationId));
@@ -35,15 +37,35 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
     const timeSlots = useSlotGrouping(slots);
     const nextAvailable = useNextAvailableDate(date, availableDates);
 
-    // removed the effect that cleared time/startAt – now handled by CheckoutButtons
-
     useEffect(() => { if (slots.length > 0 || !date) setDateLoading(false); }, [slots, date]);
     useEffect(() => { if (!dateParam && !date) setDate(new Date()); }, [dateParam]);
     useEffect(() => { if (!dateParam && date) updateParams({ date: format(date, 'yyyy-MM-dd') }); }, []);
 
     const updateParams = (updates: Record<string, string>) => { const params = new URLSearchParams(searchParams.toString()); Object.entries(updates).forEach(([k, v]) => params.set(k, v)); router.push(`/booking?${params.toString()}`, { scroll: false }); };
     const handleDateChange = (newDate: Date) => { setDate(newDate); setSelectedTime(null); setDateLoading(true); updateParams({ date: format(newDate, 'yyyy-MM-dd') }); };
-    const handleProceed = async () => { if (!date || !selectedTime || !selectedLocation) return; const startAt = searchParams.get('startAt') || ''; const result = await lock(selectedLocation, startAt, selectedServices.map(s => s.variationId)); if (result && !result.alreadyLocked) { onProceed(); } else { removeSlot(startAt); setSelectedTime(null); toast.error('This time slot is no longer available. Please select another time.'); } };
+
+    const handleTimeChange = (slot: { startAt: string; appointmentSegments: { teamMemberId: string }[] }) => {
+        const time = format(new Date(slot.startAt), 'hh:mm a');
+        const startAt = slot.startAt;
+        setSelectedTime(time);
+        startAtRef.current = startAt;
+        timeRef.current = time;
+        updateParams({ time, teamMemberId: slot.appointmentSegments[0]?.teamMemberId || '', startAt });
+    };
+
+    const handleProceed = async () => {
+        if (!date || !timeRef.current || !selectedLocation) return;
+        const startAt = startAtRef.current;
+        const result = await lock(selectedLocation, startAt, selectedServices.map(s => s.variationId));
+        if (result && !result.alreadyLocked) {
+            onProceed(startAt, timeRef.current);
+        } else {
+            removeSlot(startAt);
+            setSelectedTime(null);
+            toast.error('This time slot is no longer available. Please select another time.');
+        }
+    };
+
     const goToNextAvailable = () => { if (nextAvailable) { const nextDate = new Date(nextAvailable + 'T00:00:00'); setDate(nextDate); setSelectedTime(null); updateParams({ date: nextAvailable }); } };
 
     if (!selectedLocation || selectedServices.length === 0) return <div className="flex items-center justify-center py-12"><div className="w-6 h-6 border-2 border-[#0098E8] border-t-transparent rounded-full animate-spin" /></div>;
@@ -57,7 +79,7 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
                 {nextAvailable && <Button variant="outline" onClick={goToNextAvailable} className={`w-full mt-2 py-2 px-3 justify-center rounded-lg border font-inter text-xs sm:text-sm ${isDark ? 'text-white hover:bg-white/10' : 'text-[#1D1F2C]'}`}>Check Next Available Date</Button>}
             </div>
             <div className="flex flex-col justify-between items-start flex-1 self-stretch gap-6">
-                <TimeSlotList slots={slots} timeSlots={timeSlots} cacheLoading={cacheLoading} dateLoading={dateLoading} date={date} selectedTime={selectedTime} isDark={isDark} onTimeChange={(slot) => { setSelectedTime(format(new Date(slot.startAt), 'hh:mm a')); updateParams({ time: format(new Date(slot.startAt), 'hh:mm a'), teamMemberId: slot.appointmentSegments[0]?.teamMemberId || '', startAt: slot.startAt }); }} />
+                <TimeSlotList slots={slots} timeSlots={timeSlots} cacheLoading={cacheLoading} dateLoading={dateLoading} date={date} selectedTime={selectedTime} isDark={isDark} onTimeChange={handleTimeChange} />
                 <div className="flex w-full gap-4">
                     <Button variant="outline" onClick={onBack} className={`flex-1 py-[14px] px-5 justify-center rounded-xl border font-inter text-sm ${isDark ? 'border-white/20 hover:bg-white/10! dark:hover:bg-white/20! text-white' : 'border-[#DFE1E7] hover:bg-white/10! dark:hover:bg-white/20! text-[#1B1B1B]'}`}>Back</Button>
                     <Button onClick={handleProceed} disabled={!date || !selectedTime || lockLoading} isLoading={lockLoading} loadingText="Verifying slot..." className={`flex-1 py-[14px] px-5 justify-center items-center gap-2 rounded-xl text-white font-inter text-sm disabled:opacity-50 ${isDark ? 'border-white/20 hover:bg-white/10 text-white' : 'border-[#DFE1E7] text-black'}`}>Continue to checkout</Button>

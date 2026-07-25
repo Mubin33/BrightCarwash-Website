@@ -16,9 +16,9 @@ import { useCheckoutLock } from '@/hooks/useCheckoutLock';
 import { useCheckoutValidation } from '@/hooks/useCheckoutValidation';
 import { toast } from 'react-toastify';
 
-interface Props { onBack: () => void; onSuccess: () => void; }
+interface Props { onBack: () => void; onSuccess: () => void; bookingStartAt: string; bookingTime: string; }
 
-export function CheckoutStep({ onBack, onSuccess }: Props) {
+export function CheckoutStep({ onBack, onSuccess, bookingStartAt, bookingTime }: Props) {
     const [agreed, setAgreed] = useState(false);
     const [contactInfo, setContactInfo] = useState({ firstName: '', lastName: '', phone: '', email: '', note: '' });
     const searchParams = useSearchParams();
@@ -29,7 +29,7 @@ export function CheckoutStep({ onBack, onSuccess }: Props) {
     const { lock, release } = useBookingLock();
     const { isFormValid, errors } = useCheckoutValidation(contactInfo, agreed);
     const teamMemberId = searchParams.get('teamMemberId') || '';
-    const startAt = searchParams.get('startAt') || '';
+    const startAt = bookingStartAt || searchParams.get('startAt') || '';
     useCheckoutLock({ startAt, selectedServices, lockToken, locationId: selectedLocation, lock, release });
 
     const handleCheckout = async () => {
@@ -62,7 +62,7 @@ export function CheckoutStep({ onBack, onSuccess }: Props) {
                         setLockToken(null);
                         localStorage.removeItem('bookingLockToken');
                     }} />
-                    <AppointmentSummary />
+                    <AppointmentSummary overrideStartAt={startAt} overrideTime={bookingTime} />
                     <CheckoutButtons onBack={onBack} isFormValid={isFormValid} lockToken={lockToken} checkoutLoading={checkoutLoading} isDark={isDark} onCheckout={handleCheckout} release={release} locationId={selectedLocation} startAt={startAt} />
                 </div>
             </div>
