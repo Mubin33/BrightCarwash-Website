@@ -160,7 +160,7 @@ export function HeroSectionWrapper() {
                 }}
                 className="w-full sm:w-auto"
               >
-                <Button className="w-full sm:w-auto flex py-3.5 px-5 justify-center items-center gap-2 rounded bg-[#FEC300] text-black font-inter text-sm lg:text-base uppercase font-medium hover:bg-[#ECA300]">
+                <Button className="w-full sm:w-auto flex py-3.5 px-5 justify-center items-center gap-2 rounded bg-[#FEC300] text-gray-800 font-inter text-sm lg:text-base uppercase font-medium hover:bg-[#ECA300]">
                   Book my wash
                   <Icon name="book" width={20} height={20} color="black" />
                 </Button>
