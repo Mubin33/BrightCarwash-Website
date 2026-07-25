@@ -71,7 +71,7 @@ export function NewsSectionWrapper() {
                             {featuredArticle.title}
                         </h3>
                         <p
-                            className={`self-stretch font-inter text-sm sm:text-base font-normal leading-[160%] tracking-[0.16px] ${isDark ? 'text-white/80' : 'text-[#4A4C56]'}`}
+                            className={`self-stretch font-inter text-sm sm:text-base font-normal leading-[160%] tracking-[0.16px] line-clamp-2 ${isDark ? 'text-white/80' : 'text-[#4A4C56]'}`}
                         >
                             {featuredArticle.excerpt}
                         </p>
@@ -79,7 +79,7 @@ export function NewsSectionWrapper() {
                 </div>
 
                 {/* Side Articles (Right) */}
-                <div className="flex flex-col justify-between items-start flex-1 self-stretch gap-4 whitespace-nowrap">
+                <div className="flex flex-col justify-between items-start flex-1 self-stretch gap-4 min-w-0">
                     {sideArticles.map((article) => (
                         <SideArticleCard key={article.id} article={article} />
                     ))}

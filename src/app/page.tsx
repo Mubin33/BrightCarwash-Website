@@ -23,7 +23,6 @@ export default function HomePage() {
       <TestimonialsSection />
       <NewsSection />
       <GallerySection />
-
     </main>
   );
 }

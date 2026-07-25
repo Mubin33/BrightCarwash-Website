@@ -8,7 +8,7 @@ function getCardHeight(seed: string, idx: number, colIndex: number) {
     }
     const jitter = hash % 40;
     const phase = (idx + colIndex) % 2;
-    const base = phase === 0 ? 340 : 220; // tall vs short alternation
+    const base = phase === 0 ? 340 : 220;
     return base + jitter;
 }
 

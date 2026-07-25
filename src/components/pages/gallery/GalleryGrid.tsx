@@ -4,14 +4,37 @@ import { useGallery } from '@/hooks/useGallery';
 import { useTheme } from '@/contexts/ThemeContext';
 import { GalleryImageCard } from '../home/gallery/GalleryImageCard';
 
+function getCardHeight(seed: string, idx: number, colIndex: number) {
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+        hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
+    }
+    const jitter = hash % 40;
+    const phase = (idx + colIndex) % 2;
+    const base = phase === 0 ? 340 : 220;
+    return base + jitter;
+}
+
 export function GalleryGrid() {
     const { theme } = useTheme();
     const { images, loading } = useGallery();
     const isDark = theme === 'dark';
 
-    const columns = Array.from({ length: 3 }, (_, colIndex) =>
-        images.filter((_, i) => i % 3 === colIndex)
-    ).filter((col) => col.length > 0);
+    // Distribute images to balance column heights
+    const columns = Array.from({ length: 3 }, () => [] as Array<{ image: typeof images[0]; idx: number; colIndex: number; height: number }>);
+    const columnHeights = [0, 0, 0];
+
+    images.forEach((img, idx) => {
+        const colIndex = idx % 3;
+        const height = getCardHeight(img.id, idx, colIndex);
+
+        // Find the shortest column
+        const shortestCol = columnHeights.indexOf(Math.min(...columnHeights));
+        columns[shortestCol].push({ image: img, idx, colIndex: shortestCol, height });
+        columnHeights[shortestCol] += height + 16; // 16px gap
+    });
+
+    const nonEmptyColumns = columns.filter((col) => col.length > 0);
 
     if (loading) {
         return (
@@ -32,19 +55,19 @@ export function GalleryGrid() {
             className={`flex py-20 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40 2xl:px-[300px] flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-[#F5F5F5]'}`}
         >
             <div className="flex justify-center w-full">
-                <div className={`grid gap-4 w-full ${columns.length === 1 ? 'grid-cols-1 max-w-[424px]' :
-                        columns.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-[872px]' :
+                <div className={`grid gap-4 w-full ${nonEmptyColumns.length === 1 ? 'grid-cols-1 max-w-[424px]' :
+                        nonEmptyColumns.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-[872px]' :
                             'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-[1320px]'
                     }`}>
-                    {columns.map((col, colIndex) => (
+                    {nonEmptyColumns.map((col, colIndex) => (
                         <div key={colIndex} className="flex flex-col gap-4">
-                            {col.map((img, idx) => (
+                            {col.map((item) => (
                                 <GalleryImageCard
-                                    key={`${img.id}-${idx}`}
-                                    image={img}
-                                    seed={`${img.id}-${idx}`}
-                                    idx={idx}
-                                    colIndex={colIndex}
+                                    key={`${item.image.id}-${item.idx}`}
+                                    image={item.image}
+                                    seed={`${item.image.id}-${item.idx}`}
+                                    idx={item.idx}
+                                    colIndex={item.colIndex}
                                 />
                             ))}
                         </div>
