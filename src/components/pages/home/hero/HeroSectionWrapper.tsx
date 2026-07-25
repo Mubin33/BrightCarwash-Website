@@ -168,7 +168,7 @@ export function HeroSectionWrapper() {
               <Link href="/services" className="w-full sm:w-auto">
                 <Button
                   variant="outline"
-                  className="w-full sm:w-auto flex py-3.5 px-5 justify-center items-center gap-2 rounded border border-white/30 text-white font-inter text-sm font-medium hover:bg-white/10"
+                  className="w-full sm:w-auto flex py-3.5 px-5 justify-center items-center gap-2 rounded border border-white/30 text-white font-inter text-sm font-medium hover:bg-white/10 uppercase"
                 >
                   See our services
                 </Button>

@@ -2,12 +2,14 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import Image from "next/image";
 import CarIcon from "../../../../../public/icons/custom/CarIcon";
 import StarIcon from "../../../../../public/icons/custom/StarIcon";
+import { Icon } from "@/components/ui/Icon";
 
 export function AboutSectionWrapper() {
   const data = [
     {
       icon: <CarIcon />,
       title: "12,000+",
+      subtitle: "Cars Washed",
     },
     {
       icon: <StarIcon />,
@@ -18,7 +20,7 @@ export function AboutSectionWrapper() {
       icon: <CarIcon />,
       title: "95%",
       subtitle: "Customer satisfaction",
-       },
+    },
     {
       icon: <StarIcon />,
       title: "500+",
@@ -26,19 +28,31 @@ export function AboutSectionWrapper() {
     },
   ];
   return (
-    <section className="bg-[#092544] py-20">
-      <div className="max-w-350 mx-auto flex gap-12">
+    <section className="bg-[#092544] py-10 xl:py-20 px-4">
+      <div className="max-w-350 mx-auto flex flex-col lg:flex-row gap-6 xl:gap-12">
         <Image
           src="/images/CEO-image.png"
           alt="Brightside car wash service"
           height={656}
           width={500}
-          className="w-125 object-cover rounded-xl"
+          className="w-full xl:w-125 object-cover rounded-xl"
         />
-        <div>
+        <div className="lg:w-full xl:w-full">
           <div>
+            <div className="w-fit flex flex-wrap py-1.5 px-3 mb-4 items-center gap-2 sm:gap-3 rounded-lg border text-white border-[#DCA3A0] bg-[#B23730]">
+              <Icon
+                name="car"
+                width={20}
+                height={20}
+                color="#fff"
+                className="sm:w-4 sm:h-4"
+              />
+              <span className="w-fit font-inter text-[10px] xs:text-xs sm:text-sm font-normal leading-[112%] uppercase">
+                THE FOUNDER'S STORY
+              </span>
+            </div>
             <h1 className="font-bebas text-3xl sm:text-4xl lg:text-5xl font-normal leading-[116%] text-white mb-4">
-              BUILT ON INTEGRITY, <br /> DISCIPLINE & SERVICE.
+              BUILT ON INTEGRITY, <br className="hidden lg:block" /> DISCIPLINE & SERVICE.
             </h1>
             <p className="text-white/80 font-inter text-sm sm:text-lg dark:text-white/80 font-normal leading-[160%] self-stretch">
               At Brightside Car Wash, we're more than just a car wash we're a
@@ -55,17 +69,17 @@ export function AboutSectionWrapper() {
               relationships, and become the car wash our community trusts most.
             </p>
           </div>
-          <div className="mt-8 grid grid-cols-4 gap-3">
+          <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-2 xl:gap-3">
             {data.map((item) => (
               <div
                 key={item.title}
                 className="flex flex-col items-center gap-3 bg-[#252019] rounded-xl py-5 px-4"
               >
                 {item.icon}
-                <h2 className="text-[2rem] font-bebas text-white">
+                <h2 className="text-xl lg:text-2xl  xl:text-[2rem] font-bebas text-white">
                   {item.title}
                 </h2>
-                <p className="text-sm text-white/80">{item.title}</p>
+                <p className="text-[10px] xl:text-sm text-white/80 text-center">{item.subtitle}</p>
               </div>
             ))}
           </div>
@@ -74,58 +88,3 @@ export function AboutSectionWrapper() {
     </section>
   );
 }
-
-//  <section className="flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch bg-[#092544]">
-//             <div className="flex flex-col lg:flex-row items-start gap-6 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]">
-//                 {/* Left Content */}
-//                 <div className="flex w-full lg:w-162 flex-col items-start gap-6 self-stretch">
-//                     <SectionHeader
-//                         badgeIcon="car"
-//                         badgeText={aboutData.badgeText}
-//                         align="start"
-//                         heading={
-//                             <>
-//                                 <span className="text-[#FFFFFF]">{aboutData.heading.prefix} </span>
-//                                 <span className="text-[#B23730]">{aboutData.heading.accent}</span>{' '}
-//                                 <span className="text-[#FFFFFF]">{aboutData.heading.prefix2} </span>
-//                                 <span className="text-[#A5A5AB]">{aboutData.heading.suffix}</span>
-//                             </>
-//                         }
-//                         subheading=""
-//                     />
-
-//                     {aboutData.paragraphs.map((text, i) => (
-//                         <p
-//                             key={i}
-//                             className="text-white/80 font-inter text-sm sm:text-base font-normal leading-[160%] self-stretch"
-//                         >
-//                             {text}
-//                         </p>
-//                     ))}
-
-//                     <div className="flex p-4 flex-col justify-end items-center gap-2.5 flex-1 self-stretch rounded-lg relative overflow-hidden min-h-62.5 sm:min-h-75">
-//                         <Image
-//                             src="/images/about-us-service-image.jpg"
-//                             alt="Brightside car wash service"
-//                             fill
-//                             className="object-cover"
-//                             sizes="(max-width: 1024px) 100vw, 648px"
-//                         />
-//                     </div>
-//                 </div>
-
-//                 {/* Right Content */}
-//                 <div className="flex w-full lg:flex-1 flex-col justify-between! items-start gap-6 self-stretch">
-//                     <div className="flex h-60 sm:h-80 lg:h-137 p-4 flex-col justify-end items-start gap-2.5 self-stretch rounded-lg relative overflow-hidden">
-//                         <Image
-//                             src="/images/CEO-image.png"
-//                             alt="Jonathan Roldan - Founder"
-//                             fill
-//                             className="object-fit"
-//                             sizes="(max-width: 1024px) 100vw, 50vw"
-//                         />
-//                     </div>
-//                     <FounderCard />
-//                 </div>
-//             </div>
-//         </section>
