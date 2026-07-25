@@ -9,6 +9,7 @@ import { Footer } from '@/components/layout/Footer';
 import { Navbar } from '@/components/layout/Navbar';
 import { ConditionalFaq } from '@/components/layout/ConditionalFaq';
 import { TrustedBy } from '@/components/pages/home/TrustedBy/TrustedBy';
+import { ConditionalTrustedBy } from '@/components/layout/ConditionalTrustedBy';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const bebasNeue = Bebas_Neue({
@@ -48,7 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Navbar />
             {children}
             <ConditionalFaq />
-            <TrustedBy />
+            <ConditionalTrustedBy />
             <Footer />
           </BookingProvider>
           <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />

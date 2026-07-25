@@ -73,7 +73,7 @@ export function HeroSectionWrapper() {
   return (
     <section
       id="hero"
-      className="relative flex pt-10 pb-10 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-2.5 self-stretch overflow-hidden min-h-125"
+      className="relative flex pt-50  px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-2.5 self-stretch overflow-hidden min-h-185"
     >
       {/* Background Image – always visible */}
       <div className="absolute inset-0 z-0">
@@ -101,7 +101,7 @@ export function HeroSectionWrapper() {
             style={{ backgroundImage: "url('/images/hero-image.png')" }}
           />
         )}
-        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute inset-0 bg-black/30" />
       </div>
 
       {/* Content */}
