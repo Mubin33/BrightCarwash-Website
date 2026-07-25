@@ -35,8 +35,6 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
     const timeSlots = useSlotGrouping(slots);
     const nextAvailable = useNextAvailableDate(date, availableDates);
 
-    // removed the effect that cleared time/startAt – now handled by CheckoutButtons
-
     useEffect(() => { if (slots.length > 0 || !date) setDateLoading(false); }, [slots, date]);
     useEffect(() => { if (!dateParam && !date) setDate(new Date()); }, [dateParam]);
     useEffect(() => { if (!dateParam && date) updateParams({ date: format(date, 'yyyy-MM-dd') }); }, []);

@@ -46,7 +46,6 @@ export function PrivacyPolicyContent() {
                 <div className="flex flex-col items-center gap-4 text-center">
                     <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-[#F7EBEA]">
                         <ContrastIcon width={28} height={28} color="#B23730" />
-
                     </div>
                     <h1 className="text-[#1D1F2C] font-bebas text-4xl sm:text-5xl lg:text-6xl font-normal leading-[110%] tracking-[1px]">
                         Privacy <span className="text-[#0098E8]">Policy</span>

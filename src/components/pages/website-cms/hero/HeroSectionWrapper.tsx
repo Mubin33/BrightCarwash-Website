@@ -24,8 +24,6 @@ export function HeroSectionWrapper() {
             </section>
         );
     }
-
-    // If no data is available, don't render anything
     if (!data) {
         return null;
     }
