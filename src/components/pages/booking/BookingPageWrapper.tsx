@@ -9,6 +9,9 @@ import { CartStep } from './CartStep';
 import { DateTimeStep } from './DateTimeStep';
 import { CheckoutStep } from './CheckoutStep';
 import { BookingSuccess } from './BookingSuccess';
+import { useBooking } from '@/contexts/BookingContext';
+import { useCheckoutLock } from '@/hooks/useCheckoutLock';
+import { useBookingLock } from '@/hooks/useBookingLock';
 
 type Step = 'cart' | 'datetime' | 'checkout' | 'confirmed';
 
@@ -21,7 +24,15 @@ export function BookingPageWrapper() {
     const [bookingTime, setBookingTime] = useState(searchParams.get('time') || '');
     const { theme } = useTheme();
     const isDark = theme === 'dark';
-
+    // Inside BookingPageWrapper, add:
+    const { lockToken, selectedLocation } = useBooking();
+    const { release } = useBookingLock();
+    const startAt = searchParams.get('startAt') || bookingStartAt;
+    useEffect(() => {
+        if (step !== 'checkout' && step !== 'confirmed' && lockToken) {
+            release(selectedLocation, startAt);
+        }
+    }, [step]);
     const updateStep = (newStep: Step) => {
         const params = new URLSearchParams(searchParams.toString());
         params.set('step', newStep);

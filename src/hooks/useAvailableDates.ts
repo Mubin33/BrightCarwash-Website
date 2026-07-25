@@ -8,7 +8,7 @@ const BATCH_SIZE = 29;
 const BATCH_DELAY = 500;
 const TOTAL_DAYS = 30;
 const CACHE_MAX_AGE_MS = 5 * 60 * 1000;
-const POLL_INTERVAL_MS = 30000;
+const POLL_INTERVAL_MS = 5000;
 
 function getCacheKey(locationId: string, serviceVariationIds: string[]): string {
     return `avail_${locationId}_${serviceVariationIds.join(',')}`;
