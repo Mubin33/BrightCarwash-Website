@@ -3,14 +3,26 @@
 import Image from "next/image";
 import { useTheme } from "@/contexts/ThemeContext";
 import type { NewsDetail } from "@/data/news";
+import { SkeletonNewsDetail } from "@/components/ui/Skeleton";
 
 interface Props {
     article: NewsDetail;
+    loading?: boolean;
 }
 
-export function NewsDetailContent({ article }: Props) {
+export function NewsDetailContent({ article, loading = false }: Props) {
     const { theme } = useTheme();
     const isDark = theme === "dark";
+
+    if (loading) {
+        return (
+            <section
+                className={`flex py-10 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40 2xl:px-[300px] flex-col justify-center items-center gap-12 self-stretch border ${isDark ? "border-white/20 bg-[#1A1A1A]" : "border-[#DFE1E7] bg-white"}`}
+            >
+                <SkeletonNewsDetail isDark={isDark} />
+            </section>
+        );
+    }
 
     return (
         <section

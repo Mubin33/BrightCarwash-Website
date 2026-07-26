@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const NAV_LINKS = [
     { label: 'Home', href: '/' },
@@ -14,6 +15,8 @@ const NAV_LINKS = [
 
 export function NavItems() {
     const pathname = usePathname();
+    const { theme } = useTheme();
+    const isDark = theme === 'dark';
 
     return (
         <nav className="flex flex-col lg:flex-row items-start lg:items-center gap-3 lg:gap-5 xl:gap-8">
@@ -25,8 +28,8 @@ export function NavItems() {
                         key={link.href}
                         href={link.href}
                         className={`font-inter text-base font-normal leading-[100%] transition-colors whitespace-nowrap ${isActive
-                            ? 'underline decoration-[#B23730] decoration-[11%] underline-offset-[25%] text-white dark:text-white'
-                            : 'no-underline text-[#E9E9EA]'
+                            ? `underline decoration-[#B23730] decoration-[11%] underline-offset-[25%] ${isDark ? 'text-white' : 'lg:text-white text-[#092544]'}`
+                            : `no-underline ${isDark ? 'text-[#E9E9EA]' : 'lg:text-white text-[#4A4C56]'}`
                             }`}
                     >
                         {link.label}

@@ -9,10 +9,13 @@ import { ThemeToggle } from './navbar/ThemeToggle';
 import { BookNowButton } from './navbar/BookNowButton';
 import { CartButton } from './navbar/CartButton';
 import { Icon } from '@/components/ui/Icon';
+import { useTheme } from '@/contexts/ThemeContext';
 
 export function Navbar() {
     const pathname = usePathname();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const { theme } = useTheme();
+    const isDark = theme === 'dark';
 
     const handleLogoClick = (e: React.MouseEvent) => {
         if (pathname === '/') {
@@ -56,9 +59,9 @@ export function Navbar() {
                         <button
                             type="button"
                             onClick={() => setMobileMenuOpen(true)}
-                            className="lg:hidden flex p-2 items-center justify-center w-10 h-10 rounded-lg border border-[#DFE1E7] bg-white"
+                            className={`lg:hidden flex p-2 items-center justify-center w-10 h-10 rounded-lg border ${isDark ? 'border-white/20 bg-white/10' : 'border-[#DFE1E7] bg-white'}`}
                         >
-                            <Icon name="menu" width={20} height={20} color="#1B1B1B" />
+                            <Icon name="menu" width={20} height={20} color={isDark ? '#FFFFFF' : '#1B1B1B'} />
                         </button>
                     </div>
                 </div>
@@ -71,21 +74,21 @@ export function Navbar() {
                         className="absolute inset-0 bg-black/40 backdrop-blur-sm"
                         onClick={() => setMobileMenuOpen(false)}
                     />
-                    <div className="absolute top-0 right-0 h-full w-[300px] max-w-[80vw] shadow-xl transition-transform duration-300 flex flex-col p-6 gap-6 bg-white dark:bg-[#1A1A1A]">
+                    <div className={`absolute top-0 right-0 h-full w-[300px] max-w-[80vw] shadow-xl transition-transform duration-300 flex flex-col p-6 gap-6 ${isDark ? 'bg-[#1A1A1A]' : 'bg-white'}`}>
                         <div className="flex justify-between items-center">
-                            <span className="font-bebas-neue text-2xl text-[#1D1F2C] dark:text-white">Menu</span>
+                            <span className={`font-bebas-neue text-2xl ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>Menu</span>
                             <button
                                 type="button"
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="flex p-2 items-center justify-center w-10 h-10 rounded-lg border border-[#DFE1E7] bg-white"
+                                className={`flex p-2 items-center justify-center w-10 h-10 rounded-lg border ${isDark ? 'border-white/20 bg-white/10' : 'border-[#DFE1E7] bg-white'}`}
                             >
-                                <Icon name="close" width={20} height={20} color="#1B1B1B" />
+                                <Icon name="close" width={20} height={20} color={isDark ? '#FFFFFF' : '#1B1B1B'} />
                             </button>
                         </div>
                         <div className="flex flex-col gap-4">
                             <NavItems />
                         </div>
-                        <div className="pt-4 border-t border-[#DFE1E7] dark:border-white/10">
+                        <div className={`pt-4 border-t ${isDark ? 'border-white/10' : 'border-[#DFE1E7]'}`}>
                             <BookNowButton />
                         </div>
                     </div>

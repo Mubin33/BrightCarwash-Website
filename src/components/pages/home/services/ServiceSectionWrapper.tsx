@@ -60,7 +60,7 @@ export function ServicesSectionWrapper() {
         <ServicesHeader />
       </div>
 
-      <div className="font-inter flex flex-col sm:flex-row justify-between items-center pb-6 w-full max-w-7xl xl:max-w-330">
+      <div className="font-inter flex flex-col sm:flex-row gap-2  justify-between items-center pb-6 w-full max-w-7xl xl:max-w-330">
         <LocationFilter />
         <Link href="/services">
           <Button

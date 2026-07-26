@@ -45,11 +45,11 @@ export function ServiceCard({
   return (
     <div
       onClick={() => onSelect?.(service.id)}
-      className={`flex w-full p-4 sm:p-6 flex-col items-start gap-6 sm:gap-8 rounded-lg border transition-all cursor-pointer ${selected
-          ? "border-3 border-[#FEC300] bg-[#092544]"
-          : isDark
-            ? "border-white/20 bg-white/6 hover:bg-white/12 hover:border-[#0098E8]/30"
-            : "border-[#DFE1E7] bg-white hover:bg-[#F0F8FF] hover:border-[#0098E8]/30"
+      className={`flex w-full p-4 sm:p-6 flex-col items-start gap-6 sm:gap-8 rounded-lg border transition-all  ${selected
+        ? "border-3 border-[#FEC300] bg-[#092544]"
+        : isDark
+          ? "border-white/20 bg-white/6 hover:bg-white/12 hover:border-[#0098E8]/30"
+          : "border-[#DFE1E7] bg-white hover:bg-[#F0F8FF] hover:border-[#0098E8]/30"
         }`}
     >
       {/* Image */}
@@ -94,10 +94,10 @@ export function ServiceCard({
           />
           <span
             className={`font-inter text-md ${selected
-                ? "text-white/80"
-                : isDark
-                  ? "text-white/60"
-                  : "text-[#777980]"
+              ? "text-white/80"
+              : isDark
+                ? "text-white/60"
+                : "text-[#777980]"
               }`}
           >
             {service.duration}
@@ -108,16 +108,16 @@ export function ServiceCard({
       {/* Description */}
       <div
         className={`flex w-full py-3 px-4 flex-col items-start gap-4 rounded-md border-3 ${isDark && !selected
-            ? "border-white/20 bg-white/4"
-            : "border-gray-400/20 bg-gray-400/4 "
+          ? "border-white/20 bg-white/4"
+          : "border-gray-400/20 bg-gray-400/4 "
           }`}
       >
         <div
           className={`font-inter text-start text-sm leading-[150%] ${!selected
-              ? "text-gray-700 dark:text-gray-300"
-              : isDark
-                ? "text-gray-300"
-                : "text-white"
+            ? "text-gray-700 dark:text-gray-300"
+            : isDark
+              ? "text-gray-300"
+              : "text-white"
             }`}
           dangerouslySetInnerHTML={{ __html: service.descriptionHtml }}
         />
@@ -147,8 +147,8 @@ export function ServiceCard({
             variant="outline"
             onClick={handleAddToCartClick}
             className={`w-full py-3.5 px-5 justify-center items-center gap-2 rounded-lg font-inter text-sm ${isDark
-                ? "border-white/20 bg-white/8 text-white hover:bg-white/16"
-                : "bg-white hover:bg-[#F8FAFB]"
+              ? "border-white/20 bg-white/8 text-white hover:bg-white/16"
+              : "bg-white hover:bg-[#F8FAFB]"
               }`}
           >
             Add to cart

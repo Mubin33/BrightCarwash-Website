@@ -5,15 +5,23 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { NewsDetailContent } from './NewsDetailContent';
 import { NewsDetailRelated } from './NewsDetailRelated';
 import { useNewsDetail } from '@/hooks/useNewsDetail';
+import { SkeletonNewsDetail } from '@/components/ui/Skeleton';
+import { useTheme } from '@/contexts/ThemeContext';
 
 export function NewsDetailWrapper() {
     const { slug } = useParams<{ slug: string }>();
     const { article, loading } = useNewsDetail(slug);
+    const { theme } = useTheme();
+    const isDark = theme === 'dark';
 
     if (loading) {
         return (
             <div className="pt-20 sm:pt-24 lg:pt-28">
-                <div className="h-112.5 bg-gray-100 animate-pulse rounded-lg mx-4 sm:mx-8 lg:mx-75" />
+                <section
+                    className={`flex py-10 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40 2xl:px-[300px] flex-col justify-center items-center gap-12 self-stretch border ${isDark ? "border-white/20 bg-[#1A1A1A]" : "border-[#DFE1E7] bg-white"}`}
+                >
+                    <SkeletonNewsDetail isDark={isDark} />
+                </section>
             </div>
         );
     }

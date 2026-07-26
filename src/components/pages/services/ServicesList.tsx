@@ -8,6 +8,7 @@ import { useBooking } from '@/contexts/BookingContext';
 import { LocationFilter } from '../home/services/LocationFilter';
 import { ServiceCard } from '../home/services/ServiceCard';
 import type { ServiceData } from '@/data/services';
+import { SkeletonServices } from '@/components/ui/Skeleton';
 
 export function ServicesList() {
     const { theme } = useTheme();
@@ -37,11 +38,7 @@ export function ServicesList() {
     if (loading) {
         return (
             <section className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-[#F5F5F5]'}`}>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-[1280px] xl:max-w-[1320px] ">
-                    {[...Array(6)].map((_, i) => (
-                        <div key={i} className="h-[400px] sm:h-[500px] bg-gray-100 animate-pulse rounded-lg" />
-                    ))}
-                </div>
+                <SkeletonServices isDark={isDark} />
             </section>
         );
     }

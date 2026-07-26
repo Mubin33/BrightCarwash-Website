@@ -7,12 +7,33 @@ import Link from 'next/link';
 
 interface Props {
     article: NewsArticle;
+    loading?: boolean;
 }
 
-export function NewsCard({ article }: Props) {
+export function NewsCard({ article, loading = false }: Props) {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
     console.log('NewsCard image:', article.image);
+
+    if (loading) {
+        return (
+            <div
+                className={`h-full flex flex-col items-start gap-4 self-stretch rounded-xl border ${isDark ? 'border-white/20 bg-white/[0.06]' : 'border-[#ECEFF3] bg-white'
+                    }`}
+            >
+                <div className={`h-[246px] self-stretch rounded-t-xl animate-pulse ${isDark ? 'bg-[#2A2A2A]' : 'bg-gray-200'}`} />
+                <div className="flex flex-col items-start gap-3 p-4 pt-0 w-full">
+                    <div className="flex items-center gap-2 w-full">
+                        <div className={`h-4 w-20 rounded animate-pulse ${isDark ? 'bg-[#2A2A2A]' : 'bg-gray-200'}`} />
+                        <div className={`h-4 w-24 rounded animate-pulse ${isDark ? 'bg-[#2A2A2A]' : 'bg-gray-200'}`} />
+                    </div>
+                    <div className={`h-7 w-full rounded animate-pulse ${isDark ? 'bg-[#2A2A2A]' : 'bg-gray-200'}`} />
+                    <div className={`h-4 w-full rounded animate-pulse ${isDark ? 'bg-[#2A2A2A]' : 'bg-gray-200'}`} />
+                    <div className={`h-4 w-3/4 rounded animate-pulse ${isDark ? 'bg-[#2A2A2A]' : 'bg-gray-200'}`} />
+                </div>
+            </div>
+        );
+    }
 
     return (
         <Link href={`/news/${article.slug}`} className='self-strech'>
