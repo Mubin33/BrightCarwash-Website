@@ -12,7 +12,7 @@ export function NewsList() {
   const { articles, loading } = useNewsList(currentPage, 6);
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const totalPages = 1;
+  const totalPages = 3;
   const allArticles = articles;
 
   if (loading) {
