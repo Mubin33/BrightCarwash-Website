@@ -13,7 +13,7 @@ export function NewsDetailWrapper() {
     if (loading) {
         return (
             <div className="pt-20 sm:pt-24 lg:pt-28">
-                <div className="h-[450px] bg-gray-100 animate-pulse rounded-lg mx-4 sm:mx-8 lg:mx-[300px]" />
+                <div className="h-112.5 bg-gray-100 animate-pulse rounded-lg mx-4 sm:mx-8 lg:mx-75" />
             </div>
         );
     }
