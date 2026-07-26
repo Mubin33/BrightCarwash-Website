@@ -19,22 +19,18 @@ export function useCheckoutLock({ startAt, selectedServices, lockToken, location
 			lock(locationId, startAt, selectedServices.map(s => s.variationId));
 		}
 	}, []);
-
-	// No unmount-cleanup release here on purpose — React Strict Mode's
-	// synthetic mount -> cleanup -> remount was firing this immediately
-	// in dev, releasing the lock right after DateTimeStep set it, which
-	// left Confirm & Pay permanently disabled. Release is already handled by:
-	// - CheckoutButtons.handleBack (explicit back navigation)
-	// - beforeunload below (tab close / hard navigation)
-	// - BookingPageWrapper's step-change effect (leaving checkout step)
-
 	useEffect(() => {
 		const handleBeforeUnload = () => {
 			if (lockTokenRef.current) {
-				navigator.sendBeacon(
+				fetch(
 					`${process.env.NEXT_PUBLIC_API_BASE_URL}/appointments/lock/release`,
-					JSON.stringify({ locationId, startAt, lockToken: lockTokenRef.current })
-				);
+					{
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ locationId, startAt, lockToken: lockTokenRef.current }),
+						keepalive: true,
+					}
+				).catch(() => { });
 			}
 		};
 		window.addEventListener('beforeunload', handleBeforeUnload);
