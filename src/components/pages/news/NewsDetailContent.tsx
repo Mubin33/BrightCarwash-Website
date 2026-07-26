@@ -11,10 +11,10 @@ interface Props {
 export function NewsDetailContent({ article }: Props) {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
-   
+
     return (
         <section
-            className={`flex py-10 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40 2xl:px-[300px] flex-col justify-center items-center gap-12 self-stretch border ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-white'}`}
+            className={`flex py-10 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40  flex-col justify-center items-center gap-12 self-stretch border ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-white'}`}
         >
             <div className="flex flex-col items-start gap-8 self-stretch max-w-[1320px]">
                 {/* Main Featured Image */}

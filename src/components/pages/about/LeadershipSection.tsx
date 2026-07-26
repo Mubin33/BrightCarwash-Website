@@ -22,7 +22,7 @@ export function LeadershipSection() {
                 subheading=""
             />
 
-            <div className="flex flex-col lg:flex-row items-start gap-6 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]">
+            <div className="flex flex-col lg:flex-row items-start gap-6 w-full max-w-[1280px] xl:max-w-[1320px]">
                 {/* Card 1 - Jonathan Roldan */}
                 <div className={`flex p-6 flex-col items-start gap-8 flex-1 rounded-lg ${isDark ? 'bg-white/[0.04]' : 'bg-white'}`}>
                     <div className="flex h-80 sm:h-[450px] lg:h-[548px] p-4 flex-col justify-end items-start gap-2.5 self-stretch rounded-lg relative overflow-hidden">

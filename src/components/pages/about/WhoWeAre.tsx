@@ -15,7 +15,7 @@ export function WhoWeAre() {
                 subheading=""
             />
 
-            <div className="flex flex-col lg:flex-row items-start gap-6 w-full max-w-[1280px] xl:max-w-[1320px] 2xl:max-w-[1600px]">
+            <div className="flex flex-col lg:flex-row items-start gap-6 w-full max-w-[1280px] xl:max-w-[1320px] ">
                 {/* Left */}
                 <div className="flex flex-col items-start gap-6 flex-1 self-stretch">
                     <p className="text-[#4A4C56] dark:text-white/80 text-justify font-inter text-lg sm:text-xl font-normal leading-[160%] self-stretch">
