@@ -13,9 +13,9 @@ export function AboutHero() {
                 heading={
                     <>
                         <span className="text-white">Community-driven,</span>
-                        <span className="text-[#B23730]">built on </span>
+                        <span className="text-[#FEC300]">built on </span>
                         <span className="">service and </span>
-                        <span className="text-[#9F9FA5]">support.</span>
+                        <span className="">support.</span>
                     </>
                 }
                 subheading="Hand-crafted care for your vehicle. Select any service below to add it to your booking then pick your date and time."

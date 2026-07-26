@@ -13,7 +13,7 @@ export function AboutPageWrapper() {
             <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'About Us', href: '/about' }]} />
             <AboutHero />
             <WhoWeAre />
-            <StatisticsSection />
+
             <LeadershipSection />
             <WhyBrightside />
         </div>
