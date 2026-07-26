@@ -12,7 +12,7 @@ export function FaqSectionWrapper() {
 
     if (loading) {
         return (
-            <section className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-white'}`}>
+            <section className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-[#FFF7E6]'}`}>
                 <div className="flex flex-col gap-4 w-full max-w-[872px]">
                     {[...Array(4)].map((_, i) => (
                         <div key={i} className="h-20 bg-gray-100 dark:bg-white/10 animate-pulse rounded-lg" />
@@ -25,7 +25,7 @@ export function FaqSectionWrapper() {
     if (faqs.length === 0) return null;
 
     return (
-        <section className={`self-stretch px-4 md:px-8 lg:px-16 xl:px-72 py-20 flex flex-col justify-center items-center gap-12 ${isDark ? 'bg-[#1A1A1A]' : 'bg-white'}`}>
+        <section className={`self-stretch px-4 md:px-8 lg:px-16 xl:px-72 py-20 flex flex-col justify-center items-center gap-12 ${isDark ? 'bg-[#1A1A1A]' : 'bg-[#FFF7E6]'}`}>
             <div className="self-stretch flex flex-col justify-end items-center gap-3">
                 <FaqBadge isDark={isDark} />
                 <div className="self-stretch flex flex-col justify-center items-center gap-4">

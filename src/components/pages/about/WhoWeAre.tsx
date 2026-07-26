@@ -1,15 +1,20 @@
 import { SectionHeader } from '@/components/ui/SectionHeader';
+import { useTheme } from '@/contexts/ThemeContext';
 import Image from 'next/image';
 
 export function WhoWeAre() {
+
+    const { theme } = useTheme();
+    const isDark = theme === 'dark';
+
     return (
-        <section className="flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch">
+        <section className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch ${isDark ? '' : 'bg-[#FFF7E6]'}`}>
             <SectionHeader
                 badgeIcon="car"
                 badgeText="Who We Are"
                 heading={
                     <>
-                        <div className='whitespace-nowrap'>TRUSTED <span className="text-[#B23730]">CAR CARE EXPERTS</span> LOCATED</div>  IN NAPERVILLE,<span className='text-[#9F9FA5]'>READY TO HELP</span>
+                        <div className='whitespace-nowrap'>TRUSTED CAR CARE EXPERTS LOCATED</div>  IN NAPERVILLE,<span className='text-[#FEC300]'> READY TO HELP</span>
                     </>
                 }
                 subheading=""
@@ -23,10 +28,10 @@ export function WhoWeAre() {
                     </p>
                     <div className="flex p-4 flex-col justify-end items-center gap-2.5 flex-1 self-stretch rounded-lg relative overflow-hidden min-h-[300px]">
                         <Image
-                            src="/images/whoweare.jpg"
+                            src="/images/whoweare2.png"
                             alt="Brightside Car Wash team"
                             fill
-                            className="object-cover"
+                            className="object-cover object-top"
                             sizes="(max-width: 1024px) 100vw, 50vw"
                         />
                     </div>
@@ -36,7 +41,7 @@ export function WhoWeAre() {
                 <div className="flex flex-col items-start gap-6 flex-1 self-stretch">
                     <div className="flex p-4 flex-col justify-end items-center gap-2.5 flex-1 self-stretch rounded-lg relative overflow-hidden min-h-[300px]">
                         <Image
-                            src="/images/whoweare2.png"
+                            src="/images/whoweare.png"
                             alt="Brightside Car Wash service"
                             fill
                             className="object-cover"
