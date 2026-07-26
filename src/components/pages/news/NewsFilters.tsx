@@ -11,7 +11,7 @@ export function NewsFilters() {
     const isDark = theme === 'dark';
 
     return (
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 self-stretch overflow-visible">
+        <div className="flex flex-col sm:flex-row justify-between w-full max-w-330 mx-auto">
             <h2 className={`font-bebas-neue text-3xl sm:text-4xl font-normal leading-[100%] tracking-[0.8px] capitalize ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
                 Latest News & Updates
             </h2>
