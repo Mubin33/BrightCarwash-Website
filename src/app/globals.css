@@ -23,15 +23,18 @@ body {
   color: var(--foreground);
   font-family: var(--font-inter), sans-serif;
   overflow-x: hidden;
-
 }
 
 .adm-hero-bg {
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.60) 0%, rgba(0, 0, 0, 0.60) 100%), url('/images/service-hero.jpg') lightgray 50% / cover no-repeat;
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%),
+    url("/images/service-hero.jpg") lightgray 50% / cover no-repeat;
 }
 
 .glr-hero-bg {
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.60) 0%, rgba(0, 0, 0, 0.60) 100%), url('/images/gallery.png') lightgray 60% / cover no-repeat;
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.6) 100%),
+    url("/images/gallery.png") lightgray 60% / cover no-repeat;
 }
 
 #card-container .sq-card-message:empty {
@@ -40,7 +43,29 @@ body {
   padding: 0;
 }
 
-
 .abt-hero-bg {
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.4) 30%, rgba(0, 0, 0, 0.4) 0%), url('/images/abt-hero.png') lightgray 0% 30% / cover no-repeat;
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.4) 30%, rgba(0, 0, 0, 0.4) 0%),
+    url("/images/abt-hero.png") lightgray 0% 30% / cover no-repeat;
+}
+
+/*  Custom scroll */
+
+.custom-scroll {
+  scrollbar-width: thin;
+
+  scrollbar-color: #e0e0e000;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #68b0d4;
+  border-radius: 15px;
 }

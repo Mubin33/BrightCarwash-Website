@@ -144,7 +144,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
           {sessionId ? (
             <>
               <div
-                className="flex- space-y-6 overflow-y-auto  pr-2"
+                className="flex- space-y-6 overflow-y-auto custom-scroll  pr-2"
                 style={{ maxHeight: "calc(100% )" }}
               >
                 {isSessionLoading ? (
@@ -164,7 +164,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                         className={`flex flex-col ${isUser ? "items-end" : "items-start"}`}
                       >
                         <div
-                          className={`max-w-[85%] px-4 py-3 leading-[160%] ${
+                          className={`max-w-full px-4 py-3 leading-[160%]  ${
                             isUser
                               ? "bg-[#B72B2B] text-white rounded-l-3xl rounded-t-3xl "
                               : "bg-[#F8FAFB] text-[#0F172A] rounded-r-3xl rounded-t-3xl"
