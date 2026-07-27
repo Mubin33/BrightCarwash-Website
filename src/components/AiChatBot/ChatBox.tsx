@@ -115,15 +115,15 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
 
   // scroll to bottom on message change
 
-  useEffect(()=>{
+  useEffect(() => {
     const scrollContainer = document.querySelector(".custom-scroll");
     if (scrollContainer) {
       scrollContainer.scrollTop = scrollContainer.scrollHeight;
     }
-  },[messages])
+  }, [messages]);
 
   return (
-    <div className="bg-[#F5F5F5] rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.12)] w-95 h-[75vh] max-w-[95vw] overflow-hidden flex flex-col border border-[#E7ECFF] mb-16 p-2">
+    <div className="bg-[#F5F5F5] rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.12)] w-95 h-[75vh] max-w-[95vw] overflow-hidden flex flex-col border border-[#E7ECFF] mb-16 p-2 relative z-50">
       <div className="flex items-start justify-between gap-3 bg-[#071F4D] p-3 text-white rounded-xl">
         <div className="flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-md bg-[#D33E3E]">
@@ -161,12 +161,12 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                   <div className="text-sm text-[#64748B]">
                     Starting your chat session…
                   </div>
-                ) : messages.length === 0 ? (
+                ) : messages?.length === 0 ? (
                   <div className="text-sm text-[#64748B]">
                     Type a question to begin the conversation.
                   </div>
                 ) : (
-                  messages.map((message, index) => {
+                  messages?.map((message, index) => {
                     const isUser = message.role === "user";
                     return (
                       <div
@@ -180,7 +180,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                               : "bg-[#F8FAFB] text-[#0F172A] rounded-r-3xl rounded-t-3xl"
                           }`}
                         >
-                          {message.content}
+                          {message?.content ?? ""}
                         </div>
                       </div>
                     );
