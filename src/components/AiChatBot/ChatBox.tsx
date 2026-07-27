@@ -12,6 +12,7 @@ import {
 import { chat, createSession, ChatMessage } from "@/services/ai-chatbot.api";
 import BotIcon from "../../../public/icons/custom/BotIcon";
 import CloseIcon from "../../../public/icons/custom/CloseIcon";
+import PlaneIcon from "../../../public/icons/custom/PlaneIcon";
 
 interface ChatBoxProps {
   onClose?: () => void;
@@ -111,6 +112,15 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
   function handleQuickAction(value: string) {
     setInput(value);
   }
+
+  // scroll to bottom on message change
+
+  useEffect(()=>{
+    const scrollContainer = document.querySelector(".custom-scroll");
+    if (scrollContainer) {
+      scrollContainer.scrollTop = scrollContainer.scrollHeight;
+    }
+  },[messages])
 
   return (
     <div className="bg-[#F5F5F5] rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.12)] w-95 h-[75vh] max-w-[95vw] overflow-hidden flex flex-col border border-[#E7ECFF] mb-16 p-2">
@@ -227,7 +237,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                 key={action.label}
                 type="button"
                 onClick={() => handleQuickAction(action.value)}
-                className="flex items-center gap-2 rounded-[10px] border border-[#DCE7FF] bg-[#E6F5FD] px-4 py-2 text-left text-xs text-[#33ADED] font-semibold transition hover:bg-[#E2E8F0]"
+                className="flex items-center gap-2 rounded-[10px] border border-[#DCE7FF] bg-[#E6F5FD] p-4 text-left text-xs text-[#33ADED] font-semibold transition hover:bg-[#E2E8F0]"
               >
                 <Icon size={16} className="text-[#071f4d]" />
                 {action.label}
@@ -251,16 +261,16 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                 ? "Loading chat session..."
                 : "Type your message here..."
             }
-            className="flex-1 text-sm rounded-xl border border-[#E7ECFF] px-3 py-2 bg-[#F8FAFB] text-[#0F172A] outline-none placeholder:text-[#94A3B8] disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex-1 text-sm rounded-xl border border-[#E7ECFF] p-4 bg-[#F8FAFB] text-[#0F172A] outline-none placeholder:text-[#94A3B8] disabled:cursor-not-allowed disabled:opacity-60"
           />
           <button
             type="button"
             onClick={handleSend}
             disabled={!input.trim() || isSessionLoading || isLoading}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#0F172A] text-white transition disabled:cursor-not-allowed disabled:opacity-40"
+            className="inline-flex p-2.5 items-center justify-center rounded-xl hover:bg-[#0F172A] text-[#0F172A] hover:text-white transition disabled:cursor-not-allowed disabled:opacity-40 duration-300 cursor-pointer"
             aria-label="Send message"
           >
-            <BotIcon />
+            <PlaneIcon />
           </button>
         </div>
       </div>
