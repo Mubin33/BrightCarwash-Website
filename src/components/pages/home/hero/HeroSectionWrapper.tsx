@@ -7,8 +7,8 @@ import { QuoteForm } from "./QuoteForm";
 import { usePublicHero } from "@/hooks/usePublicHero";
 import Link from "next/link";
 import Image from "next/image";
-import { HeroBanner } from "../../website-cms/hero/HeroBanner";
-import { useState } from "react";
+import { HeroBanner } from "@/components/pages/website-cms/hero/HeroBanner";
+import { HeroBackgroundCarousel } from "@/components/pages/website-cms/hero/HeroBackgroundCarousel";
 
 const alignmentClasses: Record<string, string> = {
   left: "items-start text-left",
@@ -41,7 +41,6 @@ const getFullImageUrl = (imagePath: string) => {
 
 export function HeroSectionWrapper() {
   const { data, loading } = usePublicHero();
-  const [imageLoaded, setImageLoaded] = useState(false);
 
   if (loading) {
     return (
@@ -63,9 +62,18 @@ export function HeroSectionWrapper() {
   const isHidden = data.status === "hidden";
   const showRightColumn = showForm || showBanner;
 
-  const backgroundImageUrl = data.backgroundImageUrl
-    ? getFullImageUrl(data.backgroundImageUrl)
-    : "";
+  // Normalize backgroundImageUrl to an array of full URLs
+  let backgroundImages: string[] = [];
+  if (data.backgroundImageUrl) {
+    if (Array.isArray(data.backgroundImageUrl)) {
+      backgroundImages = data.backgroundImageUrl.map((url: string) =>
+        getFullImageUrl(url)
+      );
+    } else {
+      backgroundImages = [getFullImageUrl(data.backgroundImageUrl)];
+    }
+  }
+
   const bannerImageUrl = data.bannerImageUrl
     ? getFullImageUrl(data.bannerImageUrl)
     : "";
@@ -73,39 +81,25 @@ export function HeroSectionWrapper() {
   return (
     <section
       id="hero"
-      className="relative flex pt-50  px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-2.5 self-stretch overflow-hidden min-h-185"
+      className="relative flex pt-50 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-2.5 self-stretch overflow-hidden min-h-185"
     >
-      {/* Background Image – always visible */}
+      {/* Background Carousel */}
       <div className="absolute inset-0 z-0">
-        {backgroundImageUrl ? (
-          <>
-            <Image
-              src={backgroundImageUrl}
-              alt="Hero background"
-              fill
-              className={`object-cover transition-opacity duration-700 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
-              priority
-              onLoad={() => setImageLoaded(true)}
-              onError={() => setImageLoaded(true)}
-              sizes="100vw"
-              quality={90}
-              unoptimized={true}
-            />
-            {!imageLoaded && (
-              <div className="absolute inset-0 bg-gray-800 animate-pulse" />
-            )}
-          </>
+        {backgroundImages.length > 0 ? (
+          <HeroBackgroundCarousel images={backgroundImages} autoPlayInterval={3000} />
         ) : (
           <div
             className="w-full h-full bg-cover bg-center"
             style={{ backgroundImage: "url('/images/hero-image.png')" }}
           />
         )}
-        <div className="absolute inset-0 bg-black/30" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 w-full max-w-7xl xl:max-w-330 ">
+      {/* Dark overlay - pointer-events-none allows clicks to pass through */}
+      <div className="absolute inset-0 bg-black/30 z-10 pointer-events-none" />
+
+      {/* Content – z-20 to sit above overlay */}
+      <div className="relative z-20 w-full max-w-7xl xl:max-w-330 ">
         <div
           className={`flex flex-col ${showRightColumn ? "lg:flex-row" : ""} items-center gap-8 md:gap-10 lg:gap-12 xl:gap-14 w-full ${showRightColumn ? "" : alignment}`}
         >
@@ -175,11 +169,7 @@ export function HeroSectionWrapper() {
               </Link>
             </div>
 
-            <HeroStats
-              starRating={data.star_rating}
-              carsWashed={data.cars_washed}
-              avgTime={data.avg_time}
-            />
+           
           </div>
 
           {showRightColumn && (

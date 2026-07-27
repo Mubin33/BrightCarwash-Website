@@ -1,6 +1,5 @@
 import { HeroSection } from '@/components/pages/home/all-sections/HeroSection';
 import { LocationsSection } from '@/components/pages/home/all-sections/LocationsSection';
-import { StatisticsSection } from '@/components/pages/home/all-sections/StatisticsSection';
 import { ServicesSection } from '@/components/pages/home/all-sections/ServicesSection';
 import { AboutSection } from '@/components/pages/home/all-sections/AboutSection';
 import { MembershipSection } from '@/components/pages/home/all-sections/MembershipSection';

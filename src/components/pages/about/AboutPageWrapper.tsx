@@ -3,7 +3,6 @@
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { AboutHero } from './AboutHero';
 import { WhoWeAre } from './WhoWeAre';
-import { StatisticsSection } from '../home/all-sections/StatisticsSection';
 import { LeadershipSection } from './LeadershipSection';
 import { WhyBrightside } from './WhyBrightside';
 

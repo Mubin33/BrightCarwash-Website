@@ -35,7 +35,7 @@ export function BookingSteps({ currentStep, onStepChange }: Props) {
                             type="button"
                             onClick={() => isAccessible && onStepChange(s.key)}
                             className={`flex py-1.5 sm:py-2 px-2 sm:px-3 justify-center items-center gap-1.5 sm:gap-3 flex-1 self-stretch rounded-full font-inter text-xs sm:text-sm font-medium transition-colors ${currentStep === s.key
-                                ? 'bg-[#B23730] text-white'
+                                ? 'bg-[#0098E8] text-white'
                                 : isDark
                                     ? 'text-white/60 hover:text-white'
                                     : 'text-[#777980] hover:text-[#1B1B1B]'

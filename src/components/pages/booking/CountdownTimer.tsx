@@ -44,11 +44,11 @@ export function CountdownTimer({ onExpire }: Props) {
     if (!mounted) {
         return (
             <div className="flex p-4 sm:p-6 flex-col items-center gap-4 self-stretch rounded-xl border border-[#DFE1E7] bg-white">
-                <div className="flex py-3 px-8 flex-col justify-center items-center gap-3 self-stretch rounded-lg bg-[#F7EBEA]">
-                    <span className="text-[#B23730] font-bebas-neue text-4xl sm:text-5xl lg:text-[64px] font-normal leading-[100%] tracking-[4px] sm:tracking-[6.4px]">
+                <div className="flex py-3 px-8 flex-col justify-center items-center gap-3 self-stretch rounded-lg bg-[#FFF7E6]">
+                    <span className="text-[#FEC300]! font-bebas-neue text-4xl sm:text-5xl lg:text-[64px] font-normal leading-[100%] tracking-[4px] sm:tracking-[6.4px]">
                         10:00
                     </span>
-                    <span className="text-[#C15F59] font-inter text-base font-medium leading-[100%]">
+                    <span className="text-[#FEC300]! font-inter text-base font-medium leading-[100%]">
                         Appointment held for
                     </span>
                 </div>
@@ -58,11 +58,11 @@ export function CountdownTimer({ onExpire }: Props) {
 
     return (
         <div className="flex p-4 sm:p-6 flex-col items-center gap-4 self-stretch rounded-xl border border-[#DFE1E7] bg-white">
-            <div className="flex py-3 px-8 flex-col justify-center items-center gap-3 self-stretch rounded-lg bg-[#F7EBEA]">
-                <span className="text-[#B23730] font-bebas-neue text-4xl sm:text-5xl lg:text-[64px] font-normal leading-[100%] tracking-[4px] sm:tracking-[6.4px]">
+            <div className="flex py-3 px-8 flex-col justify-center items-center gap-3 self-stretch rounded-lg bg-[#FFF7E6]">
+                <span className="text-[#FEC300]! font-bebas-neue text-4xl sm:text-5xl lg:text-[64px] font-normal leading-[100%] tracking-[4px] sm:tracking-[6.4px]">
                     {display}
                 </span>
-                <span className="text-[#C15F59] font-inter text-base font-medium leading-[100%]">
+                <span className="text-[#FEC300]! font-inter text-base font-medium leading-[100%]">
                     Appointment held for
                 </span>
             </div>

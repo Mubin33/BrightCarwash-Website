@@ -46,7 +46,7 @@ export function FaqAccordion({ item }: Props) {
             </div>
             <ChevronDown
                 size={24}
-                color={isDark ? '#FFFFFF' : '#525252'}
+                color={isDark ? '#525252' : '#525252'}
                 className={`shrink-0 mt-1 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''
                     }`}
             />
