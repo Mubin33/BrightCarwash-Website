@@ -86,19 +86,20 @@ export function HeroSectionWrapper() {
       {/* Background Carousel */}
       <div className="absolute inset-0 z-0">
         {backgroundImages.length > 0 ? (
-          <HeroBackgroundCarousel images={backgroundImages} autoPlayInterval={5000} />
+          <HeroBackgroundCarousel images={backgroundImages} autoPlayInterval={3000} />
         ) : (
           <div
             className="w-full h-full bg-cover bg-center"
             style={{ backgroundImage: "url('/images/hero-image.png')" }}
           />
         )}
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/30 z-10" />
       </div>
 
-      {/* Content – unchanged */}
-      <div className="relative z-10 w-full max-w-7xl xl:max-w-330 ">
+      {/* Dark overlay - pointer-events-none allows clicks to pass through */}
+      <div className="absolute inset-0 bg-black/30 z-10 pointer-events-none" />
+
+      {/* Content – z-20 to sit above overlay */}
+      <div className="relative z-20 w-full max-w-7xl xl:max-w-330 ">
         <div
           className={`flex flex-col ${showRightColumn ? "lg:flex-row" : ""} items-center gap-8 md:gap-10 lg:gap-12 xl:gap-14 w-full ${showRightColumn ? "" : alignment}`}
         >
