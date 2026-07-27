@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { chat, createSession, ChatMessage } from "@/services/ai-chatbot.api";
 import BotIcon from "../../../public/icons/custom/BotIcon";
+import CloseIcon from "../../../public/icons/custom/CloseIcon";
 
 interface ChatBoxProps {
   onClose?: () => void;
@@ -64,7 +65,10 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
     setIsSessionLoading(true);
 
     try {
-      const session = await createSession({ name: name.trim(), email: email.trim() });
+      const session = await createSession({
+        name: name.trim(),
+        email: email.trim(),
+      });
       setSessionId(session.session_id);
       setMessages(session.messages ?? []);
     } catch (err) {
@@ -109,42 +113,38 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
   }
 
   return (
-    <div className="bg-white rounded-4xl shadow-[0_30px_60px_rgba(0,0,0,0.12)] w-95 h-[75vh] max-w-[95vw] overflow-hidden flex flex-col border border-[#E7ECFF]">
-      <div className="flex items-center justify-between gap-3 bg-[#071F4D] px-4 py-4 text-white">
+    <div className="bg-[#F5F5F5] rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.12)] w-95 h-[75vh] max-w-[95vw] overflow-hidden flex flex-col border border-[#E7ECFF] mb-16 p-2">
+      <div className="flex items-start justify-between gap-3 bg-[#071F4D] p-3 text-white rounded-xl">
         <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-[#D33E3E]">
+          <div className="flex h-12 w-12 items-center justify-center rounded-md bg-[#D33E3E]">
             <BotIcon />
           </div>
           <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-[#F8FAFE]/90">
+            <p className="text-xl uppercase font-bebas text-[#F8FAFE]/90">
               Brightside AI
             </p>
-            <p className="text-sm font-semibold">
-              Online - Typically replies instantly
+            <p className="text-sm text-[#5FC696] flex items-center text-nowrap">
+              <span className="text-2xl">•</span> Online - Typically replies
+              instantly
             </p>
           </div>
         </div>
         <button
           type="button"
           onClick={onClose}
-          className="rounded-full border border-white/20 bg-white/10 p-2 text-white transition hover:bg-white/20"
           aria-label="Close chat"
+          className="cursor-pointer"
         >
-          <X size={18} />
+          <CloseIcon />
         </button>
       </div>
 
-      <div className="flex-1 overflow-hidden bg-[#F4F7FF] p-4">
-        <div className="flex h-full flex-col rounded-4xl bg-white p-4 shadow-[0_10px_30px_rgba(15,25,63,0.08)]">
-          <div className="mb-4 rounded-[28px] bg-[#F4F7FF] px-4 py-3 text-sm text-[#475569]">
-            Hey there 👋 I'm BrightSide AI. Ask me about pricing, hours, or
-            let's get your car booked in under a minute.
-          </div>
-
+      <div className="flex-1 overflow-hidden ">
+        <div className="flex h-full flex-col rounded-xl  p-4 ">
           {sessionId ? (
             <>
               <div
-                className="flex-1 space-y-3 overflow-y-auto pr-2"
+                className="flex-1 space-y-6 overflow-y-auto pr-2"
                 style={{ maxHeight: "calc(100% - 280px)" }}
               >
                 {isSessionLoading ? (
@@ -177,23 +177,6 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                   })
                 )}
               </div>
-
-              <div className="mt-5 grid gap-2 sm:grid-cols-2">
-                {quickActions.map((action) => {
-                  const Icon = action.icon;
-                  return (
-                    <button
-                      key={action.label}
-                      type="button"
-                      onClick={() => handleQuickAction(action.value)}
-                      className="flex items-center gap-2 rounded-full border border-[#DCE7FF] bg-[#EFF6FF] px-4 py-3 text-left text-sm text-[#0F172A] transition hover:bg-[#E2E8F0]"
-                    >
-                      <Icon size={16} className="text-[#0F172A]" />
-                      {action.label}
-                    </button>
-                  );
-                })}
-              </div>
             </>
           ) : (
             <div className="space-y-4">
@@ -224,7 +207,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                 type="button"
                 onClick={handleStartSession}
                 disabled={isSessionLoading}
-                className="inline-flex w-full items-center justify-center rounded-3xl bg-[#0F172A] px-5 py-3 text-sm font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex w-full items-center justify-center rounded-3xl bg-[#071f4d] px-5 py-3 text-sm font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
               >
                 {isSessionLoading ? "Starting chat…" : "Start Chat"}
               </button>
@@ -233,9 +216,26 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
         </div>
       </div>
 
-      <div className="border-t border-[#E7ECFF] bg-white px-4 py-4">
+      <div className=" bg-white p-3 rounded-xl border border-[#E7ECFF]">
         {error ? <p className="mb-3 text-sm text-[#B91C1C]">{error}</p> : null}
-        <div className="flex items-center gap-2 rounded-full border border-[#E7ECFF] bg-[#F8FAFB] px-3 py-2">
+        {/* Quick Actions */}
+        <div className="mb-2 grid gap-2 sm:grid-cols-2">
+          {quickActions.map((action) => {
+            const Icon = action.icon;
+            return (
+              <button
+                key={action.label}
+                type="button"
+                onClick={() => handleQuickAction(action.value)}
+                className="flex items-center gap-2 rounded-[10px] border border-[#DCE7FF] bg-[#E6F5FD] px-4 py-2 text-left text-xs text-[#33ADED] font-semibold transition hover:bg-[#E2E8F0]"
+              >
+                <Icon size={16} className="text-[#071f4d]" />
+                {action.label}
+              </button>
+            );
+          })}
+        </div>
+        <div className="flex items-center gap-2  ">
           <input
             value={input}
             onChange={(event) => setInput(event.target.value)}
@@ -251,7 +251,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                 ? "Loading chat session..."
                 : "Type your message here..."
             }
-            className="flex-1 bg-transparent text-sm text-[#0F172A] outline-none placeholder:text-[#94A3B8] disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex-1 text-sm rounded-xl border border-[#E7ECFF] px-3 py-2 bg-[#F8FAFB] text-[#0F172A] outline-none placeholder:text-[#94A3B8] disabled:cursor-not-allowed disabled:opacity-60"
           />
           <button
             type="button"
