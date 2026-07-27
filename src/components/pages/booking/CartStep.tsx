@@ -83,7 +83,7 @@ export function CartStep({ onProceed }: Props) {
                         Add another service
                     </Button>
                 </Link>
-                <Button onClick={onProceed} disabled={selectedServices.length === 0} className="w-full sm:flex-1 py-[14px] px-5 justify-center rounded bg-[#0098E8] text-white font-inter text-sm disabled:opacity-50">
+                <Button onClick={onProceed} disabled={selectedServices.length === 0} className="w-full sm:flex-1 py-[14px] px-5 justify-center rounded bg-[#FEC300] text-black font-inter text-sm disabled:opacity-50">
                     Proceed to Date & Time
                 </Button>
             </div>

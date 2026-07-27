@@ -82,7 +82,7 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
                 <TimeSlotList slots={slots} timeSlots={timeSlots} cacheLoading={cacheLoading} dateLoading={dateLoading} date={date} selectedTime={selectedTime} isDark={isDark} onTimeChange={handleTimeChange} />
                 <div className="flex w-full gap-4">
                     <Button variant="outline" onClick={onBack} className={`flex-1 py-[14px] px-5 justify-center rounded-xl border font-inter text-sm ${isDark ? 'border-white/20 hover:bg-white/10! dark:hover:bg-white/20! text-white' : 'border-[#DFE1E7] hover:bg-white/10! dark:hover:bg-white/20! text-[#1B1B1B]'}`}>Back</Button>
-                    <Button onClick={handleProceed} disabled={!date || !selectedTime || lockLoading} isLoading={lockLoading} loadingText="Verifying slot..." className={`flex-1 py-[14px] px-5 justify-center items-center gap-2 rounded-xl text-white font-inter text-sm disabled:opacity-50 ${isDark ? 'border-white/20 hover:bg-white/10 text-white' : 'border-[#DFE1E7] text-black'}`}>Continue to checkout</Button>
+                    <Button onClick={handleProceed} disabled={!date || !selectedTime || lockLoading} isLoading={lockLoading} loadingText="Verifying slot..." className={`flex-1 py-[14px] px-5 justify-center items-center gap-2 rounded-xl text-black bg-[#FEC300] font-inter text-sm disabled:opacity-50 ${isDark ? 'border-white/20 hover:bg-white/10 text-white' : 'border-[#DFE1E7] text-black'}`}>Continue to checkout</Button>
                 </div>
             </div>
         </div>

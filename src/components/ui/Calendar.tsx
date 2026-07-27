@@ -99,9 +99,9 @@ export function Calendar({ value, onChange, isDark = false, availableDates = [] 
                             disabled={!valid || past || noSlotsAvailable}
                             onClick={() => valid && !past && !noSlotsAvailable && handleSelect(day)}
                             className={`relative w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-xs sm:text-sm font-inter rounded-full transition-colors mx-auto ${selected
-                                ? 'bg-[#B23730] text-white'
+                                ? 'bg-[#FEC300] text-black'
                                 : todayCell
-                                    ? 'border-2 border-[#B23730] text-[#B23730]'
+                                    ? 'border-2 border-[#FEC300] text-[#FEC300]'
                                     : past || !valid || noSlotsAvailable
                                         ? `${isDark ? 'text-white/20' : 'text-[#D2D2D5]'} cursor-not-allowed`
                                         : isDark

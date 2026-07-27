@@ -1,5 +1,8 @@
+'use client';
+
 import { Icon } from '@/components/ui/Icon';
 import { ContrastIcon } from 'lucide-react';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const sections = [
     {
@@ -29,9 +32,15 @@ const sections = [
 ];
 
 export function TermsConditionsContent() {
+    const { theme } = useTheme();
+    const isDark = theme === 'dark';
+
     return (
-        <section className="relative flex py-20 px-4 md:px-6 lg:px-10 flex-col items-center gap-8 bg-white overflow-hidden">
-            {/* Background Pattern */}
+        <section
+            className={`relative flex py-20 px-4 md:px-6 lg:px-10 flex-col items-center gap-8 overflow-hidden ${isDark ? 'bg-[#1A1A1A]' : 'bg-white'
+                }`}
+        >
+            {/* Background Pattern – subdued for dark mode */}
             <div className="absolute inset-0 opacity-[0.02] pointer-events-none">
                 <div className="absolute top-0 left-0 w-96 h-96 bg-[#0098E8] rounded-full blur-3xl" />
                 <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#B23730] rounded-full blur-3xl" />
@@ -40,18 +49,41 @@ export function TermsConditionsContent() {
             <div className="relative flex flex-col gap-8 w-full max-w-[900px]">
                 {/* Header */}
                 <div className="flex flex-col items-center gap-4 text-center">
-                    <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-[#EBF5FF]">
-                        <ContrastIcon width={28} height={28} color="#0098E8" />
+                    <div
+                        className={`flex items-center justify-center w-16 h-16 rounded-2xl ${isDark ? 'bg-white/10' : 'bg-[#EBF5FF]'
+                            }`}
+                    >
+                        <ContrastIcon
+                            width={28}
+                            height={28}
+                            color={isDark ? '#FEC300' : '#0098E8'}
+                        />
                     </div>
-                    <h1 className="text-[#1D1F2C] font-bebas text-4xl sm:text-5xl lg:text-6xl font-normal leading-[110%] tracking-[1px]">
+                    <h1
+                        className={`font-bebas text-4xl sm:text-5xl lg:text-6xl font-normal leading-[110%] tracking-[1px] ${isDark ? 'text-white' : 'text-[#1D1F2C]'
+                            }`}
+                    >
                         Terms & <span className="text-[#B23730]">Conditions</span>
                     </h1>
-                    <p className="text-[#777980] font-inter text-sm">Last updated: {new Date().getFullYear()}</p>
+                    <p
+                        className={`font-inter text-sm ${isDark ? 'text-white/50' : 'text-[#777980]'
+                            }`}
+                    >
+                        Last updated: {new Date().getFullYear()}
+                    </p>
                 </div>
 
                 {/* Intro */}
-                <div className="p-6 sm:p-8 rounded-2xl bg-[#F8FAFB] border border-[#DFE1E7]">
-                    <p className="text-[#4A4C56] font-inter text-base leading-[160%]">
+                <div
+                    className={`p-6 sm:p-8 rounded-2xl border ${isDark
+                            ? 'border-white/10 bg-white/[0.06]'
+                            : 'border-[#DFE1E7] bg-[#F8FAFB]'
+                        }`}
+                >
+                    <p
+                        className={`font-inter text-base leading-[160%] ${isDark ? 'text-white/70' : 'text-[#4A4C56]'
+                            }`}
+                    >
                         Welcome to Brightside Car Wash. By accessing or using our services, you agree to be bound by these terms and conditions. Please read them carefully before booking.
                     </p>
                 </div>
@@ -59,11 +91,23 @@ export function TermsConditionsContent() {
                 {/* Sections */}
                 <div className="flex flex-col gap-4">
                     {sections.map((section) => (
-                        <div key={section.title} className="p-6 sm:p-8 rounded-2xl bg-white border border-[#DFE1E7] hover:shadow-md transition-shadow">
-                            <h2 className="text-[#1D1F2C] font-inter text-lg font-semibold mb-3">
+                        <div
+                            key={section.title}
+                            className={`p-6 sm:p-8 rounded-2xl border transition-shadow ${isDark
+                                    ? 'border-white/10 bg-white/[0.04] hover:shadow-lg hover:shadow-white/5'
+                                    : 'border-[#DFE1E7] bg-white hover:shadow-md'
+                                }`}
+                        >
+                            <h2
+                                className={`font-inter text-lg font-semibold mb-3 ${isDark ? 'text-white' : 'text-[#1D1F2C]'
+                                    }`}
+                            >
                                 {section.title}
                             </h2>
-                            <p className="text-[#4A4C56] font-inter text-base leading-[160%]">
+                            <p
+                                className={`font-inter text-base leading-[160%] ${isDark ? 'text-white/60' : 'text-[#4A4C56]'
+                                    }`}
+                            >
                                 {section.content}
                             </p>
                         </div>
@@ -71,15 +115,28 @@ export function TermsConditionsContent() {
                 </div>
 
                 {/* Contact Banner */}
-                <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-[#0098E8] to-[#0078D8] text-center">
-                    <h3 className="text-white font-inter text-xl font-semibold mb-2">Have Questions?</h3>
+                <div
+                    className={`p-6 sm:p-8 rounded-2xl text-center ${isDark
+                            ? 'bg-gradient-to-r from-[#0098E8]/80 to-[#0078D8]/80'
+                            : 'bg-gradient-to-r from-[#0098E8] to-[#0078D8]'
+                        }`}
+                >
+                    <h3 className="text-white font-inter text-xl font-semibold mb-2">
+                        Have Questions?
+                    </h3>
                     <p className="text-white/80 font-inter text-sm">
                         Reach out to us at{' '}
-                        <a href="mailto:hello@brightsidecarwash.com" className="text-white underline font-medium">
+                        <a
+                            href="mailto:hello@brightsidecarwash.com"
+                            className="text-white underline font-medium"
+                        >
                             hello@brightsidecarwash.com
-                        </a>
-                        {' '}or call{' '}
-                        <a href="tel:+13314015793" className="text-white underline font-medium">
+                        </a>{' '}
+                        or call{' '}
+                        <a
+                            href="tel:+13314015793"
+                            className="text-white underline font-medium"
+                        >
                             (331) 401-5793
                         </a>
                     </p>

@@ -5,8 +5,7 @@ import { getAvailability, type AvailabilitySlot } from '@/services/booking.api';
 import { format, addDays, startOfDay, endOfDay } from 'date-fns';
 
 const BATCH_SIZE = 29;
-const BATCH_DELAY = 500;
-const TOTAL_DAYS = 30;
+const TOTAL_DAYS = 28;
 const CACHE_MAX_AGE_MS = 5 * 60 * 1000;
 const POLL_INTERVAL_MS = 5000;
 
@@ -129,7 +128,7 @@ export function useAvailableDates(
             }
 
             if (!cancelledRef.current && index + 1 < batches.length && currentFetchId === fetchIdRef.current) {
-                setTimeout(() => fetchBatch(index + 1), BATCH_DELAY);
+                setTimeout(() => fetchBatch(index + 1));
             }
         };
 

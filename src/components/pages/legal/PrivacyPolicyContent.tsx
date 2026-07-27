@@ -1,5 +1,8 @@
+'use client';
+
 import { Icon } from '@/components/ui/Icon';
 import { ContrastIcon } from 'lucide-react';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const sections = [
     {
@@ -33,8 +36,14 @@ const sections = [
 ];
 
 export function PrivacyPolicyContent() {
+    const { theme } = useTheme();
+    const isDark = theme === 'dark';
+
     return (
-        <section className="relative flex py-20 px-4 md:px-6 lg:px-10 flex-col items-center gap-8 bg-white overflow-hidden">
+        <section
+            className={`relative flex py-20 px-4 md:px-6 lg:px-10 flex-col items-center gap-8 overflow-hidden ${isDark ? 'bg-[#1A1A1A]' : 'bg-white'
+                }`}
+        >
             {/* Background Pattern */}
             <div className="absolute inset-0 opacity-[0.02] pointer-events-none">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-[#0098E8] rounded-full blur-3xl" />
@@ -44,18 +53,41 @@ export function PrivacyPolicyContent() {
             <div className="relative flex flex-col gap-8 w-full max-w-[900px]">
                 {/* Header */}
                 <div className="flex flex-col items-center gap-4 text-center">
-                    <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-[#F7EBEA]">
-                        <ContrastIcon width={28} height={28} color="#B23730" />
+                    <div
+                        className={`flex items-center justify-center w-16 h-16 rounded-2xl ${isDark ? 'bg-white/10' : 'bg-[#F7EBEA]'
+                            }`}
+                    >
+                        <ContrastIcon
+                            width={28}
+                            height={28}
+                            color={isDark ? '#FEC300' : '#B23730'}
+                        />
                     </div>
-                    <h1 className="text-[#1D1F2C] font-bebas text-4xl sm:text-5xl lg:text-6xl font-normal leading-[110%] tracking-[1px]">
+                    <h1
+                        className={`font-bebas text-4xl sm:text-5xl lg:text-6xl font-normal leading-[110%] tracking-[1px] ${isDark ? 'text-white' : 'text-[#1D1F2C]'
+                            }`}
+                    >
                         Privacy <span className="text-[#0098E8]">Policy</span>
                     </h1>
-                    <p className="text-[#777980] font-inter text-sm">Last updated: {new Date().getFullYear()}</p>
+                    <p
+                        className={`font-inter text-sm ${isDark ? 'text-white/50' : 'text-[#777980]'
+                            }`}
+                    >
+                        Last updated: {new Date().getFullYear()}
+                    </p>
                 </div>
 
                 {/* Intro */}
-                <div className="p-6 sm:p-8 rounded-2xl bg-[#F8FAFB] border border-[#DFE1E7]">
-                    <p className="text-[#4A4C56] font-inter text-base leading-[160%]">
+                <div
+                    className={`p-6 sm:p-8 rounded-2xl border ${isDark
+                            ? 'border-white/10 bg-white/[0.06]'
+                            : 'border-[#DFE1E7] bg-[#F8FAFB]'
+                        }`}
+                >
+                    <p
+                        className={`font-inter text-base leading-[160%] ${isDark ? 'text-white/70' : 'text-[#4A4C56]'
+                            }`}
+                    >
                         Brightside Car Wash (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our services.
                     </p>
                 </div>
@@ -63,11 +95,23 @@ export function PrivacyPolicyContent() {
                 {/* Sections */}
                 <div className="flex flex-col gap-4">
                     {sections.map((section) => (
-                        <div key={section.title} className="p-6 sm:p-8 rounded-2xl bg-white border border-[#DFE1E7] hover:shadow-md transition-shadow">
-                            <h2 className="text-[#1D1F2C] font-inter text-lg font-semibold mb-3">
+                        <div
+                            key={section.title}
+                            className={`p-6 sm:p-8 rounded-2xl border transition-shadow ${isDark
+                                    ? 'border-white/10 bg-white/[0.04] hover:shadow-lg hover:shadow-white/5'
+                                    : 'border-[#DFE1E7] bg-white hover:shadow-md'
+                                }`}
+                        >
+                            <h2
+                                className={`font-inter text-lg font-semibold mb-3 ${isDark ? 'text-white' : 'text-[#1D1F2C]'
+                                    }`}
+                            >
                                 {section.title}
                             </h2>
-                            <p className="text-[#4A4C56] font-inter text-base leading-[160%]">
+                            <p
+                                className={`font-inter text-base leading-[160%] ${isDark ? 'text-white/60' : 'text-[#4A4C56]'
+                                    }`}
+                            >
                                 {section.content}
                             </p>
                         </div>
@@ -75,10 +119,17 @@ export function PrivacyPolicyContent() {
                 </div>
 
                 {/* Security Banner */}
-                <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-[#006F1F] to-[#004D15] text-center">
+                <div
+                    className={`p-6 sm:p-8 rounded-2xl text-center ${isDark
+                            ? 'bg-gradient-to-r from-[#006F1F]/80 to-[#004D15]/80'
+                            : 'bg-gradient-to-r from-[#006F1F] to-[#004D15]'
+                        }`}
+                >
                     <div className="flex items-center justify-center gap-2 mb-2">
                         <Icon name="contract" width={20} height={20} color="#FFFFFF" />
-                        <h3 className="text-white font-inter text-xl font-semibold">Your Data is Secure</h3>
+                        <h3 className="text-white font-inter text-xl font-semibold">
+                            Your Data is Secure
+                        </h3>
                     </div>
                     <p className="text-white/80 font-inter text-sm">
                         We use industry-standard encryption and security measures to protect your personal information.

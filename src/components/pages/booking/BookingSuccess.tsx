@@ -90,7 +90,7 @@ export function BookingSuccess() {
 
             {/* Back to Home Button */}
             <Link href="/" className="w-full">
-                <Button className="w-full py-4 px-6 justify-center items-center gap-2 rounded bg-[#0098E8] text-white font-inter text-sm">
+                <Button className="w-full py-4 px-6 justify-center items-center gap-2 rounded bg-[#FEC300] text-black font-inter text-sm">
                     Back to Home
                 </Button>
             </Link>

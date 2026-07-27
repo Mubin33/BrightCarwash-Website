@@ -47,7 +47,12 @@ export function GallerySectionWrapper() {
             <div className="flex justify-center w-full">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-[340px_220px] gap-4 w-full max-w-[1280px] xl:max-w-[1320px]">
                     {images.map((img, idx) => (
-                        <GalleryImageCard key={img.id} image={img} idx={idx} />
+                        <GalleryImageCard
+                            key={img.id}
+                            image={img}
+                            idx={idx}
+                            showLabel={idx < 6}
+                        />
                     ))}
                 </div>
             </div>
