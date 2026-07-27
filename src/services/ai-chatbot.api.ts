@@ -39,7 +39,6 @@ export async function createSession(params?: {
     email: params?.email || defaultEmail,
     name: params?.name || "Guest",
   };
-
   const { data } = await apiClient.post<ApiResponse<ChatSessionData>>(
     "/sessions/",
     payload,
