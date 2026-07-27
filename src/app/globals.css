@@ -53,19 +53,36 @@ body {
 
 .custom-scroll {
   scrollbar-width: thin;
-
-  scrollbar-color: #e0e0e000;
+  scrollbar-color: #071f4d transparent;
+  
+  scroll-behavior: smooth;
+  overflow-y: auto;
 }
 
 .custom-scroll::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
+  height: 6px; 
 }
 
 .custom-scroll::-webkit-scrollbar-track {
   background: transparent;
+  border-radius: 10px;
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {
-  background-color: #68b0d4;
-  border-radius: 15px;
+  background: #071f4d;
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: #071f4d; 
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:active {
+  background: #071f4d;
+}
+
+.custom-scroll::-webkit-scrollbar-corner {
+  background: transparent;
 }
