@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE = "https://venue-sitter-catnip.ngrok-free.dev/api/v1";
+const API_BASE = "https://taste-engineer-terms-ends.trycloudflare.com/api/v1";
 
 const apiClient = axios.create({
   baseURL: API_BASE,
