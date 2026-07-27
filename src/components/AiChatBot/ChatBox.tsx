@@ -190,8 +190,8 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
             </>
           ) : (
             <div className="space-y-4">
-              <p className="text-sm text-[#334155]">
-                To start chatting, please enter your name and email.
+              <p className="text-sm text-[#334155] font-bold">
+                To start chatting, please enter your Name and Email.
               </p>
               <div className="space-y-3">
                 <label className="block text-sm font-medium text-[#0F172A]">
