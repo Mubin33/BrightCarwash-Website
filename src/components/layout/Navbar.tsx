@@ -30,7 +30,7 @@ export function Navbar() {
                 <div className="flex mx-auto w-full max-w-[1280px] xl:max-w-[1320px] justify-between items-center gap-4">
                     {/* Logo */}
                     <div className="flex-1">
-                        <Link href="/" onClick={handleLogoClick} className="shrink-0 inline-block">
+                        <Link prefetch={false} href="/" onClick={handleLogoClick} className="shrink-0 inline-block">
                             <Image
                                 src="/images/logo.png"
                                 alt="Bright Carwash"
