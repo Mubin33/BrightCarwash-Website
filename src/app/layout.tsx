@@ -10,6 +10,7 @@ import { Navbar } from '@/components/layout/Navbar';
 import { ConditionalFaq } from '@/components/layout/ConditionalFaq';
 import { TrustedBy } from '@/components/pages/home/TrustedBy/TrustedBy';
 import { ConditionalTrustedBy } from '@/components/layout/ConditionalTrustedBy';
+import AiChatBot from '@/components/AiChatBot/AiChatBot';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const bebasNeue = Bebas_Neue({
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <ThemeProvider>
           <BookingProvider>
+            <AiChatBot />
             <Navbar />
             {children}
             <ConditionalFaq />
