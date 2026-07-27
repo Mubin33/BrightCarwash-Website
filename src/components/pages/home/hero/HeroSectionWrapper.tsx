@@ -169,7 +169,7 @@ export function HeroSectionWrapper() {
               </Link>
             </div>
 
-            {/* <HeroStats ... /> */}
+           
           </div>
 
           {showRightColumn && (

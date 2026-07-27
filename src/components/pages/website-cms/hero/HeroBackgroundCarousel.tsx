@@ -22,14 +22,12 @@ export function HeroBackgroundCarousel({
         (index: number) => {
             if (isTransitioning || index === currentIndex || images.length === 0) return;
 
-            // Clamp index
             const safeIndex = ((index % images.length) + images.length) % images.length;
             if (safeIndex === currentIndex) return;
 
             setIsTransitioning(true);
             setCurrentIndex(safeIndex);
 
-            // Allow the fade transition to complete
             setTimeout(() => {
                 setIsTransitioning(false);
             }, 1000);
@@ -49,7 +47,6 @@ export function HeroBackgroundCarousel({
         goTo(newIndex);
     }, [currentIndex, images.length, goTo, isTransitioning]);
 
-    // Reset interval when index changes (for auto-play)
     const resetInterval = useCallback(() => {
         if (intervalRef.current) {
             clearInterval(intervalRef.current);
@@ -73,7 +70,6 @@ export function HeroBackgroundCarousel({
         };
     }, [resetInterval]);
 
-    // Mark image as loaded
     const handleImageLoad = useCallback((index: number) => {
         setLoadedImages((prev) => {
             const newSet = new Set(prev);
@@ -87,37 +83,41 @@ export function HeroBackgroundCarousel({
     return (
         <div className="relative w-full h-full">
             {/* Images with fade transition */}
-            {images.map((url, idx) => (
-                <div
-                    key={`${url}-${idx}`}
-                    className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
-                    style={{
-                        opacity: idx === currentIndex ? 1 : 0,
-                        zIndex: idx === currentIndex ? 1 : 0,
-                    }}
-                >
-                    <Image
-                        src={url}
-                        alt={`Hero background ${idx + 1}`}
-                        fill
-                        className="object-top"
-                        priority={idx === 0}
-                        sizes="100vw"
-                        quality={90}
-                        unoptimized
-                        onLoad={() => handleImageLoad(idx)}
-                    />
-                    {/* Skeleton while loading */}
-                    {!loadedImages.has(idx) && (
-                        <div className="absolute inset-0 bg-gray-800 animate-pulse" />
-                    )}
-                </div>
-            ))}
+            {images.map((url, idx) => {
+                // First image: object-center, others: object-top
+                const objectPositionClass = idx === 0 ? 'object-center' : 'object-top';
+
+                return (
+                    <div
+                        key={`${url}-${idx}`}
+                        className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+                        style={{
+                            opacity: idx === currentIndex ? 1 : 0,
+                            zIndex: idx === currentIndex ? 1 : 0,
+                        }}
+                    >
+                        <Image
+                            src={url}
+                            alt={`Hero background ${idx + 1}`}
+                            fill
+                            className={`object-cover ${objectPositionClass}`}
+                            priority={idx === 0}
+                            sizes="100vw"
+                            quality={90}
+                            unoptimized
+                            onLoad={() => handleImageLoad(idx)}
+                        />
+                        {/* Skeleton while loading */}
+                        {!loadedImages.has(idx) && (
+                            <div className="absolute inset-0 bg-gray-800 animate-pulse" />
+                        )}
+                    </div>
+                );
+            })}
 
             {/* Controls – visible only if more than one image */}
             {images.length > 1 && (
                 <>
-                    {/* Left Chevron - z-30 to ensure it's above everything */}
                     <button
                         onClick={(e) => {
                             e.preventDefault();
@@ -132,7 +132,6 @@ export function HeroBackgroundCarousel({
                         <ChevronLeft size={24} />
                     </button>
 
-                    {/* Right Chevron - z-30 to ensure it's above everything */}
                     <button
                         onClick={(e) => {
                             e.preventDefault();
@@ -147,7 +146,6 @@ export function HeroBackgroundCarousel({
                         <ChevronRight size={24} />
                     </button>
 
-                    {/* Dots indicator - z-30 to ensure it's above everything */}
                     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex gap-2">
                         {images.map((_, idx) => (
                             <button
@@ -158,8 +156,8 @@ export function HeroBackgroundCarousel({
                                     goTo(idx);
                                 }}
                                 className={`transition-all duration-300 ${idx === currentIndex
-                                    ? 'bg-white w-4 h-2 rounded-full'
-                                    : 'bg-white/50 w-2 h-2 rounded-full hover:bg-white/80'
+                                        ? 'bg-white w-4 h-2 rounded-full'
+                                        : 'bg-white/50 w-2 h-2 rounded-full hover:bg-white/80'
                                     }`}
                                 aria-label={`Go to image ${idx + 1}`}
                                 type="button"

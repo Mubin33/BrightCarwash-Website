@@ -1,9 +1,11 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { Button } from '@/components/ui/Button';
 import { GalleryImageCard } from './GalleryImageCard';
+import { ImageModal } from '@/components/ui/ImageModal';
 import { useGallery } from '@/hooks/useGallery';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Icon } from '@/components/ui/Icon';
@@ -12,6 +14,18 @@ export function GallerySectionWrapper() {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
     const { images, loading } = useGallery();
+    const [selectedImage, setSelectedImage] = useState<typeof images[0] | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleImageClick = (image: typeof images[0]) => {
+        setSelectedImage(image);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setTimeout(() => setSelectedImage(null), 300);
+    };
 
     if (loading) {
         return (
@@ -28,41 +42,50 @@ export function GallerySectionWrapper() {
     if (images.length === 0) return null;
 
     return (
-        <section
-            className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch border ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-white'}`}
-        >
-            <SectionHeader
-                badgeIcon="car"
-                badgeText="Gallery"
-                heading={
-                    <>
-                        Explore{' '}
-                        <span className="">Stunning Moments</span> Captured at{' '}
-                        <span className="text-[#0098E8]">Brightside</span> Gallery
-                    </>
-                }
-                subheading="Experience the beauty of our services through stunning moments captured at Brightside Gallery. Join us and see for yourself!"
-            />
+        <>
+            <section
+                className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch border ${isDark ? 'border-white/20 bg-[#1A1A1A]' : 'border-[#DFE1E7] bg-white'}`}
+            >
+                <SectionHeader
+                    badgeIcon="car"
+                    badgeText="Gallery"
+                    heading={
+                        <>
+                            Explore{' '}
+                            <span className="">Stunning Moments</span> Captured at{' '}
+                            <span className="text-[#0098E8]">Brightside</span> Gallery
+                        </>
+                    }
+                    subheading="Experience the beauty of our services through stunning moments captured at Brightside Gallery. Join us and see for yourself!"
+                />
 
-            <div className="flex justify-center w-full">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-[340px_220px] gap-4 w-full max-w-[1280px] xl:max-w-[1320px]">
-                    {images.map((img, idx) => (
-                        <GalleryImageCard
-                            key={img.id}
-                            image={img}
-                            idx={idx}
-                            showLabel={idx < 6}
-                        />
-                    ))}
+                <div className="flex justify-center w-full">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-[340px_220px] gap-4 w-full max-w-[1280px] xl:max-w-[1320px]">
+                        {images.map((img, idx) => (
+                            <GalleryImageCard
+                                key={img.id}
+                                image={img}
+                                idx={idx}
+                                showLabel={idx < 6}
+                                onClick={() => handleImageClick(img)}
+                            />
+                        ))}
+                    </div>
                 </div>
-            </div>
 
-            <Link href="/gallery">
-                <Button className="flex py-[14px] px-5 justify-center items-center gap-2 rounded-lg bg-[#FEC300] text-black font-inter text-base lg:text-xl hover:bg-[#FEC300]/90">
-                    See more transformation
-                    <Icon name="book" width={20} height={20} color='black' />
-                </Button>
-            </Link>
-        </section>
+                <Link href="/gallery">
+                    <Button className="flex py-[14px] px-5 justify-center items-center gap-2 rounded-lg bg-[#FEC300] text-black font-inter text-base lg:text-xl hover:bg-[#FEC300]/90">
+                        See more transformation
+                        <Icon name="book" width={20} height={20} color='black' />
+                    </Button>
+                </Link>
+            </section>
+
+            <ImageModal
+                image={selectedImage}
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+            />
+        </>
     );
 }

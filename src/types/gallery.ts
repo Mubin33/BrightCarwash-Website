@@ -11,3 +11,10 @@ export interface GalleryResponse {
     message: string;
     data: ApiGalleryImage[];
 }
+
+export interface GalleryImage {
+    id: string;
+    src: string;
+    alt: string;
+    label?: string;
+}
