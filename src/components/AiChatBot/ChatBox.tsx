@@ -202,7 +202,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                     })}
                     {isLoading && (
                       <div className="flex flex-col items-start">
-                        <div className="max-w-full px-4 py-3 bg-[#F8FAFB] text-[#0F172A] rounded-r-3xl rounded-t-3xl">
+                        <div className="max-w-full px-4 py-3 bg-[#F8FAFB] dark:bg-[#092544] text-[#0F172A] rounded-r-3xl rounded-t-3xl">
                           <div className="flex items-center gap-1">
                             <span className="w-1 h-1 bg-[#64748B] rounded-full animate-bounce [animation-delay:-0.3s]" />
                             <span className="w-1 h-1 bg-[#64748B] rounded-full animate-bounce [animation-delay:-0.15s]" />
