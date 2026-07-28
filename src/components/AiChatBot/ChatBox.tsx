@@ -65,6 +65,8 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
     setError(null);
     setIsSessionLoading(true);
 
+    console.log("session message",messages)
+
     try {
       const session = await createSession({
         name: name.trim(),
@@ -277,7 +279,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                 ? "Loading chat session..."
                 : "Type your message here..."
             }
-            className="flex-1 text-sm rounded-xl border border-[#E7ECFF] dark:border-[#383838] p-4 bg-[#F8FAFB] dark:bg-[#092544] text-[#0F172A] outline-none dark:text-[#ffffff] disabled:cursor-not-allowed disabled:opacity-60  placeholder:text-white dark:placeholder:text-[#ffffff]"
+            className="flex-1 text-sm rounded-xl border border-[#E7ECFF] dark:border-[#383838] p-4 bg-[#F8FAFB] dark:bg-[#092544] text-[#0F172A] outline-none dark:text-[#ffffff] disabled:cursor-not-allowed disabled:opacity-60 dark:placeholder:text-[#ffffff]"
           />
           <button
             type="button"
