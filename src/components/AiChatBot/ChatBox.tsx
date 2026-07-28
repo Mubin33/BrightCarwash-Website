@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   X,
   CalendarDays,
@@ -9,7 +9,13 @@ import {
   DollarSign,
   Bot,
 } from "lucide-react";
-import { chat, createSession, ChatMessage } from "@/services/ai-chatbot.api";
+import {
+  chat,
+  createSession,
+  Campaign,
+  ChatMessage,
+} from "@/services/ai-chatbot.api";
+import CampaignImageGallery from "./CampaignImageGallery";
 import BotIcon from "../../../public/icons/custom/BotIcon";
 import CloseIcon from "../../../public/icons/custom/CloseIcon";
 import PlaneIcon from "../../../public/icons/custom/PlaneIcon";
@@ -40,12 +46,14 @@ const quickActions = [
 export default function ChatBox({ onClose }: ChatBoxProps) {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [input, setInput] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSessionLoading, setIsSessionLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const messageInputRef = useRef<HTMLInputElement>(null);
 
   function isValidEmail(value: string) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -72,6 +80,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
       });
       setSessionId(session.session_id);
       setMessages(session.messages ?? []);
+      setCampaigns(session.campaigns ?? []);
     } catch (err) {
       setError("Unable to start chat session. Please try again.");
     } finally {
@@ -117,23 +126,33 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
 
   useEffect(() => {
     const scrollContainer = document.querySelector(".custom-scroll");
+
     if (scrollContainer) {
-      scrollContainer.scrollTop = scrollContainer.scrollHeight;
+      scrollContainer.scrollTo({
+        top: scrollContainer.scrollHeight,
+        behavior: "smooth",
+      });
     }
   }, [messages]);
 
+  useEffect(() => {
+    if (sessionId && !isLoading && !isSessionLoading) {
+      messageInputRef.current?.focus();
+    }
+  }, [sessionId, isLoading, isSessionLoading]);
+
   return (
-    <div className="bg-[#F5F5F5] rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.12)] w-95 h-[75vh] max-w-[95vw] overflow-hidden flex flex-col border border-[#E7ECFF] mb-16 p-2 relative z-50">
+    <div className="bg-[#F5F5F5] dark:bg-[#121212] rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.12)] w-95 h-[75vh] max-w-[95vw] overflow-hidden flex flex-col border border-[#E7ECFF] dark:border-[#222222] p-2 relative z-50">
       <div className="flex items-start justify-between gap-3 bg-[#071F4D] p-3 text-white rounded-xl">
         <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-md bg-[#D33E3E]">
-            <BotIcon />
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#D33E3E] border border-white">
+            <BotIcon className="text-white" />
           </div>
           <div>
-            <p className="text-xl uppercase font-bebas text-[#F8FAFE]/90">
+            <p className="text-xl uppercase font-bebas text-[#F8FAFE]/90 tracking-[0.5px] leading-[100%]">
               Brightside AI
             </p>
-            <p className="text-sm text-[#5FC696] flex items-center text-nowrap">
+            <p className="text-sm text-[#5FC696] flex items-center text-nowrap leading-[100%]">
               <span className="text-2xl">•</span> Online - Typically replies
               instantly
             </p>
@@ -150,7 +169,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
       </div>
 
       <div className="flex-1 overflow-hidden ">
-        <div className="flex h-full flex-col rounded-xl p-4 ">
+        <div className="flex h-full flex-col rounded-xl py-4 ">
           {sessionId ? (
             <>
               <div
@@ -166,49 +185,66 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                     Type a question to begin the conversation.
                   </div>
                 ) : (
-                  messages?.map((message, index) => {
-                    const isUser = message.role === "user";
-                    return (
-                      <div
-                        key={`${message.role}-${index}`}
-                        className={`flex flex-col ${isUser ? "items-end" : "items-start"}`}
-                      >
+                  <>
+                    {messages?.map((message, index) => {
+                      const isUser = message.role === "user";
+                      return (
                         <div
-                          className={`max-w-full px-4 py-3 leading-[160%]  ${
-                            isUser
-                              ? "bg-[#B72B2B] text-white rounded-l-3xl rounded-t-3xl "
-                              : "bg-[#F8FAFB] text-[#0F172A] rounded-r-3xl rounded-t-3xl"
-                          }`}
+                          key={`${message.role}-${index}`}
+                          className={`flex flex-col ${isUser ? "items-end" : "items-start"}`}
                         >
-                          {message?.content ?? ""}
+                          <div
+                            className={`max-w-full px-4 py-3 leading-[160%]  ${
+                              isUser
+                                ? "bg-[#B72B2B] text-white rounded-l-3xl rounded-t-3xl "
+                                : "bg-[#F8FAFB] dark:bg-[#092544] text-[#0F172A] dark:text-white rounded-r-3xl rounded-t-3xl"
+                            }`}
+                            dangerouslySetInnerHTML={{
+                              __html: message?.content ?? "",
+                            }}
+                          />
+                          {!isUser && index === 0 ? (
+                            <CampaignImageGallery campaigns={campaigns} />
+                          ) : null}
+                        </div>
+                      );
+                    })}
+                    {isLoading && (
+                      <div className="flex flex-col items-start">
+                        <div className="max-w-full px-4 py-3 bg-[#F8FAFB] dark:bg-[#092544] text-[#0F172A] rounded-r-3xl rounded-t-3xl">
+                          <div className="flex items-center gap-1">
+                            <span className="w-1 h-1 bg-[#64748B] rounded-full animate-bounce [animation-delay:-0.3s]" />
+                            <span className="w-1 h-1 bg-[#64748B] rounded-full animate-bounce [animation-delay:-0.15s]" />
+                            <span className="w-1 h-1 bg-[#64748B] rounded-full animate-bounce" />
+                          </div>
                         </div>
                       </div>
-                    );
-                  })
+                    )}
+                  </>
                 )}
               </div>
             </>
           ) : (
-            <div className="space-y-4">
-              <p className="text-sm text-[#334155] font-bold">
+            <div className="space-y-4 border border-[#E7ECFF] dark:border-[#383838] p-3 rounded-xl">
+              <p className="text-sm text-[#334155] dark:text-white font-bold">
                 To start chatting, please enter your Name and Email.
               </p>
               <div className="space-y-3">
-                <label className="block text-sm font-medium text-[#0F172A]">
+                <label className="block text-sm font-medium text-[#0F172A] dark:text-white">
                   Name
                   <input
                     value={name}
                     onChange={(event) => setName(event.target.value)}
-                    className="mt-2 w-full rounded-3xl border border-[#E2E8F0] bg-[#F8FAFB] px-4 py-3 text-sm outline-none transition focus:border-[#0F172A]"
+                    className="mt-2 w-full rounded-3xl border border-[#E2E8F0] dark:border-none bg-[#F8FAFB] dark:bg-[#092544] px-4 py-3 text-sm outline-none transition focus:border-[#0F172A] dark:placeholder:text-white"
                     placeholder="Your name"
                   />
                 </label>
-                <label className="block text-sm font-medium text-[#0F172A]">
+                <label className="block text-sm font-medium text-[#0F172A] dark:text-white">
                   Email
                   <input
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
-                    className="mt-2 w-full rounded-3xl border border-[#E2E8F0] bg-[#F8FAFB] px-4 py-3 text-sm outline-none transition focus:border-[#0F172A]"
+                    className="mt-2 w-full rounded-3xl border border-[#E2E8F0] dark:border-none bg-[#F8FAFB] dark:bg-[#092544]  px-4 py-3 text-sm outline-none transition focus:border-[#0F172A] dark:placeholder:text-white"
                     placeholder="you@example.com"
                   />
                 </label>
@@ -226,10 +262,10 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
         </div>
       </div>
 
-      <div className=" bg-white p-3 rounded-xl border border-[#E7ECFF]">
+      <div className=" bg-[#F8FAFB] dark:bg-[#00060e] p-3 rounded-xl border border-[#E7ECFF] dark:border-[#222222]">
         {error ? <p className="mb-3 text-sm text-[#B91C1C]">{error}</p> : null}
         {/* Quick Actions */}
-        <div className="mb-2 grid gap-2 sm:grid-cols-2">
+        <div className="mb-2 flex flex-wrap gap-2">
           {quickActions.map((action) => {
             const Icon = action.icon;
             return (
@@ -237,9 +273,9 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                 key={action.label}
                 type="button"
                 onClick={() => handleQuickAction(action.value)}
-                className="flex items-center gap-2 rounded-[10px] border border-[#DCE7FF] bg-[#E6F5FD] p-4 text-left text-xs text-[#33ADED] font-semibold transition hover:bg-[#E2E8F0]"
+                className="w-fit flex items-center gap-2 rounded-[10px] border border-[#DCE7FF] dark:border-[#1d1d1d] bg-[#E6F5FD] dark:bg-[#092544] px-4 py-2 text-left text-xs text-[#33ADED] font-semibold transition hover:bg-[#E2E8F0] dark:hover:bg-[#092544]"
               >
-                <Icon size={16} className="text-[#071f4d]" />
+                <Icon size={16} className="text-[#33ADED]" />
                 {action.label}
               </button>
             );
@@ -247,6 +283,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
         </div>
         <div className="flex items-center gap-2  ">
           <input
+            ref={messageInputRef}
             value={input}
             onChange={(event) => setInput(event.target.value)}
             onKeyDown={(event) => {
@@ -261,13 +298,13 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                 ? "Loading chat session..."
                 : "Type your message here..."
             }
-            className="flex-1 text-sm rounded-xl border border-[#E7ECFF] p-4 bg-[#F8FAFB] text-[#0F172A] outline-none placeholder:text-[#94A3B8] disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex-1 text-sm rounded-xl border border-[#E7ECFF] dark:border-[#383838] p-4 bg-[#F8FAFB] dark:bg-[#092544] text-[#0F172A] outline-none dark:text-[#ffffff] disabled:cursor-not-allowed disabled:opacity-60 dark:placeholder:text-[#ffffff]"
           />
           <button
             type="button"
             onClick={handleSend}
             disabled={!input.trim() || isSessionLoading || isLoading}
-            className="inline-flex p-2.5 items-center justify-center rounded-xl hover:bg-[#0F172A] text-[#0F172A] hover:text-white transition disabled:cursor-not-allowed disabled:opacity-40 duration-300 cursor-pointer"
+            className="inline-flex p-2.5 items-center justify-center rounded-xl hover:bg-[#0F172A] text-[#0F172A] hover:text-white transition disabled:cursor-not-allowed disabled:opacity-40 duration-300 cursor-pointer dark:bg-[#092544] dark:text-[#d1d1d1] dark:hover:bg-[#eeeeee] dark:hover:text-[#092544]"
             aria-label="Send message"
           >
             <PlaneIcon />

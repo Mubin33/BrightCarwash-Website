@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_BASE = "https://venue-sitter-catnip.ngrok-free.dev/api/v1";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_AI_URL;
+console.log(API_BASE);
 
 const apiClient = axios.create({
   baseURL: API_BASE,
@@ -12,6 +13,16 @@ export interface ChatMessage {
   content: string;
 }
 
+export interface Campaign {
+  id: number;
+  title: string;
+  description?: string;
+  image: string | null;
+  is_active: boolean;
+  start_date?: string | null;
+  end_date?: string | null;
+}
+
 export interface ChatSessionData {
   session_id: string;
   user_id: string;
@@ -21,6 +32,7 @@ export interface ChatSessionData {
   question_type?: string;
   answer?: string;
   messages?: ChatMessage[];
+  campaigns?: Campaign[];
 }
 
 interface ApiResponse<T> {
