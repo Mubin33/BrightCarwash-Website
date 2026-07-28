@@ -22,7 +22,11 @@ export function WhyBrightside() {
                         <div className='whitespace-nowrap'>WE DON'T JUST WASH CAR WE</div>  TAKE <span className='text-[#FEC300]'>PRIDE IN EVERY</span> ONE
                     </>
                 }
-                subheading=""
+                subheading={[
+                    'As a veteran-owned business, attention to detail isnt optional — its our standard. We',
+                    <br key="break" />,
+                    'treat every car like its our own, because thats what we were trained to do.'
+                ]}
             />
 
             <div className="flex flex-col lg:flex-row items-start gap-6 w-full max-w-[1280px] xl:max-w-[1320px] ">

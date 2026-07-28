@@ -22,8 +22,8 @@ export function WhoWeAre() {
 
             <div className="flex flex-col lg:flex-row items-start gap-6 w-full max-w-[1280px] xl:max-w-[1320px] ">
                 {/* Left */}
-                <div className="flex flex-col items-start gap-6 flex-1 self-stretch">
-                    <p className="text-[#4A4C56] dark:text-white/80 text-justify font-inter text-lg sm:text-xl font-normal leading-[160%] self-stretch">
+                <div className="flex flex-col items-start gap-6 flex-1 self-stretch ">
+                    <p className="text-[#4A4C56] dark:text-white/80 text-justify font-inter text-lg sm:text-xl font-normal leading-[160%] self-stretch bg-white dark:bg-[#333] p-4 rounded-xl">
                         At Brightside Car Wash, we&apos;re more than just a car wash — we&apos;re a locally owned, community-focused business committed to providing exceptional full-service car care in Naperville. As a veteran-owned and family-operated company, we take pride in delivering outstanding service, treating every customer with respect, and creating a welcoming experience for families, commuters, and businesses alike.
                     </p>
                     <div className="flex p-4 flex-col justify-end items-center gap-2.5 flex-1 self-stretch rounded-lg relative overflow-hidden min-h-[300px]">
@@ -48,7 +48,7 @@ export function WhoWeAre() {
                             sizes="(max-width: 1024px) 100vw, 50vw"
                         />
                     </div>
-                    <p className="text-[#4A4C56] dark:text-white/80 text-justify font-inter text-lg sm:text-xl font-normal leading-[160%] self-stretch">
+                    <p className="text-[#4A4C56] dark:text-white/80 text-justify font-inter text-lg sm:text-xl font-normal leading-[160%] self-stretch bg-white dark:bg-[#333] p-4 rounded-xl">
                         With two convenient Naperville locations, Brightside offers professional full-service washes, unlimited membership options, detailing services, and fleet solutions designed to keep vehicles looking their best. Our goal is simple: provide quality service, build lasting relationships, and become the car wash our community trusts most.
                     </p>
                 </div>

@@ -20,7 +20,11 @@ export function LeadershipSection() {
                         <div className='whitespace-nowrap'>MEET THE PEOPLE <span className="">BEHIND</span></div>BRIGHTSIDE <span className='text-[#FEC300]'>CARWASH</span>
                     </>
                 }
-                subheading=""
+                subheading={[
+                    'Two leaders, one mission, veteran - grade standards',
+                    <br key="break" />,
+                    'and genuine care for every customer we serve.'
+                ]}
             />
             <div>
                 <div className={`flex flex-col lg:flex-row items-start gap-6 w-full max-w-[1280px] xl:max-w-[1320px]`}>
