@@ -127,7 +127,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
   }, [messages]);
 
   return (
-    <div className="bg-[#F5F5F5] rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.12)] w-95 h-[75vh] max-w-[95vw] overflow-hidden flex flex-col border border-[#E7ECFF] mb-16 p-2 relative z-50">
+    <div className="bg-[#F5F5F5] rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.12)] w-95 h-[75vh] max-w-[95vw] overflow-hidden flex flex-col border border-[#E7ECFF] p-2 relative z-50">
       <div className="flex items-start justify-between gap-3 bg-[#071F4D] p-3 text-white rounded-xl">
         <div className="flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#D33E3E] border border-white">
