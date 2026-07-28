@@ -42,8 +42,10 @@ export default function CampaignImageGallery({
 
   return (
     <>
-      <div className="mt-3 flex flex-wrap gap-2" aria-label="Campaign images">
+      <div className="mt-3 grid grid-cols-2 gap-2" aria-label="Campaign images">
         {visibleCampaigns.map((campaign, index) => {
+          const isLastVisibleImage = index === visibleCampaigns.length - 1;
+
           return (
             <button
               key={campaign.id}
@@ -57,19 +59,14 @@ export default function CampaignImageGallery({
                 alt={campaign.title}
                 className="h-full w-full object-cover"
               />
+              {isLastVisibleImage && remainingCount > 0 ? (
+                <span className="absolute inset-0 flex items-center justify-center bg-[#071F4D]/75 text-sm font-bold text-white">
+                  +{remainingCount}
+                </span>
+              ) : null}
             </button>
           );
         })}
-        {remainingCount > 0 ? (
-          <button
-            type="button"
-            onClick={() => setSelectedIndex(MAX_VISIBLE_IMAGES)}
-            className="flex h-16 w-16 items-center justify-center rounded-lg bg-[#071F4D] text-sm font-bold text-white transition hover:bg-[#0B2A63] focus:outline-none focus:ring-2 focus:ring-[#33ADED]"
-            aria-label={`View ${remainingCount} more campaign images`}
-          >
-            +{remainingCount}
-          </button>
-        ) : null}
       </div>
 
       {selectedCampaign ? (
@@ -77,7 +74,7 @@ export default function CampaignImageGallery({
           role="dialog"
           aria-modal="true"
           aria-label={`Campaign image: ${selectedCampaign.title}`}
-          className="fixed inset-0 z-60 flex items-center justify-center bg-black/80 p-4"
+          className="fixed inset-0 z-60 flex items-center justify-center bg-black/80 p-4 rounded-xl"
           onClick={() => setSelectedIndex(null)}
         >
           <div
