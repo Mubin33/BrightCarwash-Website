@@ -162,7 +162,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
       </div>
 
       <div className="flex-1 overflow-hidden ">
-        <div className="flex h-full flex-col rounded-xl p-4 ">
+        <div className="flex h-full flex-col rounded-xl py-4 ">
           {sessionId ? (
             <>
               <div
@@ -192,7 +192,9 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                                 ? "bg-[#B72B2B] text-white rounded-l-3xl rounded-t-3xl "
                                 : "bg-[#F8FAFB] dark:bg-[#092544] text-[#0F172A] dark:text-white rounded-r-3xl rounded-t-3xl"
                             }`}
-                            dangerouslySetInnerHTML={{ __html: message?.content ?? "" }}
+                            dangerouslySetInnerHTML={{
+                              __html: message?.content ?? "",
+                            }}
                           />
                           {!isUser && index === 0 ? (
                             <CampaignImageGallery campaigns={campaigns} />
@@ -216,7 +218,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
               </div>
             </>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-4 border border-[#E7ECFF] dark:border-[#383838] p-3 rounded-xl">
               <p className="text-sm text-[#334155] dark:text-white font-bold">
                 To start chatting, please enter your Name and Email.
               </p>
@@ -253,7 +255,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
         </div>
       </div>
 
-        <div className=" bg-[#F8FAFB] dark:bg-[#00060e] p-3 rounded-xl border border-[#E7ECFF] dark:border-[#222222]">
+      <div className=" bg-[#F8FAFB] dark:bg-[#00060e] p-3 rounded-xl border border-[#E7ECFF] dark:border-[#222222]">
         {error ? <p className="mb-3 text-sm text-[#B91C1C]">{error}</p> : null}
         {/* Quick Actions */}
         <div className="mb-2 grid gap-2 sm:grid-cols-2">
