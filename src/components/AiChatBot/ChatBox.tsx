@@ -117,8 +117,12 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
 
   useEffect(() => {
     const scrollContainer = document.querySelector(".custom-scroll");
+
     if (scrollContainer) {
-      scrollContainer.scrollTop = scrollContainer.scrollHeight;
+      scrollContainer.scrollTo({
+        top: scrollContainer.scrollHeight,
+        behavior: "smooth",
+      });
     }
   }, [messages]);
 
@@ -126,14 +130,14 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
     <div className="bg-[#F5F5F5] rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.12)] w-95 h-[75vh] max-w-[95vw] overflow-hidden flex flex-col border border-[#E7ECFF] mb-16 p-2 relative z-50">
       <div className="flex items-start justify-between gap-3 bg-[#071F4D] p-3 text-white rounded-xl">
         <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-md bg-[#D33E3E]">
-            <BotIcon />
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#D33E3E] border border-white">
+            <BotIcon className="text-white" />
           </div>
           <div>
-            <p className="text-xl uppercase font-bebas text-[#F8FAFE]/90">
+            <p className="text-xl uppercase font-bebas text-[#F8FAFE]/90 tracking-[0.5px] leading-[100%]">
               Brightside AI
             </p>
-            <p className="text-sm text-[#5FC696] flex items-center text-nowrap">
+            <p className="text-sm text-[#5FC696] flex items-center text-nowrap leading-[100%]">
               <span className="text-2xl">•</span> Online - Typically replies
               instantly
             </p>
@@ -179,9 +183,10 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                               ? "bg-[#B72B2B] text-white rounded-l-3xl rounded-t-3xl "
                               : "bg-[#F8FAFB] text-[#0F172A] rounded-r-3xl rounded-t-3xl"
                           }`}
-                        >
-                          {message?.content ?? ""}
-                        </div>
+                          dangerouslySetInnerHTML={{
+                            __html: message?.content ?? "",
+                          }}
+                        />
                       </div>
                     );
                   })
@@ -237,9 +242,9 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                 key={action.label}
                 type="button"
                 onClick={() => handleQuickAction(action.value)}
-                className="flex items-center gap-2 rounded-[10px] border border-[#DCE7FF] bg-[#E6F5FD] p-4 text-left text-xs text-[#33ADED] font-semibold transition hover:bg-[#E2E8F0]"
+                className="flex items-center gap-2 rounded-[10px] border border-[#DCE7FF] bg-[#E6F5FD] px-4 py-2 text-left text-xs text-[#33ADED] font-semibold transition hover:bg-[#E2E8F0]"
               >
-                <Icon size={16} className="text-[#071f4d]" />
+                <Icon size={16} className="text-[#33ADED]" />
                 {action.label}
               </button>
             );
