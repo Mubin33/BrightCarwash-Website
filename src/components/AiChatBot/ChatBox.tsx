@@ -265,7 +265,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
       <div className=" bg-[#F8FAFB] dark:bg-[#00060e] p-3 rounded-xl border border-[#E7ECFF] dark:border-[#222222]">
         {error ? <p className="mb-3 text-sm text-[#B91C1C]">{error}</p> : null}
         {/* Quick Actions */}
-        <div className="mb-2 grid gap-2 sm:grid-cols-2">
+        <div className="mb-2 flex flex-wrap gap-2">
           {quickActions.map((action) => {
             const Icon = action.icon;
             return (
