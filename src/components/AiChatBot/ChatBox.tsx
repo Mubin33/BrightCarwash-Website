@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   X,
   CalendarDays,
@@ -53,6 +53,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSessionLoading, setIsSessionLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const messageInputRef = useRef<HTMLInputElement>(null);
 
   function isValidEmail(value: string) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -133,6 +134,12 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
       });
     }
   }, [messages]);
+
+  useEffect(() => {
+    if (sessionId && !isLoading && !isSessionLoading) {
+      messageInputRef.current?.focus();
+    }
+  }, [sessionId, isLoading, isSessionLoading]);
 
   return (
     <div className="bg-[#F5F5F5] dark:bg-[#121212] rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.12)] w-95 h-[75vh] max-w-[95vw] overflow-hidden flex flex-col border border-[#E7ECFF] dark:border-[#222222] p-2 relative z-50">
@@ -276,6 +283,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
         </div>
         <div className="flex items-center gap-2  ">
           <input
+            ref={messageInputRef}
             value={input}
             onChange={(event) => setInput(event.target.value)}
             onKeyDown={(event) => {
