@@ -9,7 +9,13 @@ import {
   DollarSign,
   Bot,
 } from "lucide-react";
-import { chat, createSession, ChatMessage } from "@/services/ai-chatbot.api";
+import {
+  chat,
+  createSession,
+  Campaign,
+  ChatMessage,
+} from "@/services/ai-chatbot.api";
+import CampaignImageGallery from "./CampaignImageGallery";
 import BotIcon from "../../../public/icons/custom/BotIcon";
 import CloseIcon from "../../../public/icons/custom/CloseIcon";
 import PlaneIcon from "../../../public/icons/custom/PlaneIcon";
@@ -40,6 +46,7 @@ const quickActions = [
 export default function ChatBox({ onClose }: ChatBoxProps) {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [input, setInput] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -65,8 +72,6 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
     setError(null);
     setIsSessionLoading(true);
 
-    console.log("session message",messages)
-
     try {
       const session = await createSession({
         name: name.trim(),
@@ -74,6 +79,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
       });
       setSessionId(session.session_id);
       setMessages(session.messages ?? []);
+      setCampaigns(session.campaigns ?? []);
     } catch (err) {
       setError("Unable to start chat session. Please try again.");
     } finally {
@@ -188,6 +194,9 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                             }`}
                             dangerouslySetInnerHTML={{ __html: message?.content ?? "" }}
                           />
+                          {!isUser && index === 0 ? (
+                            <CampaignImageGallery campaigns={campaigns} />
+                          ) : null}
                         </div>
                       );
                     })}

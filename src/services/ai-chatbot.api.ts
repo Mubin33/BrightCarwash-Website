@@ -13,6 +13,16 @@ export interface ChatMessage {
   content: string;
 }
 
+export interface Campaign {
+  id: number;
+  title: string;
+  description?: string;
+  image: string | null;
+  is_active: boolean;
+  start_date?: string | null;
+  end_date?: string | null;
+}
+
 export interface ChatSessionData {
   session_id: string;
   user_id: string;
@@ -22,6 +32,7 @@ export interface ChatSessionData {
   question_type?: string;
   answer?: string;
   messages?: ChatMessage[];
+  campaigns?: Campaign[];
 }
 
 interface ApiResponse<T> {
