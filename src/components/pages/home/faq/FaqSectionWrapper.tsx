@@ -13,7 +13,7 @@ export function FaqSectionWrapper() {
     if (loading) {
         return (
             <section className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-[#FFF7E6]'}`}>
-                <div className="flex flex-col gap-4 w-full max-w-[872px]">
+                <div className="flex flex-col gap-4 w-full max-w-218">
                     {[...Array(4)].map((_, i) => (
                         <div key={i} className="h-20 bg-gray-100 dark:bg-white/10 animate-pulse rounded-lg" />
                     ))}
@@ -33,19 +33,19 @@ export function FaqSectionWrapper() {
                         <span className={`text-5xl font-normal font-['Bebas_Neue'] leading-[55.68px] ${isDark ? 'text-white' : 'text-gray-900'}`}>
                             Everything You Need to Know{' '}
                         </span>
-                        <span className="text-[#FEC300] text-5xl font-normal font-['Bebas_Neue'] leading-[55.68px]">
+                        <span className="text-[#0098e8] text-5xl font-normal font-['Bebas_Neue'] leading-[55.68px]">
                             Before You
                         </span>
                         <span className={`text-5xl font-normal font-['Bebas_Neue'] leading-[55.68px] ${isDark ? 'text-white' : 'text-gray-900'}`}>
                             {' '}Visit
                         </span>
                     </div>
-                    <div className={`w-full max-w-[666px] text-center text-base font-normal font-['Inter'] leading-6 ${isDark ? 'text-white/60' : 'text-neutral-600'}`}>
+                    <div className={`w-full max-w-166.5 text-center text-base font-normal font-['Inter'] leading-6 ${isDark ? 'text-white/60' : 'text-neutral-600'}`}>
                         From memberships to detailing appointments, here&apos;s what our Naperville neighbors ask most. No guesswork, just honest answers from a team that genuinely cares.
                     </div>
                 </div>
             </div>
-            <div className="w-full max-w-[872px] flex flex-col justify-start items-start gap-4">
+            <div className="w-full max-w-218 flex flex-col justify-start items-start gap-4">
                 {faqs.map((item) => (
                     <FaqAccordion key={item.id} item={item} />
                 ))}
