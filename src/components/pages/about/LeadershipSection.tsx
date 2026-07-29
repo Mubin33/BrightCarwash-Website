@@ -11,7 +11,7 @@ export function LeadershipSection() {
     const isDark = theme === 'dark';
 
     return (
-        <section className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-[#F5F5F5]'}`}>
+        <section className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-[#ffffff]'}`}>
             <SectionHeader
                 badgeIcon="car"
                 badgeText="LEADERSHIP"
@@ -27,11 +27,11 @@ export function LeadershipSection() {
                 ]}
             />
             <div>
-                <div className={`flex flex-col lg:flex-row items-start gap-6 w-full max-w-[1280px] xl:max-w-[1320px]`}>
+                <div className={`flex flex-col lg:flex-row items-start gap-6 w-full max-w-330`}>
                     {/* Card 1 - Jonathan Roldan */}
-                    <div className={`flex-1 rounded-lg outline-none inline-flex flex-col justify-start items-start gap-6 ${isDark ? 'bg-[#252019] text-white' : 'bg-[#F8FAFB] text-[#1D1F2C] border-1 border-[#DFE1E7]'}`}>
-                        <div className={`${isDark ? 'border-1 border-[#FEC300]' : ''} self-stretch p-6 bg-sky-950 rounded-lg flex flex-col justify-start items-start gap-4 overflow-hidden `}>
-                            <div className="relative w-full h-[548px] rounded-lg overflow-hidden">
+                    <div className={`flex-1 rounded-lg outline-none inline-flex flex-col justify-start items-start gap-6 ${isDark ? 'bg-[#252019] text-white' : 'bg-[#F8FAFB] text-[#1D1F2C] border border-[#DFE1E7]'}`}>
+                        <div className={`${isDark ? 'border border-[#FEC300]' : ''} self-stretch p-6 bg-sky-950 rounded-lg flex flex-col justify-start items-start gap-4 overflow-hidden `}>
+                            <div className="relative w-full h-137 rounded-lg overflow-hidden">
                                 <Image
                                     src="/images/CEO-image.png"
                                     alt="Jonathan Roldan - Founder & CEO"
@@ -66,9 +66,9 @@ export function LeadershipSection() {
                     </div>
 
                     {/* Card 2 - Elizabeth Quinn */}
-                    <div className={`flex-1 rounded-lg outline-none inline-flex flex-col justify-start items-start gap-6 ${isDark ? 'bg-[#252019] text-white' : 'bg-[#F8FAFB] text-[#1D1F2C] border-1 border-[#DFE1E7]'}`}>
-                        <div className={`${isDark ? 'border-1 border-[#FEC300]' : ''} self-stretch p-6 bg-sky-950 rounded-lg flex flex-col justify-start items-start gap-4 overflow-hidden `}>
-                            <div className="relative w-full h-[548px] rounded-lg overflow-hidden">
+                    <div className={`flex-1 rounded-lg outline-none inline-flex flex-col justify-start items-start gap-6 ${isDark ? 'bg-[#252019] text-white' : 'bg-[#F8FAFB] text-[#1D1F2C] border border-[#DFE1E7]'}`}>
+                        <div className={`${isDark ? 'border border-[#FEC300]' : ''} self-stretch p-6 bg-sky-950 rounded-lg flex flex-col justify-start items-start gap-4 overflow-hidden `}>
+                            <div className="relative w-full h-137 rounded-lg overflow-hidden">
                                 <Image
                                     src="/images/elizabeth.png"
                                     alt="Brightside Leadership Team"
