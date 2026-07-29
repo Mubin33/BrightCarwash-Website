@@ -31,7 +31,7 @@ export function AboutSectionWrapper() {
   return (
     <section className="bg-[#092544] py-10 xl:py-20 px-4 sm:px-6 lg:px-10">
       <div className="max-w-330 mx-auto flex flex-col lg:flex-row gap-6 xl:gap-12">
-        <div className="w-full lg:w-120 shrink-0 relative h-164 lg:h-164 p-4">
+        <div className="w-full lg:w-120 shrink-0 relative h-100 lg:h-164 p-4">
           <Image
             src="/images/CEO-image.png"
             alt="Brightside car wash service"
@@ -54,7 +54,7 @@ export function AboutSectionWrapper() {
               </p>
             </div>
           </div>
-          <div className="h-14 w-14 flex items-center justify-center absolute -top-6 -left-6 bg-[#FEC300] rounded-full border-4 border-[#092544]">
+          <div className="h-14 w-14 flex items-center justify-center absolute -top-4 -left-4 sm:-top-6 sm:-left-6 bg-[#FEC300] rounded-full border-4 border-[#092544]">
             <BatchIcon />
           </div>
         </div>

@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Icon } from '@/components/ui/Icon';
 import { useTheme } from '@/contexts/ThemeContext';
 import type { TestimonialData } from '@/data/testimonials';
+import StarIcon2 from '../../../../../public/icons/custom/StarIcon2';
 
 interface Props {
     testimonial: TestimonialData;
@@ -13,14 +14,14 @@ export function TestimonialCard({ testimonial }: Props) {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
 
-    const height = testimonial.tall ? 'h-[576px]' : 'h-[276px]';
+    const height = testimonial.tall ? 'h-[568px]' : 'h-[276px]';
 
     return (
         <div
             className={`flex w-full ${height} p-4 flex-col justify-between items-start rounded-lg border ${testimonial.featured
                 ? 'border-[#DFE1E7]/20 bg-[#092544]'
                 : isDark
-                    ? 'border-white/20 bg-white/[0.12]'
+                    ? 'border-white/20 bg-white/12'
                     : 'border-[#DFE1E7] bg-[#F8FAFB]'
                 }`}
         >
@@ -34,12 +35,8 @@ export function TestimonialCard({ testimonial }: Props) {
                 />
                 <div className="flex items-center gap-1">
                     {[1, 2, 3, 4, 5].map((star) => (
-                        <Icon
+                        <StarIcon2
                             key={star}
-                            name="star"
-                            width={16}
-                            height={16}
-                            color={star <= testimonial.rating ? '#FAAD14' : '#E8E8E8'}
                         />
                     ))}
                 </div>
