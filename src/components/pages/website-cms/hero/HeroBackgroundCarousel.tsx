@@ -156,8 +156,8 @@ export function HeroBackgroundCarousel({
                                     goTo(idx);
                                 }}
                                 className={`transition-all duration-300 ${idx === currentIndex
-                                        ? 'bg-white w-4 h-2 rounded-full'
-                                        : 'bg-white/50 w-2 h-2 rounded-full hover:bg-white/80'
+                                    ? 'bg-white w-4 h-2 rounded-full'
+                                    : 'bg-white/50 w-2 h-2 rounded-full hover:bg-white/80'
                                     }`}
                                 aria-label={`Go to image ${idx + 1}`}
                                 type="button"
