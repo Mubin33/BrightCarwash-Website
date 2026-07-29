@@ -6,23 +6,21 @@ import { membershipData } from '@/data/membership';
 export function MembershipSectionWrapper() {
     return (
         <section className="flex py-16 sm:py-20 px-4 md:px-6 lg:px-10 justify-center items-center gap-6 self-stretch bg-[#092544]">
-            <div className="flex flex-col lg:flex-row items-center gap-6 w-full max-w-[1280px] xl:max-w-[1320px]">
+            <div className="flex flex-col lg:flex-row items-center gap-6 w-full max-w-[1320px]">
                 {/* Left Image */}
-                <div className="hidden lg:flex w-[300px] xl:w-[397px] self-stretch rounded-lg relative overflow-hidden shrink-0">
+                <div className="hidden lg:flex w-[300px] xl:w-[397px] h-[270px] self-stretch rounded-lg relative overflow-hidden shrink-0">
                     <Image
                         src={membershipData.image}
                         alt="Heroes Membership"
                         fill
-                        className="object-cover"
-                        sizes="(max-width: 1280px) 300px, 397px"
-                        style={{ aspectRatio: '78/53' }}
+                        className="object-cover "
                     />
                 </div>
 
                 {/* Right Content */}
                 <div className="flex flex-col items-start gap-4 flex-1">
                     {/* Badge */}
-                    <div className="flex py-[6px] px-3 items-center gap-2 rounded-lg border border-white/20 bg-white/[0.12]">
+                    <div className="flex py-1.5 px-3 items-center gap-2 rounded-lg bg-[#B23730] border border-[#DCA3A0] ">
                         <Icon name={membershipData.badgeIcon} width={16} height={16} color="#FFFFFF" />
                         <span className="text-white font-inter text-sm font-normal leading-[112%]">
                             {membershipData.badgeText}
@@ -30,7 +28,7 @@ export function MembershipSectionWrapper() {
                     </div>
 
                     {/* Heading */}
-                    <h2 className="text-[#FEC300] font-bebas text-4xl lg:text-5xl font-normal leading-[100%]">
+                    <h2 className="text-[#FEC300] font-bebas text-4xl lg:text-[3.5rem] font-normal leading-[100%]">
                         {membershipData.heading}
                     </h2>
 
