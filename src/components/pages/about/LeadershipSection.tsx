@@ -17,7 +17,7 @@ export function LeadershipSection() {
                 badgeText="LEADERSHIP"
                 heading={
                     <>
-                        <div className='whitespace-nowrap'>MEET THE PEOPLE <span className="">BEHIND</span></div>BRIGHTSIDE <span className='text-[#FEC300]'>CARWASH</span>
+                        <div className='whitespace-nowrap'>MEET THE PEOPLE <span className="">BEHIND</span></div>BRIGHTSIDE <span className='text-[#0098E8]'>CARWASH</span>
                     </>
                 }
                 subheading={[

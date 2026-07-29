@@ -19,7 +19,7 @@ export function WhyBrightside() {
                 badgeText="Why Brightside"
                 heading={
                     <>
-                        <div className='whitespace-nowrap'>WE DON'T JUST WASH CAR WE</div>  TAKE <span className='text-[#FEC300]'>PRIDE IN EVERY</span> ONE
+                        <div className='whitespace-nowrap'>WE DON'T JUST WASH CAR WE</div>  TAKE <span className='text-[#0098E8]'>PRIDE IN EVERY</span> ONE
                     </>
                 }
                 subheading={[

@@ -14,7 +14,7 @@ export function WhoWeAre() {
                 badgeText="Who We Are"
                 heading={
                     <>
-                        <div className='whitespace-nowrap'>TRUSTED CAR CARE EXPERTS LOCATED</div>  IN NAPERVILLE,<span className='text-[#FEC300]'> READY TO HELP</span>
+                        <div className='whitespace-nowrap'>TRUSTED CAR CARE EXPERTS LOCATED</div>  IN NAPERVILLE,<span className='text-[#0098E8]'> READY TO HELP</span>
                     </>
                 }
                 subheading=""

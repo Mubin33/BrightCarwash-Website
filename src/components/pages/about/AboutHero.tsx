@@ -13,7 +13,7 @@ export function AboutHero() {
                 heading={
                     <>
                         <span className="text-white">Community-driven,</span>
-                        <span className="text-[#FEC300]">built on </span>
+                        <span className="text-[#0098E8]">built on </span>
                         <span className="">service and </span>
                         <span className="">support.</span>
                     </>
