@@ -29,10 +29,9 @@ export function AboutSectionWrapper() {
     },
   ];
   return (
-    <section className="bg-[#092544] py-10 xl:py-20 px-4">
-      <div className="max-w-350 mx-auto flex flex-col xl:flex-row gap-6 xl:gap-12">
-        {/* Fixed: Added wrapper div with proper sizing */}
-        <div className="w-full xl:w-125 shrink-0 relative h-164 p-4">
+    <section className="bg-[#092544] py-10 xl:py-20 px-4 sm:px-6 lg:px-10">
+      <div className="max-w-330 mx-auto flex flex-col lg:flex-row gap-6 xl:gap-12">
+        <div className="w-full lg:w-120 shrink-0 relative h-164 lg:h-164 p-4">
           <Image
             src="/images/CEO-image.png"
             alt="Brightside car wash service"
@@ -40,17 +39,17 @@ export function AboutSectionWrapper() {
             className="object-cover rounded-xl"
           />
 
-          <div className="w-[94%] absolute bottom-4 left-4 right-0 flex flex-col items-center justify-center bg-[#092544] border-b-3  border-l-3 border-t border-r border-[#FEC300] rounded-lg p-6">
-            <div className="flex justify-between items-center gap-4 w-full">
+          <div className=" absolute bottom-4 left-4 right-4 flex flex-col items-center justify-center bg-[#092544] border-b-3  border-l-3 border-t border-r border-[#FEC300] rounded-lg p-3 sm:p-6">
+            <div className="flex justify-between items-center sm:gap-4 w-full">
               <div>
-                <h1 className="text-2xl lg:text-[2rem] uppercase font-bebas text-white tracking-[0.64px]">
+                <h1 className="text-xl lg:text-[1.7rem] uppercase font-bebas text-white tracking-[0.64px]">
                   Jonathan Roldan
                 </h1>
                 <p className="text-xs lg:text-sm text-[#FEC300]">
                   Founder & Naperville Resident
                 </p>
               </div>
-              <p className="text-xs lg:text-sm px-3 py-1.5 text-white font-semibold bg-[#B23730] uppercase rounded-full leading-[112%] tracking-[2px]">
+              <p className="text-[0.5rem] sm:text-xs px-3 py-1.5 text-white font-semibold bg-[#B23730] uppercase rounded-full leading-[112%] tracking-[0.5px] sm:tracking-[2px]">
                 US. ARMY veteran
               </p>
             </div>
@@ -77,7 +76,7 @@ export function AboutSectionWrapper() {
               BUILT ON INTEGRITY, <br className="hidden lg:block" /> DISCIPLINE
               & SERVICE.
             </h1>
-            <p className="text-white/80 font-inter text-sm sm:text-lg dark:text-white/80 font-normal leading-[160%] self-stretch">
+            <p className="text-white/80 font-inter text-sm xl:text-lg dark:text-white/80 font-normal leading-[160%] self-stretch">
               At Brightside Car Wash, we're more than just a car wash we're a
               locally owned, community-focused business committed to providing
               exceptional full-service car care in Naperville. As a

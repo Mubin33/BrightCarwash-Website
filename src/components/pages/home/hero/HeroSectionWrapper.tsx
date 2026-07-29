@@ -81,7 +81,7 @@ export function HeroSectionWrapper() {
   return (
     <section
       id="hero"
-      className="relative flex pt-50 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-2.5 self-stretch overflow-hidden min-h-185"
+      className="relative flex pt-50 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-2.5 self-stretch overflow-hidden min-h-screen"
     >
       {/* Background Carousel */}
       <div className="absolute inset-0 z-0">
