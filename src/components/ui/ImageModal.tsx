@@ -59,10 +59,7 @@ export function ImageModal({ image, isOpen, onClose }: ImageModalProps) {
                 </button>
 
                 <div className="relative w-full h-[80vh] rounded-xl overflow-hidden bg-black/20">
-                    {/* Debug: Show image src */}
-                    <div className="absolute top-2 left-2 z-20 text-white text-xs bg-black/50 p-2 rounded">
-                        src: {image.src}
-                    </div>
+
 
                     <Image
                         src={image.src}

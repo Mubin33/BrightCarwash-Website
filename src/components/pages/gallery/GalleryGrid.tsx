@@ -89,7 +89,7 @@ export function GalleryGrid() {
                 </div>
             </section>
 
-            {/* 👈 Image Modal */}
+
             <ImageModal
                 image={selectedImage}
                 isOpen={isModalOpen}

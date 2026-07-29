@@ -12,8 +12,6 @@ interface Props {
 }
 
 export function GalleryImageCard({ image, height, showLabel = true, onClick }: Props) {
-    // Debug log
-    console.log('GalleryImageCard image:', image);
 
     return (
         <div
