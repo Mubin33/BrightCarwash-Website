@@ -7,7 +7,7 @@ interface QuoteParams {
     email: string;
     phone: string;
     vehicle_type: string;
-    date?: string; // ✅ Add date as optional string
+    date?: string; 
 }
 
 export async function submitQuote(params: QuoteParams) {
