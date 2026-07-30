@@ -7,7 +7,13 @@ import { toast } from 'react-toastify';
 export function useQuote() {
     const [loading, setLoading] = useState(false);
 
-    const sendQuote = async (params: { full_name: string; email: string; phone: string; vehicle_type: string }) => {
+    const sendQuote = async (params: {
+        full_name: string;
+        email: string;
+        phone: string;
+        vehicle_type: string;
+        date?: string; // ✅ Add date as optional string
+    }) => {
         setLoading(true);
         try {
             await submitQuote(params);
