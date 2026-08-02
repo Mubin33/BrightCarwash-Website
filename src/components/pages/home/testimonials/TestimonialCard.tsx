@@ -75,7 +75,6 @@ export function TestimonialCard({ testimonial }: Props) {
                             className="object-cover"
                             sizes="42px"
                             unoptimized
-
                         />
                     ) : (
                         <span className="text-white font-inter text-sm font-medium">
