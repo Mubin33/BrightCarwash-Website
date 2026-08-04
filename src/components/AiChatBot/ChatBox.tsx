@@ -54,6 +54,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
   const [isSessionLoading, setIsSessionLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const messageInputRef = useRef<HTMLInputElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   function isValidEmail(value: string) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -125,15 +126,27 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
   // scroll to bottom on message change
 
   useEffect(() => {
-    const scrollContainer = document.querySelector(".custom-scroll");
+    const scrollContainer = messagesContainerRef.current;
 
     if (scrollContainer) {
-      scrollContainer.scrollTo({
-        top: scrollContainer.scrollHeight,
-        behavior: "smooth",
+      requestAnimationFrame(() => {
+        const lastMessage =
+          scrollContainer.lastElementChild as HTMLElement | null;
+
+        if (lastMessage) {
+          lastMessage.scrollIntoView({
+            behavior: "smooth",
+            block: "end",
+          });
+        } else {
+          scrollContainer.scrollTo({
+            top: scrollContainer.scrollHeight,
+            behavior: "smooth",
+          });
+        }
       });
     }
-  }, [messages]);
+  }, [messages, sessionId, isLoading]);
 
   useEffect(() => {
     if (sessionId && !isLoading && !isSessionLoading) {
@@ -142,7 +155,9 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
   }, [sessionId, isLoading, isSessionLoading]);
 
   return (
-    <div className="bg-[#F5F5F5] dark:bg-[#121212] rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.12)] w-95 h-[75vh] max-w-[95vw] overflow-hidden flex flex-col border border-[#E7ECFF] dark:border-[#222222] p-2 relative z-50">
+    <div
+      className={`bg-[#F5F5F5] dark:bg-[#121212] rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.12)] w-95 max-w-[95vw] ${sessionId ? "h-[75vh]" : "h-auto"} max-h-[75vh] overflow-hidden flex flex-col border border-[#E7ECFF] dark:border-[#222222] p-2 relative z-50`}
+    >
       <div className="flex items-start justify-between gap-3 bg-[#071F4D] p-3 text-white rounded-xl">
         <div className="flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#D33E3E] border border-white">
@@ -152,7 +167,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
             <p className="text-xl uppercase font-bebas text-[#F8FAFE]/90 tracking-[0.5px] leading-[100%]">
               Brightside AI
             </p>
-            <p className="text-sm text-[#5FC696] flex items-center text-nowrap leading-[100%]">
+            <p className="text-[10px] lg:text-sm text-[#5FC696] flex items-center text-nowrap leading-[100%]">
               <span className="text-2xl">•</span> Online - Typically replies
               instantly
             </p>
@@ -168,13 +183,13 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
         </button>
       </div>
 
-      <div className="flex-1 overflow-hidden ">
-        <div className="flex h-full flex-col rounded-xl py-4 ">
+      <div className="flex-1 min-h-0 overflow-hidden">
+        <div className="flex h-full min-h-0 flex-col rounded-xl py-4">
           {sessionId ? (
             <>
               <div
-                className="flex- space-y-6 overflow-y-auto custom-scroll  pr-2"
-                style={{ maxHeight: "calc(100% )" }}
+                ref={messagesContainerRef}
+                className="flex-1 min-h-0 space-y-6 overflow-y-auto custom-scroll pr-2 pb-2"
               >
                 {isSessionLoading ? (
                   <div className="text-sm text-[#64748B]">
@@ -261,56 +276,59 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
           )}
         </div>
       </div>
-
-      <div className=" bg-[#F8FAFB] dark:bg-[#00060e] p-3 rounded-xl border border-[#E7ECFF] dark:border-[#222222]">
-        {error ? <p className="mb-3 text-sm text-[#B91C1C]">{error}</p> : null}
-        {/* Quick Actions */}
-        <div className="mb-2 flex flex-wrap gap-2">
-          {quickActions.map((action) => {
-            const Icon = action.icon;
-            return (
-              <button
-                key={action.label}
-                type="button"
-                onClick={() => handleQuickAction(action.value)}
-                className="w-fit flex items-center gap-2 rounded-[10px] border border-[#DCE7FF] dark:border-[#1d1d1d] bg-[#E6F5FD] dark:bg-[#092544] px-4 py-2 text-left text-xs text-[#33ADED] font-semibold transition hover:bg-[#E2E8F0] dark:hover:bg-[#092544]"
-              >
-                <Icon size={16} className="text-[#33ADED]" />
-                {action.label}
-              </button>
-            );
-          })}
-        </div>
-        <div className="flex items-center gap-2  ">
-          <input
-            ref={messageInputRef}
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                event.preventDefault();
-                handleSend();
+      {sessionId ? (
+        <div className="shrink-0 bg-[#F8FAFB] dark:bg-[#00060e] p-3 rounded-xl border border-[#E7ECFF] dark:border-[#222222]">
+          {error ? (
+            <p className="mb-3 text-sm text-[#B91C1C]">{error}</p>
+          ) : null}
+          {/* Quick Actions */}
+          <div className="mb-2 flex flex-wrap gap-2">
+            {quickActions.map((action) => {
+              const Icon = action.icon;
+              return (
+                <button
+                  key={action.label}
+                  type="button"
+                  onClick={() => handleQuickAction(action.value)}
+                  className="w-fit flex items-center gap-2 rounded-[10px] border border-[#DCE7FF] dark:border-[#1d1d1d] bg-[#E6F5FD] dark:bg-[#092544] px-4 py-2 text-left text-xs text-[#33ADED] font-semibold transition hover:bg-[#E2E8F0] dark:hover:bg-[#092544]"
+                >
+                  <Icon size={16} className="text-[#33ADED]" />
+                  {action.label}
+                </button>
+              );
+            })}
+          </div>
+          <div className="flex items-center gap-2  ">
+            <input
+              ref={messageInputRef}
+              value={input}
+              onChange={(event) => setInput(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  handleSend();
+                }
+              }}
+              disabled={isSessionLoading || isLoading}
+              placeholder={
+                isSessionLoading
+                  ? "Loading chat session..."
+                  : "Type your message here..."
               }
-            }}
-            disabled={isSessionLoading || isLoading}
-            placeholder={
-              isSessionLoading
-                ? "Loading chat session..."
-                : "Type your message here..."
-            }
-            className="flex-1 text-sm rounded-xl border border-[#E7ECFF] dark:border-[#383838] p-4 bg-[#F8FAFB] dark:bg-[#092544] text-[#0F172A] outline-none dark:text-[#ffffff] disabled:cursor-not-allowed disabled:opacity-60 dark:placeholder:text-[#ffffff]"
-          />
-          <button
-            type="button"
-            onClick={handleSend}
-            disabled={!input.trim() || isSessionLoading || isLoading}
-            className="inline-flex p-2.5 items-center justify-center rounded-xl hover:bg-[#0F172A] text-[#0F172A] hover:text-white transition disabled:cursor-not-allowed disabled:opacity-40 duration-300 cursor-pointer dark:bg-[#092544] dark:text-[#d1d1d1] dark:hover:bg-[#eeeeee] dark:hover:text-[#092544]"
-            aria-label="Send message"
-          >
-            <PlaneIcon />
-          </button>
+              className="flex-1 text-sm rounded-xl border border-[#E7ECFF] dark:border-[#383838] p-4 bg-[#F8FAFB] dark:bg-[#092544] text-[#0F172A] outline-none dark:text-[#ffffff] disabled:cursor-not-allowed disabled:opacity-60 dark:placeholder:text-[#ffffff]"
+            />
+            <button
+              type="button"
+              onClick={handleSend}
+              disabled={!input.trim() || isSessionLoading || isLoading}
+              className="inline-flex p-2.5 items-center justify-center rounded-xl hover:bg-[#0F172A] text-[#0F172A] hover:text-white transition disabled:cursor-not-allowed disabled:opacity-40 duration-300 cursor-pointer dark:bg-[#092544] dark:text-[#d1d1d1] dark:hover:bg-[#eeeeee] dark:hover:text-[#092544]"
+              aria-label="Send message"
+            >
+              <PlaneIcon />
+            </button>
+          </div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 }
