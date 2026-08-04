@@ -24,6 +24,10 @@ export function Navbar() {
         }
     };
 
+    const closeMobileMenu = () => {
+        setMobileMenuOpen(false);
+    };
+
     return (
         <>
             <header className="whitespace-nowrap sticky top-0 flex w-full px-4 md:px-6 lg:px-10 py-3 md:py-4 items-center gap-3 md:gap-4 z-50  border-b border-[#DFE1E7]/10  bg-[#092544] dark:backdrop-blur-md">
@@ -72,24 +76,24 @@ export function Navbar() {
                 <div className="fixed inset-0 z-[100] lg:hidden">
                     <div
                         className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-                        onClick={() => setMobileMenuOpen(false)}
+                        onClick={closeMobileMenu}
                     />
                     <div className={`absolute top-0 right-0 h-full w-[300px] max-w-[80vw] shadow-xl transition-transform duration-300 flex flex-col p-6 gap-6 ${isDark ? 'bg-[#1A1A1A]' : 'bg-white'}`}>
                         <div className="flex justify-between items-center">
                             <span className={`font-bebas-neue text-2xl ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>Menu</span>
                             <button
                                 type="button"
-                                onClick={() => setMobileMenuOpen(false)}
+                                onClick={closeMobileMenu}
                                 className={`flex p-2 items-center justify-center w-10 h-10 rounded-lg border ${isDark ? 'border-white/20 bg-white/10' : 'border-[#DFE1E7] bg-white'}`}
                             >
                                 <Icon name="close" width={20} height={20} color={isDark ? '#FFFFFF' : '#1B1B1B'} />
                             </button>
                         </div>
                         <div className="flex flex-col gap-4">
-                            <NavItems />
+                            <NavItems onLinkClick={closeMobileMenu} />
                         </div>
                         <div className={`pt-4 border-t ${isDark ? 'border-white/10' : 'border-[#DFE1E7]'}`}>
-                            <BookNowButton />
+                            <BookNowButton onClick={closeMobileMenu} />
                         </div>
                     </div>
                 </div>

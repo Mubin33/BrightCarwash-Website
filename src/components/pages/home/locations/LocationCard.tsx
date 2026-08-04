@@ -18,7 +18,7 @@ export function LocationCard({ location }: Props) {
                 }`}
         >
             {/* Header */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 self-stretch">
+            <div className="flex justify-between items-center gap-3 self-stretch">
                 <h3
                     className={`font-bebas text-2xl sm:text-3xl lg:text-4xl font-normal leading-[121%] ${isDark ? 'text-white' : 'text-[#1D1F2C]'
                         }`}
@@ -26,7 +26,7 @@ export function LocationCard({ location }: Props) {
                     {location.name}
                 </h3>
                 <a href={location.directionsUrl} target="_blank" rel="noopener noreferrer" className="sm:shrink-0">
-                    <Button className="flex py-2.5 sm:py-3 px-4 sm:px-5 justify-center items-center gap-2 rounded-lg bg-[#0098E8] text-white font-inter text-xs sm:text-sm hover:bg-[#0079D4]">
+                    <Button className="!py-2 sm:!py-2 px-4 sm:px-5 justify-center items-center gap-2 rounded-lg bg-[#0098E8] text-white font-inter text-xs sm:text-sm hover:bg-[#0079D4]">
                         <Icon name="book" width={24} height={24} color="white" />
                     </Button>
                 </a>

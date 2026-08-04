@@ -81,7 +81,7 @@ export function HeroBackgroundCarousel({
     if (images.length === 0) return null;
 
     return (
-        <div className="relative w-full h-full">
+        <div className="relative w-full h-full z-999">
             {/* Images with fade transition */}
             {images.map((url, idx) => {
                 // First image: object-center, others: object-top

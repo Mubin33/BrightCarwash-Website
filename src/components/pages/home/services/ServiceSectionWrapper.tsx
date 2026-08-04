@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
@@ -34,6 +34,24 @@ export function ServicesSectionWrapper() {
   const handleRemoveFromCart = (service: ServiceData) => {
     removeService(service.id);
   };
+
+  // State to track screen size
+  const [isTablet, setIsTablet] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1280);
+    };
+
+    handleResize(); // Set initial value
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Determine how many services to show
+  const servicesToShow = isTablet ? services.slice(0, 2) : services.slice(0, 3);
+
   if (loading) {
     return (
       <section
@@ -54,7 +72,7 @@ export function ServicesSectionWrapper() {
   return (
     <section
       id="services"
-      className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center  self-stretch ${isDark ? "bg-[#1a1712]" : "bg-[#fff8ee]"}`}
+      className={`flex py-5 px-4 md:px-6 lg:px-10 flex-col justify-center items-center self-stretch ${isDark ? "bg-[#1a1712]" : "bg-[#fff8ee]"}`}
     >
       <div className="pb-12">
         <ServicesHeader />
@@ -72,8 +90,8 @@ export function ServicesSectionWrapper() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 w-full max-w-7xl xl:max-w-330  cursor-pointer">
-        {services.slice(0, 3).map((service) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 w-full max-w-7xl xl:max-w-330 cursor-pointer">
+        {servicesToShow.map((service) => (
           <ServiceCard
             key={service.id}
             service={service}
