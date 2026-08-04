@@ -81,7 +81,7 @@ export function HeroSectionWrapper() {
   return (
     <section
       id="hero"
-      className="relative flex pt-50 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-2.5 self-stretch overflow-hidden min-h-screen"
+      className="relative flex px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-2.5 self-stretch overflow-hidden min-h-[85vh]"
     >
       {/* Background Carousel */}
       <div className="absolute inset-0 z-0">
@@ -99,9 +99,9 @@ export function HeroSectionWrapper() {
       <div className="absolute inset-0 bg-black/30 z-10 pointer-events-none" />
 
       {/* Content – z-20 to sit above overlay */}
-      <div className="relative z-20 w-full max-w-7xl xl:max-w-330 ">
+      <div className="relative z-20 w-full max-w-7xl xl:max-w-330 py-6 md:py-8 lg:py-10 pb-16 md:pb-8 lg:pb-10">
         <div
-          className={`flex flex-col ${showRightColumn ? "lg:flex-row" : ""} items-center gap-8 md:gap-10 lg:gap-12 xl:gap-14 w-full ${showRightColumn ? "" : alignment}`}
+          className={`flex flex-col ${showRightColumn ? "lg:flex-row" : ""} items-center gap-8 md:gap-10 lg:gap-12 xl:gap-14 ${showRightColumn ? "" : alignment}`}
         >
           <div
             className={`flex flex-col gap-6 sm:gap-8 lg:gap-12 ${showRightColumn ? "flex-1" : "w-full"}`}
@@ -120,7 +120,7 @@ export function HeroSectionWrapper() {
                 </span>
               </div>
 
-              <h1 className="font-bebas w-full text-5xl sm:text-6xl md:text-7xl lg:text-[56px] xl:text-[64px]  font-normal leading-[110%] sm:leading-[120%] tracking-[1px] sm:tracking-[2px]">
+              <h1 className="font-bebas w-full text-5xl sm:text-6xl md:text-7xl lg:text-[56px] xl:text-[64px] font-normal leading-[110%] sm:leading-[120%] tracking-[1px] sm:tracking-[2px]">
                 <span className="text-white">
                   {data.main_headline.split("\n")[0] || ""}
                 </span>
@@ -168,8 +168,6 @@ export function HeroSectionWrapper() {
                 </Button>
               </Link>
             </div>
-
-           
           </div>
 
           {showRightColumn && (
