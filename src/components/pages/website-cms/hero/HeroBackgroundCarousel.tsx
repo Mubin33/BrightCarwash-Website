@@ -124,7 +124,7 @@ export function HeroBackgroundCarousel({
                             e.stopPropagation();
                             goPrev();
                         }}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-black/40 hover:bg-black/60 text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50 hover:scale-110 transform"
+                        className="absolute left-1 top-1/2 -translate-y-1/2 z-99999 p-2 rounded-full bg-black/40 hover:bg-black/60 text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50 hover:scale-110 transform"
                         aria-label="Previous image"
                         type="button"
                         disabled={isTransitioning}
@@ -138,7 +138,7 @@ export function HeroBackgroundCarousel({
                             e.stopPropagation();
                             goNext();
                         }}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-2 rounded-full bg-black/40 hover:bg-black/60 text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50 hover:scale-110 transform"
+                        className="absolute right-1 top-1/2 -translate-y-1/2 z-99999 p-2 rounded-full bg-black/40 hover:bg-black/60 text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50 hover:scale-110 transform"
                         aria-label="Next image"
                         type="button"
                         disabled={isTransitioning}

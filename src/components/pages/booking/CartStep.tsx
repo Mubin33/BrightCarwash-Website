@@ -64,7 +64,7 @@ export function CartStep({ onProceed }: Props) {
                         <button
                             type="button"
                             onClick={() => removeService(service.id)}
-                            className="p-2 rounded-lg hover:bg-[#FFE6E6] transition-colors shrink-0"
+                            className="p-2 rounded-lg hover:bg-[#FFE6E6] transition-colors shrink-0 cursor-pointer"
                         >
                             <Icon name="delete" width={16} height={16} color="#FF4345" />
                         </button>

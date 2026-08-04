@@ -90,7 +90,7 @@ export function ServicesSectionWrapper() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 w-full max-w-7xl xl:max-w-330 cursor-pointer">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 w-full max-w-7xl xl:max-w-330">
         {servicesToShow.map((service) => (
           <ServiceCard
             key={service.id}
