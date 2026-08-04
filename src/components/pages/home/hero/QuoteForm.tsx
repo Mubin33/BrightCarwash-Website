@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState } from "react";
 import { VehicleCard } from "./VehicleCard";
@@ -51,11 +51,15 @@ export function QuoteForm() {
       return;
     }
 
+    // ✅ Convert Date to ISO string (YYYY-MM-DD)
+    const formattedDate = date ? date.toISOString().split('T')[0] : undefined;
+
     const success = await sendQuote({
       full_name: name,
       email,
       phone: `+1${phone.replace(/\D/g, "")}`,
       vehicle_type: selectedVehicle!,
+      date: formattedDate, // ✅ Send as ISO string
     });
     if (success) {
       setName("");

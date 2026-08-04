@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
+import type { BookingValidationErrors } from '@/types/booking';
 
 interface Props {
     locationId: string;
@@ -9,7 +10,8 @@ interface Props {
     disabled?: boolean;
     agreed: boolean;
     onAgreeChange: (value: boolean) => void;
-    errors?: { agreed?: string };
+    errors?: BookingValidationErrors;
+    submitted?: boolean;
 }
 
 declare global {
@@ -24,19 +26,17 @@ const APP_ID = process.env.NEXT_PUBLIC_SQUARE_APP_ID || '';
 let squareScriptLoading = false;
 let squareScriptLoaded = false;
 
-export function SquarePaymentForm({ locationId, onNonceReady, disabled, agreed, onAgreeChange, errors = {} }: Props) {
+export function SquarePaymentForm({ locationId, onNonceReady, disabled, agreed, onAgreeChange, errors = {}, submitted = false }: Props) {
     const [loaded, setLoaded] = useState(false);
     const [error, setError] = useState('');
     const cardRef = useRef<HTMLDivElement>(null);
     const cardInstanceRef = useRef<any>(null);
-    // Tracks whether THIS component instance has already run initSquare
     const initializedRef = useRef(false);
     const { theme } = useTheme();
     const isDark = theme === 'dark';
 
     useEffect(() => {
         if (!APP_ID || !locationId) return;
-        // Guard: only initialize once per component mount
         if (initializedRef.current) return;
 
         async function initSquare() {
@@ -44,7 +44,6 @@ export function SquarePaymentForm({ locationId, onNonceReady, disabled, agreed, 
             if (initializedRef.current) return;
             initializedRef.current = true;
 
-            // Destroy any previous card instance attached to this component
             if (cardInstanceRef.current) {
                 try {
                     await cardInstanceRef.current.destroy();
@@ -52,7 +51,6 @@ export function SquarePaymentForm({ locationId, onNonceReady, disabled, agreed, 
                 cardInstanceRef.current = null;
             }
 
-            // Clear any leftover iframes from a previous attach
             if (cardRef.current) {
                 cardRef.current.innerHTML = '';
             }
@@ -80,7 +78,6 @@ export function SquarePaymentForm({ locationId, onNonceReady, disabled, agreed, 
                         },
                     },
                 });
-                console.log('Square card instance created:', card);
                 await card.attach(cardRef.current!);
                 cardInstanceRef.current = card;
                 setLoaded(true);
@@ -141,22 +138,15 @@ export function SquarePaymentForm({ locationId, onNonceReady, disabled, agreed, 
         if (!cardInstanceRef.current) return null;
         const result = await cardInstanceRef.current.tokenize();
 
-        console.log('Square tokenize result:', JSON.stringify(result, null, 2));
-
         if (result.status === 'OK') {
             onNonceReady(result.token);
             setError('');
             return result.token;
         }
-        const errors: any[] = result.errors ?? [];
-        const firstDetail = errors
+        const tokenizeErrors: any[] = result.errors ?? [];
+        const firstDetail = tokenizeErrors
             .map((e: any) => e.detail || e.message)
             .filter(Boolean)[0];
-
-        console.warn(
-            'Square tokenize errors:',
-            errors.length ? errors : `status=${result.status}`
-        );
 
         setError(firstDetail || `Payment failed (${result.status}). Check card details and try again.`);
         return null;
@@ -170,6 +160,8 @@ export function SquarePaymentForm({ locationId, onNonceReady, disabled, agreed, 
             delete (window as any).__tokenizeCard;
         };
     }, [loaded]);
+
+    const hasAgreedError = submitted && errors?.agreed;
 
     return (
         <div className={`flex p-4 sm:p-6 flex-col items-center gap-6 self-stretch rounded-xl border ${isDark ? 'border-white/20 bg-white/[0.04]' : 'border-[#DFE1E7] bg-white'
@@ -190,7 +182,6 @@ export function SquarePaymentForm({ locationId, onNonceReady, disabled, agreed, 
                 </p>
 
                 <label className="flex items-center gap-2 self-stretch cursor-pointer">
-                    {errors?.agreed && <span className="text-[#FF4345] font-inter text-xs mt-1">{errors.agreed}</span>}
                     <input
                         type="checkbox"
                         checked={agreed}
@@ -206,7 +197,8 @@ export function SquarePaymentForm({ locationId, onNonceReady, disabled, agreed, 
                         {' '}of Brightside Car Wash.
                     </span>
                 </label>
+                {hasAgreedError && <span className="text-[#FF4345] font-inter text-xs mt-1">{errors?.agreed}</span>}
             </div>
         </div>
     );
-} 
+}

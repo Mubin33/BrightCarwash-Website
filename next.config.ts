@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'tooth-availability-coupons-stays.trycloudflare.com',
+        hostname: 'universities-domestic-technologies-broker.trycloudflare.com',
         pathname: '/**',
       },
       {
@@ -15,10 +15,10 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
       {
-        protocol: 'https',
-        hostname: 'bridge-decent-operational-power.trycloudflare.com',
-        pathname: '/**',
-      },
+        protocol: "https",
+        hostname: "karma-usr-dealers-msg.trycloudflare.com",
+        pathname: "/**",
+      }
     ],
   },
 };

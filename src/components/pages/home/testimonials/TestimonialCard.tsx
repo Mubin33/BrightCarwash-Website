@@ -69,12 +69,12 @@ export function TestimonialCard({ testimonial }: Props) {
                 <div className="w-[42px] h-[42px] rounded-full relative overflow-hidden shrink-0 bg-[#0098E8] flex items-center justify-center">
                     {testimonial.image ? (
                         <Image
-                            src={testimonial.image}
+                            src={`${testimonial.image}`}
                             alt={testimonial.name}
                             fill
                             className="object-cover"
                             sizes="42px"
-
+                            unoptimized
                         />
                     ) : (
                         <span className="text-white font-inter text-sm font-medium">

@@ -42,7 +42,7 @@ export function NewsCard({ article, loading = false }: Props) {
                     }`}
             >
                 <div className="h-[246px] self-stretch relative overflow-hidden rounded-t-xl">
-                    <Image src={article.image} alt={article.title} fill className="object-cover" sizes="100vw" />
+                    <Image src={article.image} alt={article.title} fill className="object-cover" sizes="100vw" unoptimized />
                 </div>
                 <div className="flex flex-col items-start gap-3 p-4 pt-0">
                     <div className="flex items-center gap-2">

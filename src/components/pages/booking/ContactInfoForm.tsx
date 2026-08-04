@@ -2,33 +2,21 @@
 
 import { useTheme } from '@/contexts/ThemeContext';
 import { toast } from 'react-toastify';
-
-interface ContactValues {
-    firstName: string;
-    lastName: string;
-    phone: string;
-    email: string;
-    note: string;
-}
+import type { ContactValues, BookingValidationErrors } from '@/types/booking';
 
 interface Props {
     values: ContactValues;
     onChange: (values: ContactValues) => void;
     disabled?: boolean;
-    errors?: {
-        firstName?: string;
-        lastName?: string;
-        phone?: string;
-        email?: string;
-        agreed?: string;
-    };
+    errors?: BookingValidationErrors;
+    submitted?: boolean;
 }
 
-export function ContactInfoForm({ values, onChange, disabled, errors = {} }: Props) {
+export function ContactInfoForm({ values, onChange, disabled, errors = {}, submitted = false }: Props) {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
 
-    const inputClass = `flex py-4 px-4 justify-between items-center self-stretch rounded-lg border font-inter text-sm outline-none focus:border-[#0098E8] placeholder-[#A5A5AB] ${isDark
+    const inputClass = `flex py-4 px-4 justify-between items-center self-stretch rounded-lg border font-inter text-sm outline-none focus:border-[#0098E8] placeholder-[#A5A5AB] transition-colors ${isDark
         ? 'border-white/20 bg-white/[0.08] text-white placeholder:text-white/30'
         : 'border-[#DFE1E7] bg-[#F8FAFB] text-[#1D1F2C]'
         }`;
@@ -59,6 +47,14 @@ export function ContactInfoForm({ values, onChange, disabled, errors = {} }: Pro
         update('phone', formatted);
     };
 
+    const hasError = (field: keyof ContactValues): boolean => {
+        return submitted && !!errors[field as keyof BookingValidationErrors];
+    };
+
+    const getError = (field: keyof ContactValues): string | undefined => {
+        return submitted ? errors[field as keyof BookingValidationErrors] : undefined;
+    };
+
     return (
         <div className={`flex p-4 sm:p-6 flex-col items-center gap-6 self-stretch rounded-xl border ${isDark ? 'border-white/20 bg-white/[0.04]' : 'border-[#DFE1E7] bg-white'}`}>
             <div className="flex flex-col items-start gap-6 self-stretch">
@@ -67,30 +63,72 @@ export function ContactInfoForm({ values, onChange, disabled, errors = {} }: Pro
                     <div className="flex flex-col sm:flex-row items-start gap-4 self-stretch">
                         <div className="w-full flex flex-col items-start gap-2 flex-1">
                             <label className={labelClass}>First Name</label>
-                            <input type="text" placeholder="John" className={`${inputClass} ${errors.firstName ? 'border-[#FF4345]' : ''}`} value={values.firstName} onChange={(e) => handleNameChange('firstName', e.target.value)} onKeyDown={handleNameKeyDown} disabled={disabled} />
-                            {errors.firstName && <span className={errorClass}>{errors.firstName}</span>}
+                            <input
+                                id="contact-firstName"
+                                type="text"
+                                placeholder="John"
+                                className={`${inputClass} ${hasError('firstName') ? 'border-[#FF4345]' : ''}`}
+                                value={values.firstName}
+                                onChange={(e) => handleNameChange('firstName', e.target.value)}
+                                onKeyDown={handleNameKeyDown}
+                                disabled={disabled}
+                            />
+                            {getError('firstName') && <span className={errorClass}>{getError('firstName')}</span>}
                         </div>
                         <div className="w-full flex flex-col items-start gap-2 flex-1">
                             <label className={labelClass}>Last Name</label>
-                            <input type="text" placeholder="Doe" className={`${inputClass} ${errors.lastName ? 'border-[#FF4345]' : ''}`} value={values.lastName} onChange={(e) => handleNameChange('lastName', e.target.value)} onKeyDown={handleNameKeyDown} disabled={disabled} />
-                            {errors.lastName && <span className={errorClass}>{errors.lastName}</span>}
+                            <input
+                                id="contact-lastName"
+                                type="text"
+                                placeholder="Doe"
+                                className={`${inputClass} ${hasError('lastName') ? 'border-[#FF4345]' : ''}`}
+                                value={values.lastName}
+                                onChange={(e) => handleNameChange('lastName', e.target.value)}
+                                onKeyDown={handleNameKeyDown}
+                                disabled={disabled}
+                            />
+                            {getError('lastName') && <span className={errorClass}>{getError('lastName')}</span>}
                         </div>
                     </div>
                     <div className="flex flex-col sm:flex-row items-start gap-4 self-stretch">
                         <div className="w-full flex flex-col items-start gap-2 flex-1">
                             <label className={labelClass}>Phone Number</label>
-                            <input type="tel" placeholder="(555) 000-0000" className={`${inputClass} ${errors.phone ? 'border-[#FF4345]' : ''}`} value={values.phone} onChange={(e) => handlePhoneChange(e.target.value)} maxLength={14} disabled={disabled} />
-                            {errors.phone && <span className={errorClass}>{errors.phone}</span>}
+                            <input
+                                id="contact-phone"
+                                type="tel"
+                                placeholder="(555) 000-0000"
+                                className={`${inputClass} ${hasError('phone') ? 'border-[#FF4345]' : ''}`}
+                                value={values.phone}
+                                onChange={(e) => handlePhoneChange(e.target.value)}
+                                maxLength={14}
+                                disabled={disabled}
+                            />
+                            {getError('phone') && <span className={errorClass}>{getError('phone')}</span>}
                         </div>
                         <div className="w-full flex flex-col items-start gap-2 flex-1">
                             <label className={labelClass}>Email Address</label>
-                            <input type="email" placeholder="john@example.com" className={`${inputClass} ${errors.email ? 'border-[#FF4345]' : ''}`} value={values.email} onChange={(e) => update('email', e.target.value)} onBlur={(e) => { const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; if (e.target.value && !emailRegex.test(e.target.value)) { toast.warning('Please enter a valid email address'); } }} disabled={disabled} />
-                            {errors.email && <span className={errorClass}>{errors.email}</span>}
+                            <input
+                                id="contact-email"
+                                type="email"
+                                placeholder="john@example.com"
+                                className={`${inputClass} ${hasError('email') ? 'border-[#FF4345]' : ''}`}
+                                value={values.email}
+                                onChange={(e) => update('email', e.target.value)}
+                                onBlur={(e) => { const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; if (e.target.value && !emailRegex.test(e.target.value)) { toast.warning('Please enter a valid email address'); } }}
+                                disabled={disabled}
+                            />
+                            {getError('email') && <span className={errorClass}>{getError('email')}</span>}
                         </div>
                     </div>
                     <div className="flex flex-col items-start gap-2 self-stretch">
                         <label className={labelClass}>Appointment note (optional)</label>
-                        <textarea placeholder="Add any special requests..." className={`${inputClass} h-[127px] items-start resize-none`} value={values.note} onChange={(e) => update('note', e.target.value)} disabled={disabled} />
+                        <textarea
+                            placeholder="Add any special requests..."
+                            className={`${inputClass} h-[127px] items-start resize-none`}
+                            value={values.note}
+                            onChange={(e) => update('note', e.target.value)}
+                            disabled={disabled}
+                        />
                     </div>
                 </div>
             </div>
