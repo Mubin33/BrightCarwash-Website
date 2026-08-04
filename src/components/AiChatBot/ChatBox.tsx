@@ -290,7 +290,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                   key={action.label}
                   type="button"
                   onClick={() => handleQuickAction(action.value)}
-                  className="w-fit flex items-center gap-2 rounded-[10px] border border-[#DCE7FF] dark:border-[#1d1d1d] bg-[#E6F5FD] dark:bg-[#092544] px-4 py-2 text-left text-xs text-[#33ADED] font-semibold transition hover:bg-[#E2E8F0] dark:hover:bg-[#092544]"
+                  className="w-fit flex items-center gap-2 rounded-[10px] border border-[#DCE7FF] dark:border-[#1d1d1d] bg-[#E6F5FD] dark:bg-[#092544] px-4 py-2 text-left text-[10px] lg:text-xs text-[#33ADED] font-semibold transition hover:bg-[#E2E8F0] dark:hover:bg-[#092544]"
                 >
                   <Icon size={16} className="text-[#33ADED]" />
                   {action.label}
