@@ -33,7 +33,7 @@ const NAV_LINKS: NavLink[] = [
   { label: "Gallery", href: "/gallery" },
   { label: "News & Events", href: "/news" },
   {
-    label: "Manages",
+    label: "Membership",
     subItems: [
       {
         label: "Manage My Membership",
@@ -188,7 +188,7 @@ export function NavItems({ onLinkClick }: NavItemsProps) {
                           handleClick();
                           setOpenSubmenu(null);
                         }}
-                        className={`relative z-10 block rounded-lg px-4 py-3 font-inter lg:text-xs xl:text-base transition-colors ${
+                        className={`relative z-10 block rounded-lg px-4 py-3 font-inter lg:text-xs xl:text-sm transition-colors ${
                           isSubActive
                             ? isDark
                               ? "bg-white/10 text-white"
