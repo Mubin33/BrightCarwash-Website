@@ -52,7 +52,7 @@ export function SectionHeader({
           align === "center"
             ? "text-center w-full sm:w-95 lg:w-135"
             : "text-left w-full"
-        } ${isDark ? "dark:text-white" : "text-[#1D1F2C]"}`}
+        } ${isDark ? "text-white" : "text-[#1D1F2C]"}`}
       >
         {heading}
       </h2>
@@ -63,7 +63,7 @@ export function SectionHeader({
             align === "center"
               ? "text-center w-full sm:w-125 lg:w-159.5"
               : "text-left w-full"
-          } ${isDark ? "dark:text-white/80" : "text-[#4A4C56]"}`}
+          } ${isDark ? "text-white/80" : "text-[#4A4C56]"}`}
         >
           {subheading}
         </p>
