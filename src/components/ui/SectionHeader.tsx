@@ -27,10 +27,10 @@ export function SectionHeader({
 
   return (
     <div
-      className={`flex min-h-[auto] lg:h-56 flex-col justify-end ${align === "center" ? "items-center" : "items-start"} gap-3 self-stretch`}
+      className={`flex min-h-auto lg:h-56 flex-col justify-end ${align === "center" ? "items-center" : "items-start"} gap-3 self-stretch`}
     >
       <div
-        className={`flex py-[6px] px-3 items-center gap-3 rounded-lg border border-[#E7C1BF] bg-[#B23730]`}
+        className={`flex py-1.5 px-3 items-center gap-3 rounded-lg border border-[#E7C1BF] bg-[#B23730]`}
       >
         <Icon
           name={badgeIcon}
@@ -50,7 +50,7 @@ export function SectionHeader({
       <h2
         className={`font-bebas text-3xl sm:text-4xl lg:text-5xl font-normal leading-[116%] ${
           align === "center"
-            ? "text-center w-full sm:w-[380px] lg:w-[540px]"
+            ? "text-center w-full sm:w-95 lg:w-135"
             : "text-left w-full"
         } ${isDark ? "text-white" : "text-[#1D1F2C]"}`}
       >
@@ -61,9 +61,9 @@ export function SectionHeader({
         <p
           className={`font-inter text-sm sm:text-base font-normal leading-[160%] ${
             align === "center"
-              ? "text-center w-full sm:w-[500px] lg:w-[638px]"
+              ? "text-center w-full sm:w-125 lg:w-159.5"
               : "text-left w-full"
-          } ${isDark ? "text-white/80" : "text-[#4A4C56]"}`}
+          } ${isDark ? "dark:text-white/80" : "text-[#4A4C56]"}`}
         >
           {subheading}
         </p>
