@@ -44,6 +44,7 @@ const NAV_LINKS: NavLink[] = [
         href: "/buy-membership",
       },
       { label: "Gift Cards", href: "/gift-cards" },
+      { label: "Wash with a Purpose", href: "/wash-with-a-purpose" },
     ],
   },
   {
@@ -130,7 +131,7 @@ export function NavItems({ onLinkClick }: NavItemsProps) {
                   isSubmenuOpen ? "block" : "hidden"
                 }`}
               >
-                <div className="pl-4 border-l-2 border-[#B23730]/30 space-y-1">
+                <div className="pl-4 border-l-2 border-[#B23730]/30">
                   {subItems!.map((subItem) => {
                     const isSubActive = pathname === subItem.href;
                     return (
@@ -188,7 +189,7 @@ export function NavItems({ onLinkClick }: NavItemsProps) {
                           handleClick();
                           setOpenSubmenu(null);
                         }}
-                        className={`relative z-10 block rounded-lg px-4 py-3 font-inter lg:text-xs xl:text-sm transition-colors ${
+                        className={`relative z-10 block mb-1 rounded-lg px-4 py-3 font-inter lg:text-xs xl:text-sm transition-colors ${
                           isSubActive
                             ? isDark
                               ? "bg-white/10 text-white"
