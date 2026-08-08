@@ -159,7 +159,7 @@ export function NavItems({ onLinkClick }: NavItemsProps) {
               {/* Submenu - Desktop (dropdown) */}
               <div className="hidden lg:block relative">
                 <div
-                  className={`absolute left-1/2 top-full z-50 mt-2 w-64 -translate-x-1/2 rounded-xl border p-2 shadow-xl transition-all duration-200 ${
+                  className={`absolute left-1/2 top-full z-50 mt-3 w-64 -translate-x-1/2 rounded-xl border p-2 shadow-xl transition-all duration-200 ${
                     isSubmenuOpen
                       ? "visible opacity-100 translate-y-0"
                       : "invisible opacity-0 translate-y-2"
