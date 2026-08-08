@@ -26,13 +26,18 @@ export default function ProudToPartnerWith() {
           badgeText="Proud to Partner With"
           forceDark
           heading={
-            <>
+            <p className="text-[#0B1220] dark:text-white/90">
               The organizations{" "}
               <span className="text-[#FEC300]">we proudly support</span> and
               uplift.
-            </>
+            </p>
           }
-          subheading="We are proud to partner with the following organizations to help us serve our community."
+          subheading={
+            <p className="text-[#0B1220] dark:text-white/90">
+              We are proud to partner with the following organizations to help
+              us serve our community.
+            </p>
+          }
         />
 
         <div className="mt-8 lg:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-6">

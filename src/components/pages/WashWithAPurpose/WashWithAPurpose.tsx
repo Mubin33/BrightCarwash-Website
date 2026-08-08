@@ -57,7 +57,14 @@ export default function WashWithAPurpose() {
               <span>and make a difference! </span>
             </div>
           }
-          subheading="Every wash gives back. 20% of your purchase ($30 per pass) goes directly to the organization you love military groups, local schools, animal shelters, and first responders. No contracts. No auto-renewal. Just pure community impact."
+          subheading={
+            <p className="text-[#4A4C56] dark:text-white/90">
+              Every wash gives back. 20% of your purchase ($30 per pass) goes
+              directly to the organization you love military groups, local
+              schools, animal shelters, and first responders. No contracts. No
+              auto-renewal. Just pure community impact.
+            </p>
+          }
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mt-6 lg:mt-12">
           {data.map((item) => (
