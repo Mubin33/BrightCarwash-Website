@@ -5,20 +5,20 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'universities-domestic-technologies-broker.trycloudflare.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'items-images-sandbox.s3.us-west-2.amazonaws.com',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "holiday-exposure-pocket-whilst.trycloudflare.com",
+        pathname: "/**",
       },
       {
         protocol: "https",
-        hostname: "karma-usr-dealers-msg.trycloudflare.com",
+        hostname: "items-images-sandbox.s3.us-west-2.amazonaws.com",
         pathname: "/**",
-      }
+      },
+      {
+        protocol: "https",
+        hostname: "holiday-exposure-pocket-whilst.trycloudflare.com",
+        pathname: "/**",
+      },
     ],
   },
 };

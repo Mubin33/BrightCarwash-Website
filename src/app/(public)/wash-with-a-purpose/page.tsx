@@ -1,3 +1,4 @@
+import HowTheProgramWorks from "@/components/pages/WashWithAPurpose/HowTheProgramWorks";
 import PrepaidMembership from "@/components/pages/WashWithAPurpose/PrepaidMembership";
 import ProudToPartnerWith from "@/components/pages/WashWithAPurpose/ProudToPartnerWith";
 import WashWithAPurpose from "@/components/pages/WashWithAPurpose/WashWithAPurpose";
@@ -15,6 +16,7 @@ export default function page() {
       <WashWithAPurpose />
       <ProudToPartnerWith />
       <PrepaidMembership />
+      {/* <HowTheProgramWorks/> */}
     </div>
   );
 }

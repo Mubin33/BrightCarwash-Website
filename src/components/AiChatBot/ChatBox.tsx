@@ -241,6 +241,9 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
             </>
           ) : (
             <div className="space-y-4 border border-[#E7ECFF] dark:border-[#383838] p-3 rounded-xl">
+              {error ? (
+                <p className="mb-3 text-sm text-[#B91C1C] text-center border border-red-500 rounded-md bg-red-100">{error}</p>
+              ) : null}
               <p className="text-sm text-[#334155] dark:text-white font-bold">
                 To start chatting, please enter your Name and Email.
               </p>
@@ -278,9 +281,6 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
       </div>
       {sessionId ? (
         <div className="shrink-0 bg-[#F8FAFB] dark:bg-[#00060e] p-3 rounded-xl border border-[#E7ECFF] dark:border-[#222222]">
-          {error ? (
-            <p className="mb-3 text-sm text-[#B91C1C]">{error}</p>
-          ) : null}
           {/* Quick Actions */}
           <div className="mb-2 flex flex-wrap gap-2">
             {quickActions.map((action) => {
