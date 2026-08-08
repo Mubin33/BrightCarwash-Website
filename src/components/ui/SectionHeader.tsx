@@ -52,7 +52,7 @@ export function SectionHeader({
           align === "center"
             ? "text-center w-full sm:w-95 lg:w-135"
             : "text-left w-full"
-        } ${isDark ? "text-white" : "text-[#1D1F2C]"}`}
+        } ${isDark ? "dark:text-white" : "text-[#1D1F2C]"}`}
       >
         {heading}
       </h2>

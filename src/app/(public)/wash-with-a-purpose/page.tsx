@@ -1,3 +1,4 @@
+import ProudToPartnerWith from "@/components/pages/WashWithAPurpose/ProudToPartnerWith";
 import WashWithAPurpose from "@/components/pages/WashWithAPurpose/WashWithAPurpose";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 
@@ -11,6 +12,7 @@ export default function page() {
         ]}
       />
       <WashWithAPurpose />
+      <ProudToPartnerWith />
     </div>
   );
 }
