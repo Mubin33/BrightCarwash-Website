@@ -31,7 +31,7 @@ export function Navbar() {
     return (
         <>
             <header className="whitespace-nowrap sticky top-0 flex w-full px-4 md:px-6 lg:px-10 py-3 md:py-4 items-center gap-3 md:gap-4 z-50  border-b border-[#DFE1E7]/10  bg-[#092544] dark:backdrop-blur-md">
-                <div className="flex mx-auto w-full max-w-[1280px] xl:max-w-[1320px] justify-between items-center gap-4">
+                <div className="flex mx-auto w-full xl:max-w-330 justify-between items-center gap-4">
                     {/* Logo */}
                     <div className="flex-1">
                         <Link prefetch={false} href="/" onClick={handleLogoClick} className="shrink-0 inline-block">
@@ -73,12 +73,12 @@ export function Navbar() {
 
             {/* Mobile Sidebar */}
             {mobileMenuOpen && (
-                <div className="fixed inset-0 z-[100] lg:hidden">
+                <div className="fixed inset-0 z-100 lg:hidden">
                     <div
                         className="absolute inset-0 bg-black/40 backdrop-blur-sm"
                         onClick={closeMobileMenu}
                     />
-                    <div className={`absolute top-0 right-0 h-full w-[300px] max-w-[80vw] shadow-xl transition-transform duration-300 flex flex-col p-6 gap-6 ${isDark ? 'bg-[#1A1A1A]' : 'bg-white'}`}>
+                    <div className={`absolute top-0 right-0 h-full w-75 max-w-[80vw] shadow-xl transition-transform duration-300 flex flex-col p-6 gap-6 ${isDark ? 'bg-[#1A1A1A]' : 'bg-white'}`}>
                         <div className="flex justify-between items-center">
                             <span className={`font-bebas-neue text-2xl ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>Menu</span>
                             <button
