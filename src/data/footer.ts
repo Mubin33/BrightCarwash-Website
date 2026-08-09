@@ -12,8 +12,8 @@ export const footerData = {
     },
     copyright: `© ${new Date().getFullYear()} Brightside Car Wash. All rights reserved.`,
     socialLinks: [
-        { name: 'Facebook', href: '#', icon: 'facebook' },
-        { name: 'Instagram', href: '#', icon: 'instagram' },
-        { name: 'Twitter', href: '#', icon: 'twitter' },
+        { name: 'Facebook', href: 'https://www.facebook.com/brightsidecarwash/', icon: 'facebook' },
+        // { name: 'Instagram', href: '#', icon: 'instagram' },
+        // { name: 'Twitter', href: '#', icon: 'twitter' },
     ],
 };
