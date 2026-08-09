@@ -79,7 +79,7 @@ export function ImageModal({ image, isOpen, onClose }: ImageModalProps) {
                     />
 
                     {image.label && (
-                        <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 bg-gradient-to-t from-black/80 to-transparent">
+                        <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 bg-linear-to-t from-black/80 to-transparent">
                             <span className="text-white font-bebas-neue text-2xl sm:text-3xl md:text-4xl font-normal leading-[100%]">
                                 {image.label}
                             </span>

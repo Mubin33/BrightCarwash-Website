@@ -30,9 +30,9 @@ export function GallerySectionWrapper() {
     if (loading) {
         return (
             <section className={`flex py-20 px-4 md:px-6 lg:px-10 flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-white'}`}>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-[1280px] xl:max-w-[1320px]">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-330">
                     {[...Array(6)].map((_, i) => (
-                        <div key={i} className="h-[300px] sm:h-[500px] bg-gray-100 animate-pulse rounded-lg" />
+                        <div key={i} className="h-75 sm:h-125 bg-gray-100 animate-pulse rounded-lg" />
                     ))}
                 </div>
             </section>
@@ -60,7 +60,7 @@ export function GallerySectionWrapper() {
                 />
 
                 <div className="flex justify-center w-full">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-[340px_220px] gap-4 w-full max-w-[1280px] xl:max-w-[1320px]">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-[340px_220px] gap-4 w-full max-w-330">
                         {images.map((img, idx) => (
                             <GalleryImageCard
                                 key={img.id}
@@ -74,7 +74,7 @@ export function GallerySectionWrapper() {
                 </div>
 
                 <Link href="/gallery">
-                    <Button className="flex py-[14px] px-5 justify-center items-center gap-2 rounded-lg bg-[#FEC300] text-black font-inter text-base lg:text-xl hover:bg-[#FEC300]/90">
+                    <Button className="flex py-3.5 px-5 justify-center items-center gap-2 rounded-lg bg-[#FEC300] text-black font-inter text-base lg:text-xl hover:bg-[#FEC300]/90">
                         See more transformation
                         <Icon name="book" width={20} height={20} color='black' />
                     </Button>

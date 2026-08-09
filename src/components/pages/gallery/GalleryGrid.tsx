@@ -23,7 +23,7 @@ export function GalleryGrid() {
     const { images, loading } = useGallery();
     const isDark = theme === 'dark';
 
-    // 👈 Modal state
+    //  Modal state
     const [selectedImage, setSelectedImage] = useState<typeof images[0] | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -68,9 +68,9 @@ export function GalleryGrid() {
                 className={`flex py-20 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40 flex-col justify-center items-center gap-12 self-stretch ${isDark ? 'bg-[#1A1A1A]' : 'bg-[#F5F5F5]'}`}
             >
                 <div className="flex justify-center w-full">
-                    <div className={`grid gap-4 w-full ${nonEmptyColumns.length === 1 ? 'grid-cols-1 max-w-[424px]' :
-                        nonEmptyColumns.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-[872px]' :
-                            'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-[1320px]'
+                    <div className={`grid gap-4 w-full ${nonEmptyColumns.length === 1 ? 'grid-cols-1 max-w-106' :
+                        nonEmptyColumns.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-218' :
+                            'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-330'
                         }`}>
                         {nonEmptyColumns.map((col, colIndex) => (
                             <div key={colIndex} className="flex flex-col gap-4">
@@ -80,7 +80,7 @@ export function GalleryGrid() {
                                         image={item.image}
                                         idx={item.idx}
                                         height={item.height}
-                                        onClick={() => handleImageClick(item.image)}  // 👈 Pass click handler
+                                        onClick={() => handleImageClick(item.image)} 
                                     />
                                 ))}
                             </div>
