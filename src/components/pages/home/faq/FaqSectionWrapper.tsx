@@ -36,7 +36,7 @@ export function FaqSectionWrapper() {
                         <span className="text-[#0098e8] text-5xl font-normal font-['Bebas_Neue'] leading-[55.68px]">
                             Before You
                         </span>
-                        <span className={`text-5xl font-normal font-['Bebas_Neue'] leading-[55.68px] ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                        <span className={`text-5xl font-normal font-['Bebas_Neue'] leading-[55.68px] tracking-wide ${isDark ? 'text-white' : 'text-gray-900'}`}>
                             {' '}Visit
                         </span>
                     </div>

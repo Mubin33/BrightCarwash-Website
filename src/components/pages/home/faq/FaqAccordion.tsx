@@ -33,14 +33,14 @@ export function FaqAccordion({ item }: Props) {
                             : 'text-neutral-800'
                         }`}
                 >
-                    {item.question}
+                    {item?.question || ''}
                 </div>
                 {isOpen && (
                     <div
                         className={`self-stretch justify-start text-base font-medium font-['Inter'] leading-6 ${isDark ? 'text-black/60' : 'text-neutral-600'
                             }`}
                     >
-                        {item.answer}
+                        {item?.answer}
                     </div>
                 )}
             </div>
