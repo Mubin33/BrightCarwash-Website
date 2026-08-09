@@ -46,21 +46,19 @@ export function ImageModal({ image, isOpen, onClose }: ImageModalProps) {
 
     return (
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 backdrop-blur-md"
             onClick={handleBackdropClick}
         >
             <div className="relative max-w-7xl w-full max-h-[90vh]">
                 <button
                     onClick={onClose}
-                    className="absolute -top-12 right-0 sm:right-4 z-10 p-2 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors duration-200"
+                    className="absolute top-4 right-4 border border-white  sm:right-4 z-10 p-1 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors duration-200 cursor-pointer"
                     aria-label="Close modal"
                 >
-                    <X size={28} />
+                    <X size={24} />
                 </button>
 
-                <div className="relative w-full h-[80vh] rounded-xl overflow-hidden bg-black/20">
-
-
+                <div className="relative w-full h-[80vh] rounded-xl overflow-hidden bg-black">
                     <Image
                         src={image.src}
                         alt={image.alt}
