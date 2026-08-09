@@ -18,7 +18,7 @@ export function NewsDetailWrapper() {
         return (
             <div className="pt-20 sm:pt-24 lg:pt-28">
                 <section
-                    className={`flex py-10 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40 2xl:px-[300px] flex-col justify-center items-center gap-12 self-stretch border ${isDark ? "border-white/20 bg-[#1A1A1A]" : "border-[#DFE1E7] bg-white"}`}
+                    className={`flex py-10 px-4 sm:px-6 md:px-10 lg:px-6 xl:px-40 2xl:px-75 flex-col justify-center items-center gap-12 self-stretch border ${isDark ? "border-white/20 bg-[#1A1A1A]" : "border-[#DFE1E7] bg-white"}`}
                 >
                     <SkeletonNewsDetail isDark={isDark} />
                 </section>
