@@ -113,7 +113,7 @@ export function ServiceCard({
           }`}
       >
         <div
-          className={`font-inter text-start text-sm leading-[150%] ${!selected
+          className={`font-inter text-justify text-sm leading-[150%] ${!selected
             ? "text-gray-700 dark:text-gray-300"
             : isDark
               ? "text-gray-300"
