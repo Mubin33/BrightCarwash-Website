@@ -3,11 +3,12 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import React from "react";
 import { WashWithPurposeFaq } from "@/types/faq";
 import { otherFaqs } from "@/services/othersFaq.api";
-
+import { ChevronDown, ChevronUp } from "lucide-react"; 
 export default function HowTheProgramWorks() {
   const [faqs, setFaqs] = React.useState<WashWithPurposeFaq[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
+  const [openIndex, setOpenIndex] = React.useState<number | null>(null);
 
   React.useEffect(() => {
     const fetchFaqs = async () => {
@@ -26,6 +27,10 @@ export default function HowTheProgramWorks() {
 
     fetchFaqs();
   }, []);
+
+  const toggleAccordion = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
 
   return (
     <div className="bg-[#fff8ee] dark:bg-[#1a1a1a] py-10 lg:py-20">
@@ -61,14 +66,32 @@ export default function HowTheProgramWorks() {
             {faqs.map((faq, index) => (
               <div
                 key={faq.id || index}
-                className="bg-white dark:bg-[#2a2a2a] rounded-lg p-6 shadow-sm"
+                className="bg-white dark:bg-[#2a2a2a] rounded-lg  overflow-hidden"
               >
-                <h3 className="text-lg font-semibold text-[#0B1220] dark:text-white">
-                  {faq.question}
-                </h3>
-                <p className="mt-2 text-[#0B1220]/80 dark:text-white/80">
-                  {faq.ans}
-                </p>
+                <button
+                  onClick={() => toggleAccordion(index)}
+                  className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 dark:hover:bg-[#333333] transition-colors duration-200"
+                >
+                  <h3 className="text-lg font-semibold text-[#0B1220] dark:text-white pr-4">
+                    {faq.question}
+                  </h3>
+                  <span className="shrink-0 text-[#0B1220] dark:text-white">
+                    {openIndex === index ? (
+                      <ChevronUp className="w-5 h-5" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5" />
+                    )}
+                  </span>
+                </button>
+                <div
+                  className={`px-6 overflow-hidden transition-all duration-200 ease-in-out ${
+                    openIndex === index ? "pb-6 max-h-96" : "max-h-0"
+                  }`}
+                >
+                  <p className="text-[#0B1220]/80 dark:text-white/80">
+                    {faq.ans}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
