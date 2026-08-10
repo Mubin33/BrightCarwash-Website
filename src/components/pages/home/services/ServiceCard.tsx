@@ -74,7 +74,7 @@ export function ServiceCard({
         className={`font-bebas self-stretch text-[32px] font-normal leading-[100%] truncate ${selected ? "text-white" : isDark ? "text-white" : "text-[#1D1F2C]"
           }`}
       >
-        {service.name.split(" ").slice(0, 5).join(" ")}
+        {service.name?.split(" ").slice(0, 5).join(" ") || ""}
       </h3>
 
       {/* Price & Duration */}

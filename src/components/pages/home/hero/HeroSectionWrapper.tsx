@@ -122,9 +122,9 @@ export function HeroSectionWrapper() {
 
               <h1 className="font-bebas w-full text-5xl sm:text-6xl md:text-7xl lg:text-[56px] xl:text-[64px] font-normal leading-[110%] sm:leading-[120%] tracking-[1px] sm:tracking-[2px]">
                 <span className="text-white">
-                  {data.main_headline.split("\n")[0] || ""}
+                  {data.main_headline?.split("\n")[0] || ""}
                 </span>
-                {data.main_headline.includes("\n") && (
+                {data.main_headline?.includes("\n") && (
                   <>
                     <br />
                     <span className="text-[#0098E8]">

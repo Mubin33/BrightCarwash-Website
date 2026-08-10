@@ -78,7 +78,7 @@ export function TestimonialCard({ testimonial }: Props) {
                         />
                     ) : (
                         <span className="text-white font-inter text-sm font-medium">
-                            {testimonial.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                            {testimonial.name?.split(' ').map(n => n[0]).join('').slice(0, 2) || ''}
                         </span>
                     )}
                 </div>
