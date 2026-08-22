@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "holiday-exposure-pocket-whilst.trycloudflare.com",
+        hostname: "conclusions-installations-champions-manuals.trycloudflare.com",
         pathname: "/**",
       },
       {
@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "holiday-exposure-pocket-whilst.trycloudflare.com",
+        hostname: "conclusions-installations-champions-manuals.trycloudflare.com",
         pathname: "/**",
       },
     ],

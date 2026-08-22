@@ -4,6 +4,7 @@ import { LocationsHeader } from "./LocationsHeader";
 import { LocationHours } from "./LocationHours";
 import { useTheme } from "@/contexts/ThemeContext";
 import { locations, hours } from "@/data/locations";
+import { fetchHours } from "@/services/hours.api";
 
 export function LocationsSectionWrapper() {
   const { theme } = useTheme();
@@ -20,7 +21,7 @@ export function LocationsSectionWrapper() {
           ))}
         </div>
         <div className="w-full">
-          <LocationHours hours={hours} />
+          <LocationHours />
         </div>
       </div>
     </section>

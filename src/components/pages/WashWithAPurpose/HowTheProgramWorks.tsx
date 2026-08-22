@@ -3,7 +3,7 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import React from "react";
 import { WashWithPurposeFaq } from "@/types/faq";
 import { otherFaqs } from "@/services/othersFaq.api";
-import { ChevronDown, ChevronUp } from "lucide-react"; 
+import { ChevronDown, ChevronUp } from "lucide-react";
 export default function HowTheProgramWorks() {
   const [faqs, setFaqs] = React.useState<WashWithPurposeFaq[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -62,7 +62,7 @@ export default function HowTheProgramWorks() {
           </div>
         )}
         {!loading && !error && faqs.length > 0 && (
-          <div className="mt-8 space-y-4 max-w-3xl mx-auto">
+          <div className="mt-8 space-y-4 max-w-4xl mx-auto">
             {faqs.map((faq, index) => (
               <div
                 key={faq.id || index}
@@ -70,10 +70,10 @@ export default function HowTheProgramWorks() {
               >
                 <button
                   onClick={() => toggleAccordion(index)}
-                  className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 dark:hover:bg-[#333333] transition-colors duration-200"
+                  className="w-full px-6 py-4 flex items-center justify-between text-left cursor-pointer dark:hover:bg-[#333333] transition-colors duration-200"
                 >
-                  <h3 className="text-lg font-semibold text-[#0B1220] dark:text-white pr-4">
-                    {faq.question}
+                  <h3 className="text-base xl:text-lg font-medium text-[#0B1220] dark:text-white pr-4">
+                    {faq?.question || ""}
                   </h3>
                   <span className="shrink-0 text-[#0B1220] dark:text-white">
                     {openIndex === index ? (
@@ -89,7 +89,7 @@ export default function HowTheProgramWorks() {
                   }`}
                 >
                   <p className="text-[#0B1220]/80 dark:text-white/80">
-                    {faq.ans}
+                    {faq?.ans}
                   </p>
                 </div>
               </div>
