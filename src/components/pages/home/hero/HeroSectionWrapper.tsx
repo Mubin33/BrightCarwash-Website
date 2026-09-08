@@ -62,7 +62,6 @@ export function HeroSectionWrapper() {
   const isHidden = data.status === "hidden";
   const showRightColumn = showForm || showBanner;
 
-  // Normalize backgroundImageUrl to an array of full URLs
   let backgroundImages: string[] = [];
   if (data.backgroundImageUrl) {
     if (Array.isArray(data.backgroundImageUrl)) {
