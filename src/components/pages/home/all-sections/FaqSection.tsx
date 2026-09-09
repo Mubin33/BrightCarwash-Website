@@ -1,5 +1,8 @@
-import { FaqSectionWrapper } from '../faq/FaqSectionWrapper';
+import { usePathname } from "next/navigation";
+import { FaqSectionWrapper } from "../faq/FaqSectionWrapper";
 
 export function FaqSection() {
-    return <FaqSectionWrapper />;
+  const pathname = usePathname();
+
+  return pathname === "/wash-with-a-purpose" ? null : <FaqSectionWrapper />;
 }

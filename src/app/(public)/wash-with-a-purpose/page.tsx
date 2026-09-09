@@ -16,7 +16,7 @@ export default function page() {
       <WashWithAPurpose />
       <ProudToPartnerWith />
       <PrepaidMembership />
-      {/* <HowTheProgramWorks/> */}
+      <HowTheProgramWorks/>
     </div>
   );
 }

@@ -30,7 +30,6 @@ export function GalleryHero() {
                     }
                     subheading="Experience the beauty of our services through stunning moments captured at Brightside Gallery. Join us and see for yourself!"
                 />
-                {/* Optional: Add a small preview grid here */}
             </section>
 
             <ImageModal
