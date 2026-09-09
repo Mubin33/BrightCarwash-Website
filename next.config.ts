@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "clan-figure-breakdown-raymond.trycloudflare.com",
+        hostname: "bright-carwash-api.pixelstack.cloud",
         pathname: "/**",
       },
       {
@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "clan-figure-breakdown-raymond.trycloudflare.com",
+        hostname: "bright-carwash-api.pixelstack.cloud",
         pathname: "/**",
       },
     ],
