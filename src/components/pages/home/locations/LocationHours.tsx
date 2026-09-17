@@ -15,6 +15,13 @@ const formatTime = (start: string, end: string) => {
 const transformHours = (content: Content): { days: string; time: string }[] => {
   return [
     {
+      days: "Sunday",
+      time: formatTime(
+        content?.sunday?.start_time || "",
+        content?.sunday?.end_time || "",
+      ),
+    },
+    {
       days: "Monday - Thursday",
       time: formatTime(
         content?.mondayThursday?.start_time || "",
@@ -26,13 +33,6 @@ const transformHours = (content: Content): { days: string; time: string }[] => {
       time: formatTime(
         content?.fridaySaturday?.start_time || "",
         content?.fridaySaturday?.end_time || "",
-      ),
-    },
-    {
-      days: "Sunday",
-      time: formatTime(
-        content?.sunday?.start_time || "",
-        content?.sunday?.end_time || "",
       ),
     },
   ];

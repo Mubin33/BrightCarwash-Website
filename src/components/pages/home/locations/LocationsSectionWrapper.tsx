@@ -1,10 +1,9 @@
 "use client";
-import { LocationCard } from "./LocationCard";
-import { LocationsHeader } from "./LocationsHeader";
-import { LocationHours } from "./LocationHours";
 import { useTheme } from "@/contexts/ThemeContext";
-import { locations, hours } from "@/data/locations";
-import { fetchHours } from "@/services/hours.api";
+import { locations } from "@/data/locations";
+import { LocationCard } from "./LocationCard";
+import { LocationHours } from "./LocationHours";
+import { LocationsHeader } from "./LocationsHeader";
 
 export function LocationsSectionWrapper() {
   const { theme } = useTheme();

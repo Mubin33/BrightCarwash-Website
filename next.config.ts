@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+
   images: {
     remotePatterns: [
       {
@@ -16,7 +17,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "bright-carwash-api.pixelstack.cloud",
+        hostname: "s3.us-east-1.amazonaws.com",
         pathname: "/**",
       },
     ],
