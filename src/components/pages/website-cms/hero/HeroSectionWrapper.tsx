@@ -8,10 +8,25 @@ import Link from 'next/link';
 import { HeroStats } from './HeroStats';
 import { QuoteForm } from '../../home/hero/QuoteForm';
 
-const alignmentClasses: Record<string, string> = {
-    left: 'items-start text-left',
-    center: 'items-center text-center',
-    right: 'items-end text-right',
+const alignmentClasses: Record<
+    string,
+    {
+        container: string;
+        justify: string;
+    }
+> = {
+    left: {
+        container: 'items-start text-left',
+        justify: 'justify-start',
+    },
+    center: {
+        container: 'items-center text-center',
+        justify: 'justify-center',
+    },
+    right: {
+        container: 'items-end text-right',
+        justify: 'justify-end',
+    },
 };
 
 export function HeroSectionWrapper() {
@@ -41,10 +56,10 @@ export function HeroSectionWrapper() {
                     : `linear-gradient(0deg, rgba(0, 0, 0, 0.60) 0%, rgba(0, 0, 0, 0.60) 100%), url('/images/hero-image.png') lightgray 50% / cover no-repeat`,
             }}
         >
-            <div className={`flex flex-col ${showRightColumn ? 'lg:flex-row' : ''} items-center gap-8 md:gap-10 lg:gap-12 xl:gap-14 w-full max-w-[1280px] xl:max-w-[1320px]  ${showRightColumn ? '' : alignment}`}>
+            <div className={`flex flex-col ${showRightColumn ? 'lg:flex-row items-center' : alignment.container} gap-8 md:gap-10 lg:gap-12 xl:gap-14 w-full max-w-[1280px] xl:max-w-[1320px]`}>
                 {/* Left Content */}
-                <div className={`flex flex-col ${alignment} gap-6 sm:gap-8 lg:gap-12 ${showRightColumn ? 'flex-1' : 'w-full'}`}>
-                    <div className={`flex flex-col ${alignment} gap-3 sm:gap-4`}>
+                <div className={`flex flex-col ${alignment.container} gap-6 sm:gap-8 lg:gap-12 ${showRightColumn ? 'flex-1' : 'w-full'}`}>
+                    <div className={`flex flex-col ${alignment.container} gap-3 sm:gap-4 w-full`}>
                         {/* Badge */}
                         <div className="flex flex-wrap py-[6px] px-3 items-center gap-2 sm:gap-3 rounded-lg border border-[#DCA3A0] bg-[#F7EBEA]">
                             <Icon name="car" width={14} height={14} color="#B23730" className="sm:w-4 sm:h-4" />
@@ -71,7 +86,7 @@ export function HeroSectionWrapper() {
                     </div>
 
                     {/* Buttons */}
-                    <div className={`flex flex-col sm:flex-row flex-wrap items-center gap-3 sm:gap-4 ${showRightColumn ? 'w-full sm:w-auto' : 'w-full'}`}>
+                    <div className={`flex flex-col sm:flex-row flex-wrap items-center gap-3 sm:gap-4 w-full ${alignment.justify}`}>
                         <Link
                             href="#services"
                             onClick={(e) => {

@@ -10,10 +10,25 @@ import Image from "next/image";
 import { HeroBanner } from "@/components/pages/website-cms/hero/HeroBanner";
 import { HeroBackgroundCarousel } from "@/components/pages/website-cms/hero/HeroBackgroundCarousel";
 
-const alignmentClasses: Record<string, string> = {
-  left: "items-start text-left",
-  center: "items-center text-center",
-  right: "items-end text-right",
+const alignmentClasses: Record<
+  string,
+  {
+    container: string;
+    justify: string;
+  }
+> = {
+  left: {
+    container: "items-start text-left",
+    justify: "justify-start",
+  },
+  center: {
+    container: "items-center text-center",
+    justify: "justify-center",
+  },
+  right: {
+    container: "items-end text-right",
+    justify: "justify-end",
+  },
 };
 
 const getFullImageUrl = (imagePath: string) => {
@@ -99,12 +114,12 @@ export function HeroSectionWrapper() {
       {/* Content – z-20 to sit above overlay */}
       <div className="relative z-20 w-full max-w-7xl xl:max-w-330 py-6 md:py-8 lg:py-10 pb-16 md:pb-8 lg:pb-10">
         <div
-          className={`flex flex-col ${showRightColumn ? "lg:flex-row" : ""} items-center gap-8 md:gap-10 lg:gap-12 xl:gap-14 ${showRightColumn ? "" : alignment}`}
+          className={`flex flex-col ${showRightColumn ? "lg:flex-row items-center" : alignment.container} gap-8 md:gap-10 lg:gap-12 xl:gap-14`}
         >
           <div
-            className={`flex flex-col gap-6 sm:gap-8 lg:gap-12 ${showRightColumn ? "flex-1" : "w-full"}`}
+            className={`flex flex-col ${alignment.container} gap-6 sm:gap-8 lg:gap-12 ${showRightColumn ? "flex-1" : "w-full"}`}
           >
-            <div className={`flex flex-col gap-3 sm:gap-4`}>
+            <div className={`flex flex-col ${alignment.container} gap-3 sm:gap-4 w-full`}>
               <div className="w-fit flex flex-wrap py-1.5 px-3 items-center gap-2 sm:gap-3 rounded-lg border text-white border-[#DCA3A0] bg-[#B23730]">
                 <Icon
                   name="car"
@@ -140,7 +155,7 @@ export function HeroSectionWrapper() {
             </div>
 
             <div
-              className={`flex flex-col sm:flex-row flex-wrap items-center gap-3 sm:gap-4 ${showRightColumn ? "w-full sm:w-auto" : "w-full"}`}
+              className={`flex flex-col sm:flex-row flex-wrap items-center gap-3 sm:gap-4 w-full ${alignment.justify}`}
             >
               <Link
                 href="#services"
