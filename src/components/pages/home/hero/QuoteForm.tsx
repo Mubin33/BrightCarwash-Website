@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { DatePicker } from "@/components/ui/DatePicker";
 import { useQuote } from "@/hooks/useQuote";
 import { toast } from "react-toastify";
+import { format } from "date-fns";
 
 const vehicles = [
   { name: "Sedan", doors: "2-4 doors", image: "/images/Sedan.png" },
@@ -52,7 +53,7 @@ export function QuoteForm() {
     }
 
     // ✅ Convert Date to ISO string (YYYY-MM-DD)
-    const formattedDate = date ? date.toISOString().split('T')[0] : undefined;
+        const formattedDate = date ? format(date, 'yyyy-MM-dd') : undefined;
 
     const success = await sendQuote({
       full_name: name,
