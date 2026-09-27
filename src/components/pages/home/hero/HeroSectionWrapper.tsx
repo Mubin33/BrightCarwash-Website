@@ -24,8 +24,7 @@ const getFullImageUrl = (imagePath: string) => {
   }
 
   const baseUrl =
-    process.env.NEXT_PUBLIC_IMAGEURL ||
-    "https://bridge-decent-operational-power.trycloudflare.com";
+    process.env.NEXT_PUBLIC_IMAGEURL || "";
 
   // Remove /public/ from the path
   let cleanPath = imagePath;

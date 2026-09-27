@@ -13,15 +13,17 @@ export function useNewsList(page = 1, limit = 10, categoryId?: string) {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        fetchNewsCategories()
+            .then(setCategories)
+            .catch((err) => setError(err.message));
+    }, []);
+
+    useEffect(() => {
         setLoading(true);
-        Promise.all([
-            fetchNewsList(page, limit, categoryId),
-            fetchNewsCategories(),
-        ])
-            .then(([newsData, cats]) => {
+        fetchNewsList(page, limit, categoryId)
+            .then((newsData) => {
                 setArticles(newsData.articles);
                 setMeta(newsData.meta);
-                setCategories(cats);
             })
             .catch((err) => setError(err.message))
             .finally(() => setLoading(false));

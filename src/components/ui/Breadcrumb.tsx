@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ArrowRightIcon from "../../../public/icons/custom/ArrowRightIcon";
+import ArrowRightIcon from "../icons/ArrowRightIcon";
 
 interface Props {
   items: { label: string; href: string }[];

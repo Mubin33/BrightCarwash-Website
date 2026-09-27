@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import BotIcon from "../../../public/icons/custom/BotIcon";
+import BotIcon from "../icons/BotIcon";
 import ChatBox from "./ChatBox";
 
 export default function AiChatBot() {

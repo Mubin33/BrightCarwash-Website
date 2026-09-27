@@ -106,7 +106,7 @@ export function LeadershipSection() {
                 </div>
                 <div className="px-3 py-1.5 bg-red-700 rounded-lg flex justify-start items-center gap-3">
                   <div className="justify-start text-pink-100 text-sm font-semibold uppercase leading-4 tracking-widest">
-                    Vetaran Family
+                    Veteran Family
                   </div>
                 </div>
               </div>

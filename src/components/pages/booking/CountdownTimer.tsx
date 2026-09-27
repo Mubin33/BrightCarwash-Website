@@ -1,18 +1,28 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { useBooking } from '@/contexts/BookingContext';
 
-const LOCK_DURATION_MINUTES = 10;
+const LOCK_DURATION_SECONDS = 10 * 60;
 
 interface Props {
     onExpire?: () => void;
 }
 
+function calculateRemainingSeconds(lockTimestamp: number | null): number {
+    if (!lockTimestamp) return LOCK_DURATION_SECONDS;
+    const elapsedSeconds = Math.floor((Date.now() - lockTimestamp) / 1000);
+    return Math.min(LOCK_DURATION_SECONDS, Math.max(0, LOCK_DURATION_SECONDS - elapsedSeconds));
+}
+
 export function CountdownTimer({ onExpire }: Props) {
     const router = useRouter();
-    const [timeLeft, setTimeLeft] = useState(LOCK_DURATION_MINUTES * 60);
+    const { lockTimestamp } = useBooking();
     const [mounted, setMounted] = useState(false);
+    const [, setTick] = useState(0);
+    const hasExpiredRef = useRef(false);
+    const prevTimestampRef = useRef<number | null>(lockTimestamp);
 
     useEffect(() => {
         setMounted(true);
@@ -24,21 +34,38 @@ export function CountdownTimer({ onExpire }: Props) {
     }, [onExpire, router]);
 
     useEffect(() => {
-        if (!mounted) return;
-        const interval = setInterval(() => {
-            setTimeLeft((prev) => prev - 1);
-        }, 1000);
-        return () => clearInterval(interval);
-    }, [mounted]);
+        if (lockTimestamp !== prevTimestampRef.current) {
+            prevTimestampRef.current = lockTimestamp;
+            hasExpiredRef.current = false;
+        }
+    }, [lockTimestamp]);
 
     useEffect(() => {
-        if (timeLeft === 0 && mounted) {
-            handleExpire();
-        }
-    }, [timeLeft, mounted, handleExpire]);
+        if (!mounted) return;
 
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
+        if (calculateRemainingSeconds(lockTimestamp) <= 0 && !hasExpiredRef.current) {
+            hasExpiredRef.current = true;
+            handleExpire();
+            return;
+        }
+
+        const interval = setInterval(() => {
+            const remaining = calculateRemainingSeconds(lockTimestamp);
+            if (remaining <= 0) {
+                if (!hasExpiredRef.current) {
+                    hasExpiredRef.current = true;
+                    handleExpire();
+                }
+            }
+            setTick((t) => t + 1);
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [mounted, lockTimestamp, handleExpire]);
+
+    const remaining = mounted ? calculateRemainingSeconds(lockTimestamp) : LOCK_DURATION_SECONDS;
+    const minutes = Math.floor(remaining / 60);
+    const seconds = remaining % 60;
     const display = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
     if (!mounted) {

@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { DayPicker } from 'react-day-picker';
-import { format } from 'date-fns';
+import { format, startOfDay } from 'date-fns';
 import 'react-day-picker/style.css';
 import { usePopoverPosition } from '@/hooks/use-popover-position';
 
@@ -12,9 +12,10 @@ interface Props {
     onChange: (date: Date | undefined) => void;
     placeholder?: string;
     className?: string;
+    disablePastDates?: boolean;
 }
 
-export function DatePicker({ value, onChange, placeholder = 'Select date', className = '' }: Props) {
+export function DatePicker({ value, onChange, placeholder = 'Select date', className = '', disablePastDates = false }: Props) {
     const [open, setOpen] = useState(false);
     const [mounted, setMounted] = useState(false);
     const triggerRef = useRef<HTMLButtonElement>(null);
@@ -67,6 +68,7 @@ export function DatePicker({ value, onChange, placeholder = 'Select date', class
                         mode="single"
                         selected={value}
                         onSelect={(d) => { onChange(d); setOpen(false); }}
+                        disabled={disablePastDates ? { before: startOfDay(new Date()) } : undefined}
                     />
                 </div>,
                 document.body

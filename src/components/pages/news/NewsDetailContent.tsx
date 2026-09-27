@@ -1,9 +1,10 @@
 "use client";
 
-import Image from "next/image";
+import { SkeletonNewsDetail } from "@/components/ui/Skeleton";
 import { useTheme } from "@/contexts/ThemeContext";
 import type { NewsDetail } from "@/data/news";
-import { SkeletonNewsDetail } from "@/components/ui/Skeleton";
+import DOMPurify from "isomorphic-dompurify";
+import Image from "next/image";
 
 interface Props {
   article: NewsDetail;
@@ -66,7 +67,9 @@ export function NewsDetailContent({ article, loading = false }: Props) {
           className={`self-stretch text-justify font-inter text-base font-normal leading-[160%] ${
             isDark ? "text-white/80" : "text-[#4A4C56]"
           }`}
-          dangerouslySetInnerHTML={{ __html: article.firstHalf }}
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(article.firstHalf),
+          }}
         />
 
         {/* Side-by-side Images */}
@@ -83,6 +86,7 @@ export function NewsDetailContent({ article, loading = false }: Props) {
                   fill
                   className="object-cover"
                   sizes="50vw"
+                  unoptimized
                 />
               </div>
             ))}
@@ -94,7 +98,9 @@ export function NewsDetailContent({ article, loading = false }: Props) {
           className={`self-stretch font-inter text-justify text-base font-normal leading-[160%] ${
             isDark ? "text-white/80" : "text-[#4A4C56]"
           }`}
-          dangerouslySetInnerHTML={{ __html: article.secondHalf }}
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(article.secondHalf),
+          }}
         />
       </div>
     </section>

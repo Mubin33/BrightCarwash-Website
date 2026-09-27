@@ -1,6 +1,6 @@
 import Image from "next/image";
-import CarIcon2 from "../../../../public/icons/custom/CarIcon2";
-import CheckIcon2 from "../../../../public/icons/custom/CheckIcon2";
+import CarIcon2 from "../../icons/CarIcon2";
+import CheckIcon2 from "../../icons/CheckIcon2";
 
 export default function PrepaidMembership() {
   return (
@@ -78,9 +78,14 @@ export default function PrepaidMembership() {
                 </ul>
               </div>
             </div>
-            <button className="w-full lg:w-fit bg-[#FEC300] hover:bg-[#E6B800] text-black px-5 py-3.5 rounded-lg text-sm lg:text-base font-medium uppercase leading-[124%] mt-6 lg:mt-8 cursor-pointer duration-300 text-center">
+            <a
+              href="https://checkout.square.site/merchant/MLGKN6M92E8F6/checkout/2BPNVBSCHZSZDEJQ3U6HF2YZ"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block w-full lg:w-fit bg-[#FEC300] hover:bg-[#E6B800] text-black px-5 py-3.5 rounded-lg text-sm lg:text-base font-medium uppercase leading-[124%] mt-6 lg:mt-8 cursor-pointer duration-300 text-center"
+            >
               Purchase & Checkout
-            </button>
+            </a>
           </div>
         </div>
         <p className="border border-[#8AD0F4] rounded-lg text-[#0098E8] bg-[rgba(0,152,232,0.12)] text-xs lg:text-sm p-3 lg:p-4 mt-4 lg:mt-6">

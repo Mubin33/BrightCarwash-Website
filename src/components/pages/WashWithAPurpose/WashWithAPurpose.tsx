@@ -69,6 +69,7 @@ export default function WashWithAPurpose() {
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mt-6 lg:mt-12">
           {data.map((item) => (
             <div
+              key={item.title}
               className={`flex p-4 flex-col justify-center items-start gap-6 flex-1 rounded-lg border border-[#DFE1E7] bg-[#F8FAFB] dark:border-white/20 dark:bg-white/12`}
             >
               <div className="flex justify-between items-center self-stretch">

@@ -30,8 +30,9 @@ export function AppointmentSummary({ overrideStartAt, overrideTime }: Props) {
         selectedServices.map((s) => s.variationId)
     );
 
+    const subtotal = selectedServices.reduce((sum, s) => sum + s.price, 0);
     const tax = summary ? summary.taxInCents / 100 : 0;
-    const total = summary ? summary.totalInCents / 100 : 0;
+    const total = summary ? summary.totalInCents / 100 : subtotal;
 
     return (
         <div className={`flex p-3 sm:p-4 lg:p-6 flex-col items-center gap-4 sm:gap-6 self-stretch rounded-xl border ${isDark ? 'border-white/20 bg-white/[0.04]' : 'border-[#DFE1E7] bg-white'}`}>
@@ -49,7 +50,7 @@ export function AppointmentSummary({ overrideStartAt, overrideTime }: Props) {
                 <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
                     <Icon name="clock" width={14} height={14} color="#0098E8" className="sm:w-4 sm:h-4 shrink-0" />
                     <span className={`font-inter text-xs sm:text-sm lg:text-base font-normal leading-[150%] truncate ${isDark ? 'text-white/80' : 'text-[#4A4C56]'}`}>
-                        {timeParam || '—'}
+                        {timeParam || '\u2014'}
                     </span>
                 </div>
             </div>
@@ -66,6 +67,11 @@ export function AppointmentSummary({ overrideStartAt, overrideTime }: Props) {
             </div>
 
             <div className={`w-full h-px ${isDark ? 'bg-white/20' : 'bg-[#DFE1E7]'}`} />
+
+            <div className="flex justify-between items-center self-stretch">
+                <span className={`font-inter text-xs sm:text-sm ${isDark ? 'text-white/60' : 'text-[#4A4C56]'}`}>Subtotal</span>
+                <span className={`font-inter text-xs sm:text-sm font-medium ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>${subtotal.toFixed(2)}</span>
+            </div>
 
             <div className="flex justify-between items-center self-stretch">
                 <span className={`font-inter text-xs sm:text-sm ${isDark ? 'text-white/60' : 'text-[#4A4C56]'}`}>Tax</span>

@@ -10,12 +10,13 @@ interface Props {
     cacheLoading: boolean;
     dateLoading: boolean;
     date: Date | undefined;
-    selectedTime: string | null;
+    selectedTime?: string | null;
+    selectedStartAt?: string | null;
     isDark: boolean;
     onTimeChange: (slot: AvailabilitySlot) => void;
 }
 
-export function TimeSlotList({ slots, timeSlots, cacheLoading, dateLoading, date, selectedTime, isDark, onTimeChange }: Props) {
+export function TimeSlotList({ slots, timeSlots, cacheLoading, dateLoading, date, selectedTime, selectedStartAt, isDark, onTimeChange }: Props) {
     return (
         <div className="flex flex-col items-start gap-3.5 self-stretch">
             <h3 className={`self-stretch font-inter text-xl font-bold leading-normal ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>Select a time</h3>
@@ -32,7 +33,10 @@ export function TimeSlotList({ slots, timeSlots, cacheLoading, dateLoading, date
                                 <div className="grid lg:grid-cols-4 sm:grid-cols-2 gap-3">
                                     {periodSlots.map((slot) => {
                                         const time = format(new Date(slot.startAt), 'hh:mm a');
-                                        return <TimeSlotButton key={slot.startAt} time={time} selected={selectedTime === time} isDark={isDark} onClick={() => onTimeChange(slot)} />;
+                                        const isSelected = selectedStartAt
+                                            ? selectedStartAt === slot.startAt
+                                            : selectedTime === slot.startAt || selectedTime === time;
+                                        return <TimeSlotButton key={slot.startAt} time={time} selected={isSelected} isDark={isDark} onClick={() => onTimeChange(slot)} />;
                                     })}
                                 </div>
                             </div>

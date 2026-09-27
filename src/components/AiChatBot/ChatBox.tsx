@@ -1,24 +1,18 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import {
-  X,
-  CalendarDays,
-  MapPin,
-  Sparkles,
-  DollarSign,
-  Bot,
-} from "lucide-react";
-import {
-  chat,
-  createSession,
   Campaign,
+  chat,
   ChatMessage,
+  createSession,
 } from "@/services/ai-chatbot.api";
+import DOMPurify from "isomorphic-dompurify";
+import { CalendarDays, DollarSign, MapPin, Sparkles } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import BotIcon from "../icons/BotIcon";
+import CloseIcon from "../icons/CloseIcon";
+import PlaneIcon from "../icons/PlaneIcon";
 import CampaignImageGallery from "./CampaignImageGallery";
-import BotIcon from "../../../public/icons/custom/BotIcon";
-import CloseIcon from "../../../public/icons/custom/CloseIcon";
-import PlaneIcon from "../../../public/icons/custom/PlaneIcon";
 
 interface ChatBoxProps {
   onClose?: () => void;
@@ -215,7 +209,9 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                                 : "bg-[#F8FAFB] dark:bg-[#092544] text-[#0F172A] dark:text-white rounded-r-3xl rounded-t-3xl"
                             }`}
                             dangerouslySetInnerHTML={{
-                              __html: message?.content ?? "",
+                              __html: DOMPurify.sanitize(
+                                message?.content ?? "",
+                              ),
                             }}
                           />
                           {!isUser && index === 0 ? (
@@ -242,7 +238,9 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
           ) : (
             <div className="space-y-4 border border-[#E7ECFF] dark:border-[#383838] p-3 rounded-xl">
               {error ? (
-                <p className="mb-3 text-sm text-[#B91C1C] text-center border border-red-500 rounded-md bg-red-100">{error}</p>
+                <p className="mb-3 text-sm text-[#B91C1C] text-center border border-red-500 rounded-md bg-red-100">
+                  {error}
+                </p>
               ) : null}
               <p className="text-sm text-[#334155] dark:text-white font-bold">
                 To start chatting, please enter your Name and Email.

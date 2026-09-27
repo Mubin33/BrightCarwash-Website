@@ -1,0 +1,12 @@
+export { default as ArrowRightIcon } from "./ArrowRightIcon";
+export { default as BatchIcon } from "./BatchIcon";
+export { default as BotIcon } from "./BotIcon";
+export { default as CarIcon } from "./CarIcon";
+export { default as CarIcon2 } from "./CarIcon2";
+export { default as CheckIcon } from "./CheckIcon";
+export { default as CheckIcon2 } from "./CheckIcon2";
+export { default as CloseIcon } from "./CloseIcon";
+export { default as HalfStarIcon } from "./HalfStarIcon";
+export { default as PlaneIcon } from "./PlaneIcon";
+export { default as StarIcon } from "./StarIcon";
+export { default as StarIcon2 } from "./StarIcon2";

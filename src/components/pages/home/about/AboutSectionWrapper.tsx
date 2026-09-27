@@ -1,9 +1,8 @@
-import { SectionHeader } from "@/components/ui/SectionHeader";
-import Image from "next/image";
-import CarIcon from "../../../../../public/icons/custom/CarIcon";
-import StarIcon from "../../../../../public/icons/custom/StarIcon";
 import { Icon } from "@/components/ui/Icon";
-import BatchIcon from "../../../../../public/icons/custom/BatchIcon";
+import Image from "next/image";
+import BatchIcon from "../../../icons/BatchIcon";
+import CarIcon from "../../../icons/CarIcon";
+import StarIcon from "../../../icons/StarIcon";
 
 export function AboutSectionWrapper() {
   const data = [

@@ -4,5 +4,9 @@ import { FaqSectionWrapper } from "../faq/FaqSectionWrapper";
 export function FaqSection() {
   const pathname = usePathname();
 
-  return pathname === "/wash-with-a-purpose" ? null : <FaqSectionWrapper />;
+  return pathname === "/wash-with-a-purpose" ||
+    pathname === "/faq" ||
+    pathname.startsWith("/faq/") ? null : (
+    <FaqSectionWrapper />
+  );
 }

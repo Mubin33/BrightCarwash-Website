@@ -1,11 +1,12 @@
 "use client";
 
-import Image from "next/image";
-import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
 import { useTheme } from "@/contexts/ThemeContext";
 import type { ServiceData } from "@/data/services";
-import CheckIcon from "../../../../../public/icons/custom/CheckIcon";
+import DOMPurify from "isomorphic-dompurify";
+import Image from "next/image";
+import CheckIcon from "../../../icons/CheckIcon";
 
 interface Props {
   service: ServiceData;
@@ -45,12 +46,13 @@ export function ServiceCard({
   return (
     <div
       onClick={() => onSelect?.(service.id)}
-      className={`flex w-full p-4 sm:p-6 flex-col items-start gap-6 sm:gap-8 rounded-lg border transition-all  ${selected
-        ? "border-3 border-[#FEC300] bg-[#092544]"
-        : isDark
-          ? "border-white/20 bg-white/6 hover:bg-white/12 hover:border-[#0098E8]/30"
-          : "border-[#DFE1E7] bg-white hover:bg-[#F0F8FF] hover:border-[#0098E8]/30"
-        }`}
+      className={`flex w-full p-4 sm:p-6 flex-col items-start gap-6 sm:gap-8 rounded-lg border transition-all  ${
+        selected
+          ? "border-3 border-[#FEC300] bg-[#092544]"
+          : isDark
+            ? "border-white/20 bg-white/6 hover:bg-white/12 hover:border-[#0098E8]/30"
+            : "border-[#DFE1E7] bg-white hover:bg-[#F0F8FF] hover:border-[#0098E8]/30"
+      }`}
     >
       {/* Image */}
       <div className="flex h-52 sm:h-64 lg:h-69 p-4 flex-col justify-end items-center gap-2.5 self-stretch rounded-lg relative overflow-hidden">
@@ -71,8 +73,9 @@ export function ServiceCard({
 
       {/* Name */}
       <h3
-        className={`font-bebas self-stretch text-[32px] font-normal leading-[100%] truncate ${selected ? "text-white" : isDark ? "text-white" : "text-[#1D1F2C]"
-          }`}
+        className={`font-bebas self-stretch text-[32px] font-normal leading-[100%] truncate ${
+          selected ? "text-white" : isDark ? "text-white" : "text-[#1D1F2C]"
+        }`}
       >
         {service.name.split(" ").slice(0, 5).join(" ")}
       </h3>
@@ -83,8 +86,9 @@ export function ServiceCard({
           ${service.price}
         </span>
         <div
-          className={`flex py-1.5 px-2 items-center gap-2 rounded-lg border ${isDark && !selected ? "border-white/20" : "border-[#DFE1E7]"
-            }`}
+          className={`flex py-1.5 px-2 items-center gap-2 rounded-lg border ${
+            isDark && !selected ? "border-white/20" : "border-[#DFE1E7]"
+          }`}
         >
           <Icon
             name="clock"
@@ -93,12 +97,13 @@ export function ServiceCard({
             color={selected ? "#FFFFFF" : isDark ? "#FFFFFF" : "#4A4C56"}
           />
           <span
-            className={`font-inter text-md ${selected
-              ? "text-white/80"
-              : isDark
-                ? "text-white/60"
-                : "text-[#777980]"
-              }`}
+            className={`font-inter text-md ${
+              selected
+                ? "text-white/80"
+                : isDark
+                  ? "text-white/60"
+                  : "text-[#777980]"
+            }`}
           >
             {service.duration}
           </span>
@@ -107,19 +112,23 @@ export function ServiceCard({
 
       {/* Description */}
       <div
-        className={`flex w-full py-3 px-4 flex-col items-start gap-4 rounded-md border-3 ${isDark && !selected
-          ? "border-white/20 bg-white/4"
-          : "border-gray-400/20 bg-gray-400/4 "
-          }`}
+        className={`flex w-full py-3 px-4 flex-col items-start gap-4 rounded-md border-3 ${
+          isDark && !selected
+            ? "border-white/20 bg-white/4"
+            : "border-gray-400/20 bg-gray-400/4 "
+        }`}
       >
         <div
-          className={`font-inter text-justify text-sm leading-[150%] ${!selected
-            ? "text-gray-700 dark:text-gray-300"
-            : isDark
-              ? "text-gray-300"
-              : "text-white"
-            }`}
-          dangerouslySetInnerHTML={{ __html: service.descriptionHtml }}
+          className={`font-inter text-justify text-sm leading-[150%] ${
+            !selected
+              ? "text-gray-700 dark:text-gray-300"
+              : isDark
+                ? "text-gray-300"
+                : "text-white"
+          }`}
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(service.descriptionHtml || ""),
+          }}
         />
       </div>
 
@@ -146,10 +155,11 @@ export function ServiceCard({
           <Button
             variant="outline"
             onClick={handleAddToCartClick}
-            className={`w-full py-3.5 px-5 justify-center items-center gap-2 rounded-lg font-inter text-sm ${isDark
-              ? "border-white/20 bg-white/8 text-white hover:bg-white/16"
-              : "bg-white hover:bg-[#F8FAFB]"
-              }`}
+            className={`w-full py-3.5 px-5 justify-center items-center gap-2 rounded-lg font-inter text-sm ${
+              isDark
+                ? "border-white/20 bg-white/8 text-white hover:bg-white/16"
+                : "bg-white hover:bg-[#F8FAFB]"
+            }`}
           >
             Add to cart
           </Button>

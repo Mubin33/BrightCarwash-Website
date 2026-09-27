@@ -127,6 +127,7 @@ export function QuoteForm() {
               value={date}
               onChange={setDate}
               placeholder="Select date"
+              disablePastDates
             />
           </div>
           <div className="flex flex-col gap-1.5">

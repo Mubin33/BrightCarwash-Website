@@ -1,21 +1,38 @@
-'use client';
+"use client";
 
-import { useState } from "react";
-import { NewsFilters } from "./NewsFilters";
-import { NewsCard } from "./NewsCard";
-import { useTheme } from "@/contexts/ThemeContext";
 import { Pagination } from "@/components/ui/Pagination";
-import { useNewsList } from "@/hooks/useNewsList";
 import { SkeletonGrid } from "@/components/ui/Skeleton";
+import { useTheme } from "@/contexts/ThemeContext";
+import { useNewsList } from "@/hooks/useNewsList";
+import { useMemo, useState } from "react";
+import { NewsCard } from "./NewsCard";
+import { NewsFilters, type SortOption } from "./NewsFilters";
 
 export function NewsList() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string | undefined>(undefined);
-  const [selectedSort, setSelectedSort] = useState("Newest");
-  const { articles, loading, meta, categories } = useNewsList(currentPage, 6, selectedCategoryId);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<
+    string | undefined
+  >(undefined);
+  const [selectedSort, setSelectedSort] = useState<SortOption>("Newest");
+  const { articles, loading, meta, categories } = useNewsList(
+    currentPage,
+    6,
+    selectedCategoryId,
+  );
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const allArticles = articles;
+
+  const allArticles = useMemo(() => {
+    return [...articles].sort((a, b) => {
+      const timeA = new Date(a.createdAt || a.date).getTime();
+      const timeB = new Date(b.createdAt || b.date).getTime();
+      if (isNaN(timeA) && isNaN(timeB)) return 0;
+      if (isNaN(timeA)) return 1;
+      if (isNaN(timeB)) return -1;
+      return selectedSort === "Oldest" ? timeA - timeB : timeB - timeA;
+    });
+  }, [articles, selectedSort]);
+
   const totalPages = meta?.total_pages || 1;
 
   if (loading) {
@@ -35,9 +52,15 @@ export function NewsList() {
       <NewsFilters
         categories={categories}
         selectedCategoryId={selectedCategoryId}
-        onCategoryChange={setSelectedCategoryId}
+        onCategoryChange={(catId) => {
+          setSelectedCategoryId(catId);
+          setCurrentPage(1);
+        }}
         selectedSort={selectedSort}
-        onSortChange={setSelectedSort}
+        onSortChange={(sort) => {
+          setSelectedSort(sort);
+          setCurrentPage(1);
+        }}
       />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-330">
         {allArticles.map((article) => (

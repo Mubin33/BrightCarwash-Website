@@ -4,6 +4,7 @@ import { Icon } from '@/components/ui/Icon';
 import { Button } from '@/components/ui/Button';
 import { useBooking } from '@/contexts/BookingContext';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useCartSummary } from '@/hooks/useCartSummary';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -12,9 +13,14 @@ interface Props {
 }
 
 export function CartStep({ onProceed }: Props) {
-    const { selectedServices, removeService } = useBooking();
+    const { selectedServices, selectedLocation, removeService } = useBooking();
     const { theme } = useTheme();
     const isDark = theme === 'dark';
+
+    const { summary } = useCartSummary(
+        selectedLocation,
+        selectedServices.map((s) => s.variationId)
+    );
 
     if (selectedServices.length === 0) {
         return (
@@ -31,7 +37,10 @@ export function CartStep({ onProceed }: Props) {
         );
     }
 
-    const total = selectedServices.reduce((sum, s) => sum + s.price, 0);
+    const subtotal = selectedServices.reduce((sum, s) => sum + s.price, 0);
+    const tax = summary ? summary.taxInCents / 100 : null;
+    const hasTax = tax !== null && tax > 0;
+    const total = summary ? summary.totalInCents / 100 : subtotal;
 
     return (
         <div className="flex flex-col items-center gap-8 w-full">
@@ -72,9 +81,27 @@ export function CartStep({ onProceed }: Props) {
                 ))}
             </div>
 
-            <div className={`flex justify-between items-center self-stretch p-4 rounded-lg border ${isDark ? 'border-white/20 bg-white/[0.08]' : 'border-[#DFE1E7] bg-white'}`}>
-                <span className={`font-inter text-base font-medium ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>Total</span>
-                <span className="text-[#B23730] font-inter text-lg font-bold">${total}</span>
+            <div className={`flex flex-col gap-3 self-stretch p-4 rounded-lg border ${isDark ? 'border-white/20 bg-white/[0.08]' : 'border-[#DFE1E7] bg-white'}`}>
+                <div className="flex justify-between items-center self-stretch">
+                    <span className={`font-inter text-sm sm:text-base font-medium ${isDark ? 'text-white/80' : 'text-[#4A4C56]'}`}>Subtotal</span>
+                    <span className={`font-inter text-sm sm:text-base font-semibold ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>${subtotal.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between items-center self-stretch">
+                    <span className={`font-inter text-xs sm:text-sm ${isDark ? 'text-white/60' : 'text-[#777980]'}`}>Estimated Tax</span>
+                    <span className={`font-inter text-xs sm:text-sm ${isDark ? 'text-white/80' : 'text-[#4A4C56]'}`}>
+                        {hasTax ? `$${tax.toFixed(2)}` : 'Calculated at checkout'}
+                    </span>
+                </div>
+                <div className={`w-full h-px ${isDark ? 'bg-white/10' : 'bg-[#DFE1E7]'}`} />
+                <div className="flex justify-between items-center self-stretch">
+                    <span className={`font-inter text-base font-medium ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
+                        {hasTax ? 'Estimated Total' : 'Total'}
+                    </span>
+                    <span className="text-[#B23730] font-inter text-lg font-bold">${total.toFixed(2)}</span>
+                </div>
+                <p className={`font-inter text-xs text-right ${isDark ? 'text-white/50' : 'text-[#777980]'}`}>
+                    Taxes calculated at checkout
+                </p>
             </div>
 
             <div className="flex flex-col sm:flex-row w-full justify-center items-center gap-3 sm:gap-4">
