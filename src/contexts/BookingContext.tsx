@@ -126,20 +126,19 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
 
   const handleSetLockToken = useCallback(
     (token: string | null, timestamp?: number | null) => {
-      setLockToken((prevToken) => {
-        if (token) {
-          if (timestamp !== undefined) {
-            setLockTimestamp(timestamp);
-          } else if (prevToken !== token) {
-            setLockTimestamp(Date.now());
-          } else {
-            setLockTimestamp((prevTs) => prevTs ?? Date.now());
-          }
-        } else {
-          setLockTimestamp(null);
-        }
-        return token;
-      });
+      setLockToken(token);
+      if (token) {
+        const ts = timestamp != null ? timestamp : Date.now();
+        setLockTimestamp(ts);
+        try {
+          localStorage.setItem("bookingLockTimestamp", ts.toString());
+        } catch {}
+      } else {
+        setLockTimestamp(null);
+        try {
+          localStorage.removeItem("bookingLockTimestamp");
+        } catch {}
+      }
     },
     [],
   );

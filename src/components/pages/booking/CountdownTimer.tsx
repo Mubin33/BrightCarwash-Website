@@ -1,71 +1,105 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useBooking } from '@/contexts/BookingContext';
 
-const LOCK_DURATION_SECONDS = 10 * 60;
+const LOCK_DURATION_SECONDS = 10 * 60; // 10 minutes
 
 interface Props {
     onExpire?: () => void;
 }
 
-function calculateRemainingSeconds(lockTimestamp: number | null): number {
-    if (!lockTimestamp) return LOCK_DURATION_SECONDS;
-    const elapsedSeconds = Math.floor((Date.now() - lockTimestamp) / 1000);
-    return Math.min(LOCK_DURATION_SECONDS, Math.max(0, LOCK_DURATION_SECONDS - elapsedSeconds));
+function getStoredTimestamp(): number | null {
+    if (typeof window === 'undefined') return null;
+    try {
+        const stored = localStorage.getItem('bookingLockTimestamp');
+        if (stored) {
+            const num = Number(stored);
+            if (!isNaN(num) && num > 0) return num;
+        }
+    } catch {}
+    return null;
+}
+
+function calculateRemainingSeconds(timestamp: number | null): number {
+    if (!timestamp) return LOCK_DURATION_SECONDS;
+    const elapsed = Math.floor((Date.now() - timestamp) / 1000);
+    return Math.max(0, Math.min(LOCK_DURATION_SECONDS, LOCK_DURATION_SECONDS - elapsed));
 }
 
 export function CountdownTimer({ onExpire }: Props) {
     const router = useRouter();
-    const { lockTimestamp } = useBooking();
+    const { lockTimestamp, setLockTimestamp } = useBooking();
     const [mounted, setMounted] = useState(false);
-    const [, setTick] = useState(0);
+
+    // Keep onExpire in a ref to avoid clearing/restarting the interval on every parent re-render
+    const onExpireRef = useRef(onExpire);
+    useEffect(() => {
+        onExpireRef.current = onExpire;
+    }, [onExpire]);
+
+    const activeTimestamp = lockTimestamp || getStoredTimestamp();
+    const [remainingSeconds, setRemainingSeconds] = useState<number>(() => {
+        return calculateRemainingSeconds(activeTimestamp);
+    });
+
     const hasExpiredRef = useRef(false);
-    const prevTimestampRef = useRef<number | null>(lockTimestamp);
 
     useEffect(() => {
         setMounted(true);
-    }, []);
-
-    const handleExpire = useCallback(() => {
-        onExpire?.();
-        setTimeout(() => router.push('/booking?step=cart'), 0);
-    }, [onExpire, router]);
-
-    useEffect(() => {
-        if (lockTimestamp !== prevTimestampRef.current) {
-            prevTimestampRef.current = lockTimestamp;
-            hasExpiredRef.current = false;
+        const stored = getStoredTimestamp();
+        if (!lockTimestamp && stored) {
+            setLockTimestamp?.(stored);
+        } else if (!lockTimestamp && !stored) {
+            const now = Date.now();
+            setLockTimestamp?.(now);
+            try {
+                localStorage.setItem('bookingLockTimestamp', now.toString());
+            } catch {}
         }
-    }, [lockTimestamp]);
+    }, [lockTimestamp, setLockTimestamp]);
 
     useEffect(() => {
         if (!mounted) return;
 
-        if (calculateRemainingSeconds(lockTimestamp) <= 0 && !hasExpiredRef.current) {
-            hasExpiredRef.current = true;
-            handleExpire();
-            return;
-        }
+        const effectiveTimestamp = lockTimestamp || getStoredTimestamp() || Date.now();
 
-        const interval = setInterval(() => {
-            const remaining = calculateRemainingSeconds(lockTimestamp);
-            if (remaining <= 0) {
-                if (!hasExpiredRef.current) {
-                    hasExpiredRef.current = true;
-                    handleExpire();
-                }
+        const tick = () => {
+            const remaining = calculateRemainingSeconds(effectiveTimestamp);
+            setRemainingSeconds(remaining);
+
+            if (remaining <= 0 && !hasExpiredRef.current) {
+                hasExpiredRef.current = true;
+                onExpireRef.current?.();
+                setTimeout(() => {
+                    router.push('/booking?step=cart');
+                }, 0);
             }
-            setTick((t) => t + 1);
-        }, 1000);
+        };
 
-        return () => clearInterval(interval);
-    }, [mounted, lockTimestamp, handleExpire]);
+        // Run tick immediately when effect sets up
+        tick();
 
-    const remaining = mounted ? calculateRemainingSeconds(lockTimestamp) : LOCK_DURATION_SECONDS;
-    const minutes = Math.floor(remaining / 60);
-    const seconds = remaining % 60;
+        // Real-time 1 second tick interval
+        const interval = setInterval(tick, 1000);
+
+        // Recalculate immediately when tab becomes visible (handles background tab throttling)
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'visible') {
+                tick();
+            }
+        };
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        return () => {
+            clearInterval(interval);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+    }, [mounted, lockTimestamp, router]);
+
+    const minutes = Math.floor(remainingSeconds / 60);
+    const seconds = remainingSeconds % 60;
     const display = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
     if (!mounted) {
