@@ -1,5 +1,6 @@
 "use client";
 
+import { BookingLockNotice } from "./BookingLockNotice";
 import { Button } from "@/components/ui/Button";
 import { Calendar } from "@/components/ui/Calendar";
 import { Icon } from "@/components/ui/Icon";
@@ -9,9 +10,9 @@ import { useAvailableDates } from "@/hooks/useAvailableDates";
 import { useBookingLock } from "@/hooks/useBookingLock";
 import { useNextAvailableDate } from "@/hooks/useNextAvailableDate";
 import { useSlotGrouping } from "@/hooks/useSlotGrouping";
-import { format } from "date-fns";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { hasBookingDetails } from "@/lib/bookingValidation";
+import { utcDateKey, formatUtcTime } from "@/lib/bookingTime";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { TimeSlotList } from "./TimeSlotList";
 
@@ -21,31 +22,25 @@ interface Props {
 }
 
 export function DateTimeStep({ onProceed, onBack }: Props) {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const dateParam = searchParams.get("date");
-  const timeParam = searchParams.get("time");
-  const startAtParam = searchParams.get("startAt");
-  const [date, setDate] = useState<Date | undefined>(
-    dateParam ? new Date(dateParam) : new Date(),
-  );
-  const [selectedTime, setSelectedTime] = useState<string | null>(
-    timeParam || null,
-  );
-  const [selectedStartAt, setSelectedStartAt] = useState<string | null>(
-    startAtParam || null,
-  );
-  const [timeZone, setTimeZone] = useState<string>("");
+  const { selection, setSelection, selectedServices, selectedLocation } = useBooking();
+  const { date: dateParam, startAt: selectedStartAt } = selection;
+  const [today] = useState(() => utcDateKey(new Date()));
+  const dateStr = dateParam || (selectedStartAt ? utcDateKey(selectedStartAt) : today);
+  const date = useMemo(() => new Date(dateStr + 'T00:00:00Z'), [dateStr]);
+  const selectedTime = selectedStartAt ? formatUtcTime(selectedStartAt) : null;
   const [dateLoading, setDateLoading] = useState(false);
-  const startAtRef = useRef(searchParams.get("startAt") || "");
-  const timeRef = useRef(timeParam || "");
   const { lock, loading: lockLoading } = useBookingLock();
-  const { selectedServices, selectedLocation } = useBooking();
+  const selectionRef = useRef(selection);
+  useEffect(() => { selectionRef.current = selection; }, [selection]);
+  const mounted = useRef(true);
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
   const {
     availableDates,
     getSlotsForDate,
     loading: cacheLoading,
     removeSlot,
+    error: availabilityError,
+    refetch: retryAvailability,
   } = useAvailableDates(
     selectedLocation,
     selectedServices.map((s) => s.variationId),
@@ -53,7 +48,6 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
   );
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const dateStr = date ? format(date, "yyyy-MM-dd") : "";
   const slots = useMemo(
     () => getSlotsForDate(dateStr),
     [getSlotsForDate, dateStr],
@@ -61,83 +55,51 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
   const timeSlots = useSlotGrouping(slots);
   const nextAvailable = useNextAvailableDate(date, availableDates);
 
-  const updateParams = useCallback(
-    (updates: Record<string, string>) => {
-      const params = new URLSearchParams(searchParams.toString());
-      Object.entries(updates).forEach(([k, v]) => params.set(k, v));
-      router.push(`/booking?${params.toString()}`, { scroll: false });
-    },
-    [router, searchParams],
-  );
-
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
-    setTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone);
-  }, []);
-  useEffect(() => {
-    if (slots.length > 0 || !date) setDateLoading(false);
-  }, [slots, date]);
-  useEffect(() => {
-    if (!dateParam && !date) setDate(new Date());
-  }, [dateParam, date]);
-  useEffect(() => {
-    if (!dateParam && date) updateParams({ date: format(date, "yyyy-MM-dd") });
-  }, [dateParam, date, updateParams]);
+    if (slots.length > 0 || !cacheLoading) setDateLoading(false);
+  }, [slots, cacheLoading]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
   const handleDateChange = (newDate: Date) => {
-    setDate(newDate);
-    setSelectedTime(null);
-    setSelectedStartAt(null);
+    setSelection({ date: utcDateKey(newDate), startAt: '', teamMemberId: '' });
     setDateLoading(true);
-    updateParams({ date: format(newDate, "yyyy-MM-dd") });
   };
 
   const handleTimeChange = (slot: {
     startAt: string;
     appointmentSegments: { teamMemberId: string }[];
   }) => {
-    const time = format(new Date(slot.startAt), "hh:mm a");
-    const startAt = slot.startAt;
-    setSelectedTime(time);
-    setSelectedStartAt(startAt);
-    startAtRef.current = startAt;
-    timeRef.current = time;
-    updateParams({
-      time,
-      teamMemberId: slot.appointmentSegments[0]?.teamMemberId || "",
-      startAt,
-    });
+    const teamMemberId = slot.appointmentSegments[0]?.teamMemberId || "";
+    if (!hasBookingDetails({
+      startAt: slot.startAt, teamMemberId, locationId: selectedLocation,
+      serviceVariationIds: selectedServices.map((service) => service.variationId),
+    })) {
+      toast.warning("This slot is missing booking details. Please select another time.");
+      return;
+    }
+    setSelection({ date: utcDateKey(slot.startAt), startAt: slot.startAt, teamMemberId });
   };
 
   const handleProceed = async () => {
-    if (!date || !timeRef.current || !selectedLocation) return;
-    const startAt = startAtRef.current;
-    const result = await lock(
-      selectedLocation,
-      startAt,
-      selectedServices.map((s) => s.variationId),
-    );
+    if (availabilityError || cacheLoading || lockLoading || !hasBookingDetails({ ...selection, locationId: selectedLocation,
+      serviceVariationIds: selectedServices.map(service => service.variationId) })) {
+      toast.warning("Please select a valid date and time again.");
+      return;
+    }
+    const result = await lock(selectedLocation, selectedStartAt, selectedServices.map(s => s.variationId));
+    if (!mounted.current || selectionRef.current !== selection) return;
     if (result && !result.alreadyLocked) {
-      onProceed(startAt, timeRef.current);
-    } else {
-      removeSlot(startAt);
-      setSelectedTime(null);
-      setSelectedStartAt(null);
-      toast.error(
-        "This time slot is no longer available. Please select another time.",
-      );
+      onProceed(selectedStartAt, formatUtcTime(selectedStartAt));
+    } else if (result?.alreadyLocked) {
+      removeSlot(selectedStartAt);
+      setSelection({ date: dateStr, startAt: '', teamMemberId: '' });
+      toast.error("This time slot is no longer available. Please select another time.");
     }
   };
 
   const goToNextAvailable = () => {
-    if (nextAvailable) {
-      const nextDate = new Date(nextAvailable + "T00:00:00");
-      setDate(nextDate);
-      setSelectedTime(null);
-      setSelectedStartAt(null);
-      updateParams({ date: nextAvailable });
-    }
+    if (nextAvailable) handleDateChange(new Date(nextAvailable + 'T00:00:00Z'));
   };
 
   if (!selectedLocation || selectedServices.length === 0)
@@ -170,10 +132,9 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
           <div className="flex items-center gap-2">
             <Icon name="clock" width={16} height={16} color="#4A4C56" />
             <span
-              suppressHydrationWarning
               className={`font-inter text-sm font-medium leading-normal ${isDark ? "text-white/70" : "text-[#4A4C56]"}`}
             >
-              {timeZone}
+              UTC
             </span>
           </div>
         </div>
@@ -188,7 +149,13 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
         )}
       </div>
       <div className="flex flex-col justify-between items-start flex-1 self-stretch gap-6">
-        <TimeSlotList
+        <BookingLockNotice />
+        {availabilityError ? (
+          <div role="alert" className="w-full text-sm">
+            <p>{availabilityError}</p>
+            <button type="button" className="mt-2 underline" onClick={retryAvailability}>Retry availability</button>
+          </div>
+        ) : <TimeSlotList
           slots={slots}
           timeSlots={timeSlots}
           cacheLoading={cacheLoading}
@@ -198,7 +165,7 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
           selectedStartAt={selectedStartAt}
           isDark={isDark}
           onTimeChange={handleTimeChange}
-        />
+        />}
         <div className="flex w-full gap-4">
           <Button
             variant="outline"
@@ -209,7 +176,7 @@ export function DateTimeStep({ onProceed, onBack }: Props) {
           </Button>
           <Button
             onClick={handleProceed}
-            disabled={!date || !selectedStartAt || lockLoading}
+            disabled={!date || !selectedStartAt || lockLoading || cacheLoading || Boolean(availabilityError)}
             isLoading={lockLoading}
             loadingText="Verifying slot..."
             className={`flex-1 py-[14px] px-5 justify-center items-center gap-2 rounded-xl text-black bg-[#FEC300] font-inter text-sm disabled:opacity-50 ${isDark ? "border-white/20 hover:bg-white/10 text-white" : "border-[#DFE1E7] text-black"}`}

@@ -1,26 +1,37 @@
+import { API_BASE, AI_API_BASE } from "./src/lib/env";
 import type { NextConfig } from "next";
+import { securityHeaders } from "./src/lib/security-headers";
+import { imageRemotePatterns } from "./src/lib/image-optimization";
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  output: "standalone",
 
   images: {
-    remotePatterns: [
+    remotePatterns: imageRemotePatterns,
+  },
+
+  async headers() {
+    return [
       {
-        protocol: "https",
-        hostname: "bright-carwash-api.pixelstack.cloud",
-        pathname: "/**",
+        source: "/:path*",
+        headers: securityHeaders({
+          apiUrls: [API_BASE, AI_API_BASE],
+          imageUrl: process.env.NEXT_PUBLIC_IMAGEURL,
+          development: process.env.NODE_ENV === "development",
+        }),
       },
+    ];
+  },
+
+  async redirects() {
+    return [
       {
-        protocol: "https",
-        hostname: "items-images-sandbox.s3.us-west-2.amazonaws.com",
-        pathname: "/**",
+        source: "/store",
+        destination: "https://brightsidecw.qbstores.com/",
+        permanent: false,
       },
-      {
-        protocol: "https",
-        hostname: "s3.us-east-1.amazonaws.com",
-        pathname: "/**",
-      },
-    ],
+    ];
   },
 };
 

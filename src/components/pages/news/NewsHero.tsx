@@ -10,7 +10,7 @@ export function NewsHero() {
                 heading={
                     <>
                         Stay <span className="text-[#FEC300]">informed</span> with <br />
-                        BrightSide's latest updates!
+                        BrightSide&apos;s latest updates!
                     </>
                 }
                 subheading="Car care tips, local news, exclusive offers, and behind-the-scenes stories from Naperville's favorite car wash."

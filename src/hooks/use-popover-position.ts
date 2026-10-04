@@ -37,10 +37,7 @@ export function usePopoverPosition(
     }, [triggerRef, popoverRef]);
 
     useLayoutEffect(() => {
-        if (!open) {
-            setPosition((p) => ({ ...p, ready: false }));
-            return;
-        }
+        if (!open) return;
         calculate();
         window.addEventListener('scroll', calculate, true);
         window.addEventListener('resize', calculate);
@@ -50,5 +47,5 @@ export function usePopoverPosition(
         };
     }, [open, calculate]);
 
-    return position;
+    return { ...position, ready: open && position.ready };
 }

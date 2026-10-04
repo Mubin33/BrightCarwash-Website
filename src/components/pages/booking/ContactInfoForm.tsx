@@ -12,6 +12,10 @@ interface Props {
   submitted?: boolean;
 }
 
+const MAX_NAME_LENGTH = 100;
+const MAX_EMAIL_LENGTH = 254;
+const MAX_NOTE_LENGTH = 500;
+
 export function ContactInfoForm({
   values,
   onChange,
@@ -43,7 +47,7 @@ export function ContactInfoForm({
   };
 
   const handleNameChange = (field: "firstName" | "lastName", value: string) => {
-    const cleaned = value.replace(/[0-9]/g, "");
+    const cleaned = value.replace(/[0-9]/g, "").slice(0, MAX_NAME_LENGTH);
     update(field, cleaned);
   };
 
@@ -116,6 +120,7 @@ export function ContactInfoForm({
                 id="contact-firstName"
                 type="text"
                 placeholder="John"
+                maxLength={MAX_NAME_LENGTH}
                 className={`${inputClass} ${hasError("firstName") ? "border-[#FF4345]" : ""}`}
                 value={values.firstName}
                 onChange={(e) => handleNameChange("firstName", e.target.value)}
@@ -134,6 +139,7 @@ export function ContactInfoForm({
                 id="contact-lastName"
                 type="text"
                 placeholder="Doe"
+                maxLength={MAX_NAME_LENGTH}
                 className={`${inputClass} ${hasError("lastName") ? "border-[#FF4345]" : ""}`}
                 value={values.lastName}
                 onChange={(e) => handleNameChange("lastName", e.target.value)}
@@ -172,12 +178,13 @@ export function ContactInfoForm({
                 id="contact-email"
                 type="email"
                 placeholder="john@example.com"
+                maxLength={MAX_EMAIL_LENGTH}
                 className={`${inputClass} ${hasError("email") ? "border-[#FF4345]" : ""}`}
                 value={values.email}
-                onChange={(e) => update("email", e.target.value)}
+                onChange={(e) => update("email", e.target.value.slice(0, MAX_EMAIL_LENGTH))}
                 onBlur={(e) => {
-                  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                  if (e.target.value && !emailRegex.test(e.target.value)) {
+                  const emailRegex = /^[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+                  if (e.target.value && !emailRegex.test(e.target.value.trim())) {
                     toast.warning("Please enter a valid email address");
                   }
                 }}
@@ -198,9 +205,10 @@ export function ContactInfoForm({
                 name="make"
                 type="text"
                 placeholder="Toyota"
+                maxLength={100}
                 className={`${inputClass} ${hasError("make") ? "border-[#FF4345]" : ""}`}
                 value={values.make || values.vehicleMake || ""}
-                onChange={(e) => update("make", e.target.value)}
+                onChange={(e) => update("make", e.target.value.slice(0, 100))}
                 disabled={disabled}
               />
               {getError("make") && (
@@ -216,9 +224,10 @@ export function ContactInfoForm({
                 name="model"
                 type="text"
                 placeholder="Camry"
+                maxLength={100}
                 className={`${inputClass} ${hasError("model") ? "border-[#FF4345]" : ""}`}
                 value={values.model || values.vehicleModel || ""}
-                onChange={(e) => update("model", e.target.value)}
+                onChange={(e) => update("model", e.target.value.slice(0, 100))}
                 disabled={disabled}
               />
               {getError("model") && (
@@ -253,9 +262,10 @@ export function ContactInfoForm({
             <textarea
               id="contact-note"
               placeholder="Add any special requests..."
+              maxLength={MAX_NOTE_LENGTH}
               className={`${inputClass} h-[127px] items-start resize-none`}
               value={values.note}
-              onChange={(e) => update("note", e.target.value)}
+              onChange={(e) => update("note", e.target.value.slice(0, MAX_NOTE_LENGTH))}
               disabled={disabled}
             />
           </div>

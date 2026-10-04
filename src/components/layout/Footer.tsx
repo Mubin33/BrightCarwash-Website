@@ -47,6 +47,7 @@ export function Footer() {
               src="/images/logo.png"
               alt="Brightside Car Wash"
               fill
+              sizes="128px"
               className="object-contain"
             />
           </Link>

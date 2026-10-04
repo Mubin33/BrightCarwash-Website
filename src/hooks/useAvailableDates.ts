@@ -1,7 +1,7 @@
 "use client";
 
 import { getAvailability, type AvailabilitySlot } from "@/services/booking.api";
-import { addDays, endOfDay, format, startOfDay } from "date-fns";
+import { utcDateKey, utcDayOffset } from "@/lib/bookingTime";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const BATCH_SIZE = 29;
@@ -13,14 +13,14 @@ function getCacheKey(
   locationId: string,
   serviceVariationIds: string[],
 ): string {
-  return `avail_${locationId}_${serviceVariationIds.join(",")}`;
+  return `avail_utc_v1_${locationId}_${serviceVariationIds.join(",")}`;
 }
 
 function getSlotsCacheKey(
   locationId: string,
   serviceVariationIds: string[],
 ): string {
-  return `avail_slots_${locationId}_${serviceVariationIds.join(",")}`;
+  return `avail_utc_v1_slots_${locationId}_${serviceVariationIds.join(",")}`;
 }
 
 interface CacheEntry<T> {
@@ -57,6 +57,7 @@ export function useAvailableDates(
 ) {
   const [availableDates, setAvailableDates] = useState<string[]>([]);
   const [allSlots, setAllSlots] = useState<AvailabilitySlot[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const cancelledRef = useRef(false);
   const fetchIdRef = useRef(0);
@@ -71,13 +72,14 @@ export function useAvailableDates(
   const selectedDateStr = selectedDate
     ? typeof selectedDate === "string"
       ? selectedDate
-      : format(selectedDate, "yyyy-MM-dd")
+      : utcDateKey(selectedDate)
     : "";
   const prevDateStrRef = useRef(selectedDateStr);
 
   const fetchAllSlots = useCallback(() => {
     if (!locationId || stableVariationIds.length === 0) return;
 
+    setError(null);
     const currentFetchId = ++fetchIdRef.current;
     lastFetchTimeRef.current = Date.now();
     const dateCacheKey = getCacheKey(locationId, stableVariationIds);
@@ -86,10 +88,8 @@ export function useAvailableDates(
     const cachedDates = readCache<string[]>(dateCacheKey) || [];
     const cachedSlots = readCache<AvailabilitySlot[]>(slotCacheKey) || [];
 
-    if (cachedDates.length > 0 && currentFetchId === fetchIdRef.current)
-      setAvailableDates(cachedDates);
-    if (cachedSlots.length > 0 && currentFetchId === fetchIdRef.current)
-      setAllSlots(cachedSlots);
+    setAvailableDates(cachedDates);
+    setAllSlots(cachedSlots);
 
     if (
       cachedDates.length === 0 &&
@@ -104,7 +104,7 @@ export function useAvailableDates(
     const now = new Date();
     const allDates: string[] = [];
     for (let i = 0; i <= TOTAL_DAYS; i++) {
-      allDates.push(format(addDays(now, i), "yyyy-MM-dd"));
+      allDates.push(utcDateKey(utcDayOffset(now, i)));
     }
 
     const batches: string[][] = [];
@@ -129,10 +129,8 @@ export function useAvailableDates(
         const startAt =
           index === 0
             ? now.toISOString()
-            : startOfDay(addDays(now, index * BATCH_SIZE)).toISOString();
-        const endAt = endOfDay(
-          addDays(now, (index + 1) * BATCH_SIZE - 1),
-        ).toISOString();
+            : utcDayOffset(now, index * BATCH_SIZE).toISOString();
+        const endAt = new Date(utcDayOffset(now, (index + 1) * BATCH_SIZE).getTime() - 1).toISOString();
 
         const data = await getAvailability({
           locationId,
@@ -141,8 +139,10 @@ export function useAvailableDates(
           endAt,
         });
 
-        data.slots?.forEach((s) => {
-          accumulatedDates.add(s.startAt.split("T")[0]);
+        if (!Array.isArray(data?.slots)) throw new Error("Invalid availability response");
+
+        data.slots.forEach((s) => {
+          accumulatedDates.add(utcDateKey(s.startAt));
           if (
             !accumulatedSlots.some((existing) => existing.startAt === s.startAt)
           ) {
@@ -157,7 +157,13 @@ export function useAvailableDates(
           writeCache(dateCacheKey, sortedDates);
           writeCache(slotCacheKey, accumulatedSlots);
         }
-      } catch {}
+      } catch {
+        if (!cancelledRef.current && currentFetchId === fetchIdRef.current) {
+          setError('We could not load appointment availability. Please try again.');
+          setLoading(false);
+        }
+        return;
+      }
 
       if (index === 0 && currentFetchId === fetchIdRef.current) {
         setLoading(false);
@@ -177,7 +183,10 @@ export function useAvailableDates(
 
   // Initial fetch on mount / parameter change and re-fetch on window focus / visibility change
   useEffect(() => {
+    // Synchronize loading and cached data when subscribing to this request.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchAllSlots();
+    const requestSequence = fetchIdRef;
 
     const handleFocusOrVisibility = () => {
       if (document.visibilityState === "visible") {
@@ -193,6 +202,7 @@ export function useAvailableDates(
 
     return () => {
       cancelledRef.current = true;
+      requestSequence.current++;
       window.removeEventListener("focus", handleFocusOrVisibility);
       document.removeEventListener("visibilitychange", handleFocusOrVisibility);
     };
@@ -203,13 +213,14 @@ export function useAvailableDates(
     if (prevDateStrRef.current !== selectedDateStr) {
       prevDateStrRef.current = selectedDateStr;
       if (selectedDateStr) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- Refresh the external availability request for the selected date.
         fetchAllSlots();
       }
     }
   }, [selectedDateStr, fetchAllSlots]);
 
   const getSlotsForDate = useCallback(
-    (dateStr: string) => allSlots.filter((s) => s.startAt.startsWith(dateStr)),
+    (dateStr: string) => allSlots.filter((s) => utcDateKey(s.startAt) === dateStr),
     [allSlots],
   );
 
@@ -217,9 +228,9 @@ export function useAvailableDates(
     setAllSlots((prev) => {
       const filtered = prev.filter((s) => s.startAt !== startAt);
       // Also update availableDates if this date no longer has any slots
-      const dateStr = startAt.split("T")[0];
+      const dateStr = utcDateKey(startAt);
       const hasRemainingSlots = filtered.some((s) =>
-        s.startAt.startsWith(dateStr),
+        utcDateKey(s.startAt) === dateStr,
       );
       if (!hasRemainingSlots) {
         setAvailableDates((prevDates) =>
@@ -235,6 +246,7 @@ export function useAvailableDates(
     allSlots,
     getSlotsForDate,
     loading,
+    error,
     refetch: fetchAllSlots,
     removeSlot,
   };

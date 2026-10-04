@@ -3,6 +3,7 @@ import { Icon } from '@/components/ui/Icon';
 import { Button } from '@/components/ui/Button';
 import { useTheme } from '@/contexts/ThemeContext';
 import { LocationData } from '@/types/locations';
+import { getSafeMapEmbedUrl } from '@/lib/mapEmbedUrl';
 
 interface Props {
     location: LocationData;
@@ -11,6 +12,7 @@ interface Props {
 export function LocationCard({ location }: Props) {
     const { theme } = useTheme();
     const isDark = theme === 'dark';
+    const mapEmbedUrl = getSafeMapEmbedUrl(location.mapEmbedUrl);
 
     return (
         <div
@@ -34,15 +36,21 @@ export function LocationCard({ location }: Props) {
 
             {/* Map */}
             <div className="flex h-45 sm:h-55 lg:h-62.5 self-stretch rounded-lg border border-[#DFE1E7] relative overflow-hidden">
-                <iframe
-                    src={location.mapEmbedUrl}
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                />
+                {mapEmbedUrl ? (
+                    <iframe
+                        src={mapEmbedUrl}
+                        title={`Map of ${location.name}`}
+                        sandbox="allow-scripts allow-forms allow-same-origin allow-popups"
+                        width="100%"
+                        height="100%"
+                        style={{ border: 0 }}
+                        allowFullScreen
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                    />
+                ) : (
+                    <p className="m-auto p-4">Map unavailable.</p>
+                )}
             </div>
 
             {/* Contact Info */}

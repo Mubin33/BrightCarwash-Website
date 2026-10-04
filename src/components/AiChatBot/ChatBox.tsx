@@ -16,7 +16,12 @@ import CampaignImageGallery from "./CampaignImageGallery";
 
 interface ChatBoxProps {
   onClose?: () => void;
+  isOpen?: boolean;
 }
+
+const MAX_NAME_LENGTH = 100;
+const MAX_EMAIL_LENGTH = 254;
+const MAX_MESSAGE_LENGTH = 1000;
 
 const quickActions = [
   {
@@ -37,7 +42,7 @@ const quickActions = [
   },
 ];
 
-export default function ChatBox({ onClose }: ChatBoxProps) {
+export default function ChatBox({ onClose, isOpen = true }: ChatBoxProps) {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
@@ -51,16 +56,28 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   function isValidEmail(value: string) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    const trimmed = value.trim();
+    return (
+      trimmed.length <= MAX_EMAIL_LENGTH &&
+      /^[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(trimmed)
+    );
   }
 
   async function handleStartSession() {
-    if (!name.trim() || !email.trim()) {
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim();
+
+    if (!trimmedName || !trimmedEmail) {
       setError("Please enter your name and email to start the chat.");
       return;
     }
 
-    if (!isValidEmail(email.trim())) {
+    if (trimmedName.length > MAX_NAME_LENGTH) {
+      setError("Name must be 100 characters or fewer.");
+      return;
+    }
+
+    if (!isValidEmail(trimmedEmail)) {
       setError("Please enter a valid email address.");
       return;
     }
@@ -76,7 +93,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
       setSessionId(session.session_id);
       setMessages(session.messages ?? []);
       setCampaigns(session.campaigns ?? []);
-    } catch (err) {
+    } catch {
       setError("Unable to start chat session. Please try again.");
     } finally {
       setIsSessionLoading(false);
@@ -84,11 +101,17 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
   }
 
   async function handleSend() {
-    if (!sessionId || !input.trim()) {
+    const trimmedInput = input.trim();
+    if (!sessionId || !trimmedInput || isLoading) {
       return;
     }
 
-    const userMessage: ChatMessage = { role: "user", content: input.trim() };
+    if (trimmedInput.length > MAX_MESSAGE_LENGTH) {
+      setError("Message must be 1000 characters or fewer.");
+      return;
+    }
+
+    const userMessage: ChatMessage = { role: "user", content: trimmedInput };
     setMessages((current) => [...current, userMessage]);
     setInput("");
     setIsLoading(true);
@@ -104,7 +127,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
           { role: "assistant", content: response.answer ?? "" },
         ]);
       }
-    } catch (err) {
+    } catch {
       setError(
         "Something went wrong while sending your message. Please try again.",
       );
@@ -114,7 +137,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
   }
 
   function handleQuickAction(value: string) {
-    setInput(value);
+    setInput(value.slice(0, MAX_MESSAGE_LENGTH));
   }
 
   // scroll to bottom on message change
@@ -143,14 +166,14 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
   }, [messages, sessionId, isLoading]);
 
   useEffect(() => {
-    if (sessionId && !isLoading && !isSessionLoading) {
+    if (isOpen && sessionId) {
       messageInputRef.current?.focus();
     }
-  }, [sessionId, isLoading, isSessionLoading]);
+  }, [sessionId, isOpen]);
 
   return (
     <div
-      className={`bg-[#F5F5F5] dark:bg-[#121212] rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.12)] w-95 max-w-[95vw] ${sessionId ? "h-[75vh]" : "h-auto"} max-h-[75vh] overflow-hidden flex flex-col border border-[#E7ECFF] dark:border-[#222222] p-2 relative z-50`}
+      className={`bg-[#F5F5F5] dark:bg-[#121212] rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.12)] w-95 max-w-[95vw] ${sessionId ? "h-[75vh]" : "max-h-[75vh]"} overflow-y-auto flex flex-col border border-[#E7ECFF] dark:border-[#222222] p-2 relative z-50`}
     >
       <div className="flex items-start justify-between gap-3 bg-[#071F4D] p-3 text-white rounded-xl">
         <div className="flex items-center gap-3">
@@ -177,12 +200,20 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
         </button>
       </div>
 
+      <p role="alert" className={error ? "my-2 p-2 text-sm text-[#B91C1C] text-center border border-red-500 rounded-md bg-red-100" : "sr-only"}>
+        {error}
+      </p>
       <div className="flex-1 min-h-0 overflow-hidden">
         <div className="flex h-full min-h-0 flex-col rounded-xl py-4">
           {sessionId ? (
             <>
               <div
                 ref={messagesContainerRef}
+                role="log"
+                aria-label="Chat messages"
+                aria-live="polite"
+                aria-relevant="additions text"
+                aria-atomic="false"
                 className="flex-1 min-h-0 space-y-6 overflow-y-auto custom-scroll pr-2 pb-2"
               >
                 {isSessionLoading ? (
@@ -202,6 +233,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                           key={`${message.role}-${index}`}
                           className={`flex flex-col ${isUser ? "items-end" : "items-start"}`}
                         >
+                          <span className="sr-only">{isUser ? "You" : "Brightside AI"}:</span>
                           <div
                             className={`max-w-full px-4 py-3 leading-[160%]  ${
                               isUser
@@ -222,6 +254,7 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                     })}
                     {isLoading && (
                       <div className="flex flex-col items-start">
+                        <span className="sr-only">Brightside AI is typing.</span>
                         <div className="max-w-full px-4 py-3 bg-[#F8FAFB] dark:bg-[#092544] text-[#0F172A] rounded-r-3xl rounded-t-3xl">
                           <div className="flex items-center gap-1">
                             <span className="w-1 h-1 bg-[#64748B] rounded-full animate-bounce [animation-delay:-0.3s]" />
@@ -236,21 +269,17 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
               </div>
             </>
           ) : (
-            <div className="space-y-4 border border-[#E7ECFF] dark:border-[#383838] p-3 rounded-xl">
-              {error ? (
-                <p className="mb-3 text-sm text-[#B91C1C] text-center border border-red-500 rounded-md bg-red-100">
-                  {error}
-                </p>
-              ) : null}
+            <div className="space-y-3 border border-[#E7ECFF] dark:border-[#383838] p-3 rounded-xl">
               <p className="text-sm text-[#334155] dark:text-white font-bold">
                 To start chatting, please enter your Name and Email.
               </p>
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <label className="block text-sm font-medium text-[#0F172A] dark:text-white">
                   Name
                   <input
                     value={name}
-                    onChange={(event) => setName(event.target.value)}
+                    maxLength={MAX_NAME_LENGTH}
+                    onChange={(event) => setName(event.target.value.slice(0, MAX_NAME_LENGTH))}
                     className="mt-2 w-full rounded-3xl border border-[#E2E8F0] dark:border-none bg-[#F8FAFB] dark:bg-[#092544] px-4 py-3 text-sm outline-none transition focus:border-[#0F172A] dark:placeholder:text-white"
                     placeholder="Your name"
                   />
@@ -259,12 +288,30 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
                   Email
                   <input
                     value={email}
-                    onChange={(event) => setEmail(event.target.value)}
+                    maxLength={MAX_EMAIL_LENGTH}
+                    onChange={(event) => setEmail(event.target.value.slice(0, MAX_EMAIL_LENGTH))}
                     className="mt-2 w-full rounded-3xl border border-[#E2E8F0] dark:border-none bg-[#F8FAFB] dark:bg-[#092544]  px-4 py-3 text-sm outline-none transition focus:border-[#0F172A] dark:placeholder:text-white"
                     placeholder="you@example.com"
                   />
                 </label>
               </div>
+              <div className="rounded-xl border border-[#E7ECFF] px-3 py-2 text-[12px] leading-5 text-[#334155] dark:border-[#2d3a4d] dark:text-[#e2e8f0] -mt-1">
+                <p className="font-medium text-[#0F172A] dark:text-white">
+                  Privacy notice
+                </p>
+                <p className="mt-1">
+                  By starting this chat, you agree to our
+                  <a
+                    href="/privacy-policy"
+                    className="mx-1 font-medium text-[#0F172A] underline underline-offset-2 dark:text-[#7dd3fc]"
+                  >
+                    privacy policy
+                  </a>
+                  and understand your data may be processed by the AI service.
+                  Do not enter card details.
+                </p>
+              </div>
+
               <button
                 type="button"
                 onClick={handleStartSession}
@@ -299,15 +346,18 @@ export default function ChatBox({ onClose }: ChatBoxProps) {
           <div className="flex items-center gap-2  ">
             <input
               ref={messageInputRef}
+              aria-label="Your message"
               value={input}
-              onChange={(event) => setInput(event.target.value)}
+              maxLength={MAX_MESSAGE_LENGTH}
+              onChange={(event) => setInput(event.target.value.slice(0, MAX_MESSAGE_LENGTH))}
               onKeyDown={(event) => {
                 if (event.key === "Enter") {
                   event.preventDefault();
                   handleSend();
                 }
               }}
-              disabled={isSessionLoading || isLoading}
+              readOnly={isSessionLoading || isLoading}
+              aria-busy={isLoading}
               placeholder={
                 isSessionLoading
                   ? "Loading chat session..."

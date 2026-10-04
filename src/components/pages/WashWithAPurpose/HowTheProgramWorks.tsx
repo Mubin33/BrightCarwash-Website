@@ -4,6 +4,7 @@ import React from "react";
 import { WashWithPurposeFaq } from "@/types/faq";
 import { otherFaqs } from "@/services/othersFaq.api";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { fetchCachedPublicData } from "@/lib/public-data-cache";
 export default function HowTheProgramWorks() {
   const [faqs, setFaqs] = React.useState<WashWithPurposeFaq[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -14,12 +15,11 @@ export default function HowTheProgramWorks() {
     const fetchFaqs = async () => {
       try {
         setLoading(true);
-        const data = await otherFaqs();
+        const data = await fetchCachedPublicData("wash-with-purpose-faqs", otherFaqs);
         setFaqs(data);
         setError(null);
-      } catch (err) {
+      } catch {
         setError("Failed to load FAQs");
-        console.error("Error fetching FAQs:", err);
       } finally {
         setLoading(false);
       }

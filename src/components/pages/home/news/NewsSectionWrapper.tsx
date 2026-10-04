@@ -33,7 +33,7 @@ export function NewsSectionWrapper() {
         heading={
           <>
             Stay informed with <br />
-            <span className="text-[#0098e8]">BrightSide's</span> latest updates!
+            <span className="text-[#0098e8]">BrightSide&apos;s</span> latest updates!
           </>
         }
         subheading="Car care tips, local news, exclusive offers, and behind-the-scenes stories from Naperville's favorite car wash."

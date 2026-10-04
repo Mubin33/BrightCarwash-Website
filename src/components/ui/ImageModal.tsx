@@ -1,5 +1,6 @@
 "use client";
 
+import { shouldBypassImageOptimization } from "@/lib/image-optimization";
 import type { GalleryImage } from "@/types/gallery";
 import { X } from "lucide-react";
 import Image from "next/image";
@@ -65,14 +66,10 @@ export function ImageModal({ image, isOpen, onClose }: ImageModalProps) {
             fill
             className="object-contain"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
-            priority
-            unoptimized
-            onError={(e) => {
-              console.error("Image failed to load:", image.src);
-              console.error("Error event:", e);
-            }}
-            onLoad={() => {
-              console.log("Image loaded successfully:", image.src);
+            loading="eager"
+            unoptimized={shouldBypassImageOptimization(image.src)}
+            onError={() => {
+              // Intentionally silent in production to avoid noisy logs and leaking image URLs.
             }}
           />
 

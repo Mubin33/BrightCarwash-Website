@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
+/** Date values represent UTC calendar days. */
 interface Props {
     value: Date | undefined;
     onChange: (date: Date) => void;
@@ -18,57 +19,57 @@ const MONTHS = [
 const DAY_NAMES = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
 function getDaysInMonth(year: number, month: number): number {
-    return new Date(year, month + 1, 0).getDate();
+    return new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
 }
 
 function getFirstDayOfMonth(year: number, month: number): number {
-    return new Date(year, month, 1).getDay();
+    return new Date(Date.UTC(year, month, 1)).getUTCDay();
 }
 
 function isSameDay(a: Date, b: Date): boolean {
-    return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+    return a.getUTCFullYear() === b.getUTCFullYear() && a.getUTCMonth() === b.getUTCMonth() && a.getUTCDate() === b.getUTCDate();
 }
 
 export function Calendar({ value, onChange, isDark = false, availableDates = [] }: Props) {
     const today = new Date();
     const [viewDate, setViewDate] = useState(value || today);
 
-    useEffect(() => {
-        if (value) {
-            setViewDate(value);
-        }
-    }, [value]);
+    const [previousValue, setPreviousValue] = useState(value);
+    if (value !== previousValue) {
+        setPreviousValue(value);
+        if (value) setViewDate(value);
+    }
 
-    const year = viewDate.getFullYear();
-    const month = viewDate.getMonth();
+    const year = viewDate.getUTCFullYear();
+    const month = viewDate.getUTCMonth();
     const daysInMonth = getDaysInMonth(year, month);
     const firstDay = getFirstDayOfMonth(year, month);
     const totalCells = Math.ceil((firstDay + daysInMonth) / 7) * 7;
 
-    const handlePrevMonth = () => setViewDate(new Date(year, month - 1, 1));
-    const handleNextMonth = () => setViewDate(new Date(year, month + 1, 1));
+    const handlePrevMonth = () => setViewDate(new Date(Date.UTC(year, month - 1, 1)));
+    const handleNextMonth = () => setViewDate(new Date(Date.UTC(year, month + 1, 1)));
 
     const handleSelect = (day: number) => {
-        const newDate = new Date(year, month, day);
+        const newDate = new Date(Date.UTC(year, month, day));
         onChange(newDate);
     };
 
     const isPast = (day: number) => {
-        const d = new Date(year, month, day);
-        const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        const d = new Date(Date.UTC(year, month, day));
+        const todayStart = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
         return d < todayStart;
     };
 
     return (
-        <div className="flex flex-col items-center gap-3 self-stretch">
+        <div role="group" aria-label="Choose an appointment date (UTC)" className="flex flex-col items-center gap-3 self-stretch">
             <div className="flex items-center justify-between self-stretch">
-                <button type="button" onClick={handlePrevMonth} className="p-1 hover:bg-gray-100 dark:hover:bg-white/10 rounded transition-colors">
+                <button type="button" aria-label="Previous month" onClick={handlePrevMonth} className="p-1 hover:bg-gray-100 dark:hover:bg-white/10 rounded transition-colors">
                     <ChevronLeft size={20} className={isDark ? 'text-white' : 'text-[#1D1F2C]'} />
                 </button>
-                <span className={`font-inter text-base font-semibold ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
+                <span aria-live="polite" aria-atomic="true" className={`font-inter text-base font-semibold ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>
                     {MONTHS[month]} {year}
                 </span>
-                <button type="button" onClick={handleNextMonth} className="p-1 hover:bg-gray-100 dark:hover:bg-white/10 rounded transition-colors">
+                <button type="button" aria-label="Next month" onClick={handleNextMonth} className="p-1 hover:bg-gray-100 dark:hover:bg-white/10 rounded transition-colors">
                     <ChevronRight size={20} className={isDark ? 'text-white' : 'text-[#1D1F2C]'} />
                 </button>
             </div>
@@ -85,17 +86,22 @@ export function Calendar({ value, onChange, isDark = false, availableDates = [] 
                 {Array.from({ length: totalCells }).map((_, i) => {
                     const day = i - firstDay + 1;
                     const valid = day > 0 && day <= daysInMonth;
-                    const selected = valid && value && isSameDay(new Date(year, month, day), value);
-                    const todayCell = valid && isSameDay(new Date(year, month, day), today);
+                    const selected = valid && value && isSameDay(new Date(Date.UTC(year, month, day)), value);
+                    const todayCell = valid && isSameDay(new Date(Date.UTC(year, month, day)), today);
                     const past = valid && isPast(day);
                     const dateStr = valid ? `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}` : '';
                     const hasSlots = availableDates.includes(dateStr);
                     const noSlotsAvailable = valid && !past && !hasSlots && availableDates.length > 0;
 
+                    if (!valid) return <span key={i} aria-hidden="true" />;
+
                     return (
                         <button
                             key={i}
                             type="button"
+                            aria-label={`${MONTHS[month]} ${day}, ${year}${past ? ', past date' : noSlotsAvailable ? ', no available appointments' : hasSlots ? ', appointments available' : ''}`}
+                            aria-pressed={Boolean(selected)}
+                            aria-current={todayCell ? 'date' : undefined}
                             disabled={!valid || past || noSlotsAvailable}
                             onClick={() => valid && !past && !noSlotsAvailable && handleSelect(day)}
                             className={`cursor-pointer relative w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-xs sm:text-sm font-inter rounded-full transition-colors mx-auto ${selected

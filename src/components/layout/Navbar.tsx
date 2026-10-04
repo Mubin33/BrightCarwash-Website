@@ -38,9 +38,10 @@ export function Navbar() {
                             <Image
                                 src="/images/logo.png"
                                 alt="Bright Carwash"
+                                sizes="(max-width: 639px) 40px, (max-width: 767px) 48px, (max-width: 1023px) 56px, 71px"
                                 width={71}
                                 height={80}
-                                priority
+                                loading="eager"
                                 className="w-10 h-auto sm:w-12 md:w-14 lg:w-17.75"
                             />
                         </Link>

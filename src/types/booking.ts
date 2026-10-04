@@ -19,6 +19,7 @@ export interface BookingValidationErrors {
   lastName?: string;
   phone?: string;
   email?: string;
+  note?: string;
   agreed?: string;
   make?: string;
   model?: string;
@@ -51,6 +52,15 @@ export interface CheckoutRequest {
   vehicle: string;
   nonce: string;
 }
+
+export interface LockSlotResponse {
+  lockToken: string;
+}
+
+export type BookingLockResult =
+  | (LockSlotResponse & { alreadyLocked?: false })
+  | { alreadyLocked: true }
+  | null;
 
 export interface LockSlotRequest {
   locationId: string;

@@ -3,12 +3,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE_URL: "${NEXT_PUBLIC_API_BASE_URL:?Set NEXT_PUBLIC_API_BASE_URL before building}"
+        NEXT_PUBLIC_API_BASE_AI_URL: "${NEXT_PUBLIC_API_BASE_AI_URL:?Set NEXT_PUBLIC_API_BASE_AI_URL before building}"
+        NEXT_PUBLIC_SQUARE_APP_ID: "${NEXT_PUBLIC_SQUARE_APP_ID:?Set NEXT_PUBLIC_SQUARE_APP_ID before building}"
+        NEXT_PUBLIC_SQUARE_ENVIRONMENT: "${NEXT_PUBLIC_SQUARE_ENVIRONMENT:?Set NEXT_PUBLIC_SQUARE_ENVIRONMENT before building}"
+        NEXT_PUBLIC_IMAGEURL: "${NEXT_PUBLIC_IMAGEURL:-}"
     image: frontend-car-wash-website
     container_name: frontend-car-wash-website
     restart: unless-stopped
     ports:
       - "3000:3000"
-    env_file:
-      - .env
-    working_dir: /usr/src/app
-    command: npm start
+    deploy:
+      resources:
+        limits:
+          cpus: "1.50"
+          memory: 1G

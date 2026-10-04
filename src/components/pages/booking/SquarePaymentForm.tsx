@@ -51,17 +51,70 @@ declare global {
   }
 }
 
-const APP_ID = process.env.NEXT_PUBLIC_SQUARE_APP_ID || "";
-const SQUARE_ENV = process.env.NEXT_PUBLIC_SQUARE_ENVIRONMENT?.toLowerCase();
+import { SQUARE_APP_ID as APP_ID, SQUARE_ENVIRONMENT } from "@/lib/env";
+const SQUARE_ENV = SQUARE_ENVIRONMENT;
 const isProduction = SQUARE_ENV === "production";
 const SQUARE_SCRIPT_URL = isProduction
   ? "https://web.squarecdn.com/v1/square.js"
   : "https://sandbox.web.squarecdn.com/v1/square.js";
 const showTestCards = !isProduction && process.env.NODE_ENV !== "production";
 
-// Module-level flag to prevent duplicate script injection across re-renders
-let squareScriptLoading = false;
-let squareScriptLoaded = false;
+let squareScriptPromise: Promise<void> | null = null;
+
+function loadSquareScript(): Promise<void> {
+  if (window.Square) return Promise.resolve();
+  if (squareScriptPromise) return squareScriptPromise;
+
+  squareScriptPromise = new Promise<void>((resolve, reject) => {
+    let script = document.querySelector<HTMLScriptElement>(
+      `script[src="${SQUARE_SCRIPT_URL}"]`,
+    );
+    const shouldAppend = !script;
+
+    if (!script) {
+      script = document.createElement("script");
+      script.src = SQUARE_SCRIPT_URL;
+      script.async = true;
+    }
+
+    const finish = (error?: Error) => {
+      script?.removeEventListener("load", handleLoad);
+      script?.removeEventListener("error", handleError);
+      if (loadTimeout) clearTimeout(loadTimeout);
+
+      if (error) {
+        script?.remove();
+        squareScriptPromise = null;
+        reject(error);
+        return;
+      }
+
+      if (!window.Square) {
+        script?.remove();
+        squareScriptPromise = null;
+        reject(new Error("Square payment system did not initialize."));
+        return;
+      }
+
+      resolve();
+    };
+
+    const handleLoad = () => finish();
+    const handleError = () =>
+      finish(new Error("Failed to load payment system. Check your connection and try again."));
+    const loadTimeout = setTimeout(
+      () => finish(new Error("Loading the payment system timed out. Please try again.")),
+      15000,
+    );
+
+    script.addEventListener("load", handleLoad, { once: true });
+    script.addEventListener("error", handleError, { once: true });
+
+    if (shouldAppend) document.body.appendChild(script);
+  });
+
+  return squareScriptPromise;
+}
 
 export const SquarePaymentForm = forwardRef<SquarePaymentFormHandle, Props>(
   function SquarePaymentForm(
@@ -78,35 +131,53 @@ export const SquarePaymentForm = forwardRef<SquarePaymentFormHandle, Props>(
   ) {
     const [loaded, setLoaded] = useState(false);
     const [error, setError] = useState("");
+    const [canRetry, setCanRetry] = useState(false);
+    const [retryCount, setRetryCount] = useState(0);
     const cardRef = useRef<HTMLDivElement>(null);
     const cardInstanceRef = useRef<CardInstance | null>(null);
-    const initializedRef = useRef(false);
     const { theme } = useTheme();
     const isDark = theme === "dark";
 
     useEffect(() => {
-      if (!APP_ID || !locationId) return;
-      if (initializedRef.current) return;
+      let active = true;
+      const cleanupSquareCard = () => {
+        active = false;
+        const card = cardInstanceRef.current;
+        cardInstanceRef.current = null;
 
-      async function initSquare() {
-        if (!window.Square) return;
-        if (initializedRef.current) return;
-        initializedRef.current = true;
-
-        if (cardInstanceRef.current) {
-          try {
-            await cardInstanceRef.current.destroy();
-          } catch {}
-          cardInstanceRef.current = null;
+        if (card) {
+          void card.destroy().catch((destroyError: unknown) => {
+            console.error("Failed to clean up Square card form.", destroyError);
+          });
+          return;
         }
 
         if (cardRef.current) {
           cardRef.current.innerHTML = "";
         }
+      };
 
+      setLoaded(false);
+      setError("");
+      setCanRetry(false);
+
+      if (!locationId) {
+        setError("Choose a service location before entering payment details.");
+        return cleanupSquareCard;
+      }
+
+      async function initSquare() {
+        let cardInstance: CardInstance | null = null;
         try {
-          const payments = window.Square.payments(APP_ID, locationId);
-          const card = await payments.card({
+          await loadSquareScript();
+          if (!active || !cardRef.current) return;
+
+          const square = window.Square;
+          if (!square) {
+            throw new Error("Square payment system did not initialize.");
+          }
+          const payments = square.payments(APP_ID, locationId);
+          cardInstance = await payments.card({
             style: {
               input: {
                 fontSize: "14px",
@@ -127,77 +198,62 @@ export const SquarePaymentForm = forwardRef<SquarePaymentFormHandle, Props>(
               },
             },
           });
-          await card.attach(cardRef.current!);
-          cardInstanceRef.current = card;
+
+          if (!active || !cardRef.current) {
+            await cardInstance.destroy();
+            cardInstance = null;
+            return;
+          }
+
+          await cardInstance.attach(cardRef.current);
+          if (!active) {
+            await cardInstance.destroy();
+            cardInstance = null;
+            return;
+          }
+
+          cardInstanceRef.current = cardInstance;
+          cardInstance = null;
           setLoaded(true);
         } catch (err: unknown) {
-          setError(
-            err instanceof Error
-              ? err.message
-              : "Failed to initialize payments",
-          );
+          if (cardInstance) {
+            await cardInstance.destroy().catch((destroyError: unknown) => {
+              console.error("Failed to clean up Square card form.", destroyError);
+            });
+          }
+          if (active) {
+            setError(
+              err instanceof Error
+                ? err.message
+                : "Failed to initialize payments. Please try again.",
+            );
+            setCanRetry(true);
+          }
         }
       }
 
-      if (window.Square) {
-        initSquare();
-        return;
-      }
+      void initSquare();
 
-      const existingScript = document.querySelector('script[src*="square.js"]');
-      if (existingScript) {
-        if (squareScriptLoaded) {
-          initSquare();
-        } else {
-          existingScript.addEventListener("load", initSquare);
-          existingScript.addEventListener("error", () =>
-            setError("Failed to load payment system"),
-          );
-        }
-        return;
-      }
-
-      if (squareScriptLoading) return;
-      squareScriptLoading = true;
-
-      const script = document.createElement("script");
-      script.src = SQUARE_SCRIPT_URL;
-      script.async = true;
-      script.onload = () => {
-        squareScriptLoaded = true;
-        squareScriptLoading = false;
-        initSquare();
-      };
-      script.onerror = () => {
-        squareScriptLoading = false;
-        setError("Failed to load payment system");
-      };
-      document.body.appendChild(script);
-
-      const cardElement = cardRef.current;
-
-      return () => {
-        initializedRef.current = false;
-
-        if (cardInstanceRef.current) {
-          try {
-            cardInstanceRef.current.destroy();
-          } catch {}
-          cardInstanceRef.current = null;
-        }
-        if (cardElement) {
-          cardElement.innerHTML = "";
-        }
-      };
-    }, [locationId, isDark]);
+      return cleanupSquareCard;
+    }, [locationId, isDark, retryCount]);
 
     const handleTokenize = useCallback(async (): Promise<string | null> => {
       if (!cardInstanceRef.current) return null;
-      const result = await cardInstanceRef.current.tokenize();
+      let result: TokenizeResult;
+      try {
+        result = await cardInstanceRef.current.tokenize();
+      } catch (err: unknown) {
+        setCanRetry(false);
+        setError(
+          err instanceof Error ? err.message : "Payment could not be processed.",
+        );
+        return null;
+      }
 
       if (result.status === "OK" && result.token) {
         onNonceReady?.(result.token);
         setError("");
+        setCanRetry(false);
         return result.token;
       }
       const tokenizeErrors = result.errors ?? [];
@@ -209,6 +265,7 @@ export const SquarePaymentForm = forwardRef<SquarePaymentFormHandle, Props>(
         firstDetail ||
           `Payment failed (${result.status}). Check card details and try again.`,
       );
+      setCanRetry(false);
       return null;
     }, [onNonceReady]);
 
@@ -238,15 +295,52 @@ export const SquarePaymentForm = forwardRef<SquarePaymentFormHandle, Props>(
             Payment Details
           </h3>
 
-          {!loaded && !error && (
-            <div className="w-full h-12 bg-gray-100 dark:bg-white/10 animate-pulse rounded-lg" />
-          )}
-
           <div
-            ref={cardRef}
             id="card-container"
-            className="w-full min-h-[48px]"
-          />
+            className={`relative w-full ${loaded ? "min-h-[72px]" : "h-12"}`}
+          >
+            {!loaded && !error && (
+              <div
+                aria-hidden="true"
+                className={`absolute inset-0 flex items-center rounded-md border-2 border-[#0098E8] px-3 font-inter text-sm ${
+                  isDark ? "bg-white/[0.08]" : "bg-[#F8FAFB]"
+                }`}
+              >
+                <span className="flex h-6 w-9 shrink-0 items-center justify-center rounded bg-[#555]">
+                  <span className="h-px w-6 bg-white/40" />
+                </span>
+                <span className="flex-1 pl-4 text-[#A5A5AB]">Card number</span>
+                <span className="w-1/4 text-center text-[#A5A5AB]">MM/YY</span>
+                <span className="w-1/5 text-center text-[#A5A5AB]">CVV</span>
+              </div>
+            )}
+            <div
+              ref={cardRef}
+              className={`w-full ${
+                loaded
+                  ? "relative min-h-[72px]"
+                  : "invisible absolute inset-0 min-h-[48px]"
+              }`}
+            />
+          </div>
+
+          {error && (
+            <div
+              className="flex w-full items-center justify-between gap-3 text-sm text-[#FF4345]"
+              role="alert"
+            >
+              <span>{error}</span>
+              {locationId && canRetry && (
+                <button
+                  type="button"
+                  className="shrink-0 underline"
+                  onClick={() => setRetryCount((count) => count + 1)}
+                >
+                  Try again
+                </button>
+              )}
+            </div>
+          )}
 
           {showTestCards && (
             <p
@@ -272,6 +366,7 @@ export const SquarePaymentForm = forwardRef<SquarePaymentFormHandle, Props>(
               <a
                 href="/privacy-policy"
                 target="_blank"
+                rel="noopener noreferrer"
                 className="text-[#0098E8] underline hover:text-[#0088D8] transition-colors"
               >
                 Privacy &amp; Policy

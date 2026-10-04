@@ -1,5 +1,6 @@
 'use client';
 
+import { shouldBypassImageOptimization } from "@/lib/image-optimization";
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -101,10 +102,9 @@ export function HeroBackgroundCarousel({
                             alt={`Hero background ${idx + 1}`}
                             fill
                             className={`object-cover ${objectPositionClass}`}
-                            priority={idx === 0}
+                            preload={idx === 0}
                             sizes="100vw"
-                            quality={90}
-                            unoptimized
+                            unoptimized={shouldBypassImageOptimization(url)}
                             onLoad={() => handleImageLoad(idx)}
                         />
                         {/* Skeleton while loading */}

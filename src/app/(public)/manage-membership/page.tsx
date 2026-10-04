@@ -1,6 +1,13 @@
+import type { Metadata } from 'next';
+import { createPageMetadata } from '@/lib/site';
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
-import { SectionHeader } from "@/components/ui/SectionHeader";
 import React from "react";
+
+export const metadata: Metadata = createPageMetadata(
+    '/manage-membership',
+    'Manage Your Membership',
+    'Access your Brightside Car Wash account, update payment information, and manage your membership.',
+);
 
 export default function ManageMembershipPage() {
   return (
@@ -23,6 +30,10 @@ export default function ManageMembershipPage() {
         </div>
         <div className="w-full rounded-lg overflow-hidden mt-5">
           <iframe
+            sandbox="allow-scripts allow-forms allow-same-origin allow-popups"
+            referrerPolicy="no-referrer"
+            title="Manage Your Membership"
+            loading="lazy"
             src="https://app.flexwash.com/sign-up-portal?organizationId=264"
             style={{ width: "100%", minHeight: "400px", border: "none" }}
           ></iframe>

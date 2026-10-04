@@ -17,12 +17,10 @@ interface Props {
 
 export function DatePicker({ value, onChange, placeholder = 'Select date', className = '', disablePastDates = false }: Props) {
     const [open, setOpen] = useState(false);
-    const [mounted, setMounted] = useState(false);
     const triggerRef = useRef<HTMLButtonElement>(null);
     const popoverRef = useRef<HTMLDivElement>(null);
     const position = usePopoverPosition(triggerRef, popoverRef, open);
 
-    useEffect(() => setMounted(true), []);
 
     useEffect(() => {
         function handleClickOutside(e: MouseEvent) {
@@ -46,7 +44,7 @@ export function DatePicker({ value, onChange, placeholder = 'Select date', class
             >
                 {value ? format(value, 'MMM dd, yyyy') : placeholder}
             </button>
-            {open && mounted && createPortal(
+            {open && createPortal(
                 <div
                     ref={popoverRef}
                     style={{

@@ -1,5 +1,6 @@
 "use client";
 
+import { shouldBypassImageOptimization } from "@/lib/image-optimization";
 import { Icon } from "@/components/ui/Icon";
 import { useTheme } from "@/contexts/ThemeContext";
 import type { TestimonialData } from "@/data/testimonials";
@@ -98,7 +99,7 @@ export function TestimonialCard({ testimonial }: Props) {
               fill
               className="object-cover"
               sizes="42px"
-              unoptimized
+              unoptimized={shouldBypassImageOptimization(testimonial.image)}
             />
           ) : (
             <span className="text-white font-inter text-sm font-medium">

@@ -1,3 +1,5 @@
+import Image from "next/image";
+import { safeHref } from "@/lib/safeHref";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 
 const data = [
@@ -47,11 +49,13 @@ export default function ProudToPartnerWith() {
               className="flex flex-col justify-between bg-white dark:bg-[#403b35] border border-[#DFE1E7] dark:border-[#333] rounded-lg p-4 lg:p-6"
             >
               <div>
-                <a href={item.link} target="_blank">
-                  <img
+                <a href={safeHref(item.link)} target="_blank" rel="noopener noreferrer">
+                  <Image
+                    width={500}
+                    height={172}
                     src={item.image}
                     alt={item.title}
-                    className="mb-8 lg:mb-8 h-43"
+                    className="mb-8 lg:mb-8 h-43 w-auto"
                   />
                 </a>
 
@@ -65,8 +69,9 @@ export default function ProudToPartnerWith() {
               </div>
 
               <a
-                href={item.link}
+                href={safeHref(item.link)}
                 target="_blank"
+                rel="noopener noreferrer"
                 className="bg-[#FEC300] hover:bg-[#E6B800] text-black px-5 py-3.5 rounded-lg w-full text-sm lg:text-base font-medium uppercase leading-[124%] mt-6 lg:mt-8 cursor-pointer duration-300 text-center"
               >
                 Support & Checkout

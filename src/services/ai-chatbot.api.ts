@@ -1,11 +1,4 @@
-import axios from "axios";
-
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_AI_URL;
-
-const apiClient = axios.create({
-  baseURL: API_BASE,
-  headers: { "Content-Type": "application/json" },
-});
+import { aiApi as api } from "@/lib/http";
 
 export interface ChatMessage {
   role: "assistant" | "user" | string;
@@ -50,7 +43,7 @@ export async function createSession(params?: {
     email: params?.email || defaultEmail,
     name: params?.name || "Guest",
   };
-  const { data } = await apiClient.post<ApiResponse<ChatSessionData>>(
+  const { data } = await api.post<ApiResponse<ChatSessionData>>(
     "/sessions/",
     payload,
   );
@@ -62,7 +55,7 @@ export async function chat(
   sessionId: string,
   message: string,
 ): Promise<ChatSessionData> {
-  const { data } = await apiClient.post<ApiResponse<ChatSessionData>>(
+  const { data } = await api.post<ApiResponse<ChatSessionData>>(
     "/chat/message/",
     {
       session_id: sessionId,

@@ -20,14 +20,14 @@ export function SectionHeader({
   subheading,
   forceDark,
   align = "center",
-  className,
+  className = "",
 }: Props) {
   const { theme } = useTheme();
   const isDark = forceDark ?? theme === "dark";
 
   return (
     <div
-      className={`flex min-h-auto flex-col justify-end ${align === "center" ? "items-center" : "items-start"} gap-3 self-stretch`}
+      className={`flex min-h-auto flex-col justify-end ${align === "center" ? "items-center" : "items-start"} gap-3 self-stretch ${className}`}
     >
       <div
         className={`flex py-1.5 px-3 items-center gap-3 rounded-lg border border-[#E7C1BF] bg-[#B23730]`}

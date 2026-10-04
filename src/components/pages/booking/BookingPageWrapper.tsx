@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -11,92 +11,55 @@ import { CheckoutStep } from './CheckoutStep';
 import { BookingSuccess } from './BookingSuccess';
 import { useBooking } from '@/contexts/BookingContext';
 import { useCheckoutLock } from '@/hooks/useCheckoutLock';
-import { useBookingLock } from '@/hooks/useBookingLock';
+import { selectionFromSearch } from '@/lib/booking-storage';
+import { hasBookingDetails } from '@/lib/bookingValidation';
 
 type Step = 'cart' | 'datetime' | 'checkout' | 'confirmed';
 
 export function BookingPageWrapper() {
     const searchParams = useSearchParams();
     const router = useRouter();
-    const stepParam = searchParams.get('step') as Step | null;
-    const [step, setStep] = useState<Step>(stepParam || 'cart');
-    const [bookingStartAt, setBookingStartAt] = useState(searchParams.get('startAt') || '');
-    const [bookingTime, setBookingTime] = useState(searchParams.get('time') || '');
+    const requestedStep = searchParams.get('step');
+    const parsedStep: Step = requestedStep === 'datetime' || requestedStep === 'checkout' || requestedStep === 'confirmed'
+        ? requestedStep : 'cart';
     const { theme } = useTheme();
     const isDark = theme === 'dark';
-    // Inside BookingPageWrapper, add:
-    const { lockToken, selectedLocation } = useBooking();
-    const { release } = useBookingLock();
-    const startAt = searchParams.get('startAt') || bookingStartAt;
-
-    // Refs mirror latest values so unmount-time cleanup (e.g. Navbar link navigation)
-    // never reads a stale/blank startAt caused by the URL already having changed.
-    const stepRef = useRef(step);
-    const lockTokenRef = useRef(lockToken);
-    const selectedLocationRef = useRef(selectedLocation);
-    const startAtRef = useRef(startAt);
-
-    useEffect(() => { stepRef.current = step; }, [step]);
-    useEffect(() => { lockTokenRef.current = lockToken; }, [lockToken]);
-    useEffect(() => { selectedLocationRef.current = selectedLocation; }, [selectedLocation]);
-    useEffect(() => { startAtRef.current = startAt; }, [startAt]);
-
+    const { hydrated, selectedServices, selectedLocation, selection, lastBookingDetails, setSelection } = useBooking();
+    // Accept old bookmarked URLs once, then use the same state as the rest of the wizard.
+    const query = searchParams.toString();
+    const hasLegacySelection = ['date', 'time', 'startAt', 'teamMemberId'].some(key => searchParams.has(key));
+    const hasServicesAndLocation = selectedServices.length > 0 && !!selectedLocation;
+    const hasValidSelection = hasBookingDetails({
+        ...selection,
+        locationId: selectedLocation,
+        serviceVariationIds: selectedServices.map(service => service.variationId),
+    });
+    const hasConfirmation = (lastBookingDetails?.services.length ?? 0) > 0;
+    const step: Step = !hydrated || hasLegacySelection
+        ? parsedStep
+        : parsedStep === 'confirmed'
+            ? hasConfirmation ? 'confirmed' : 'cart'
+            : parsedStep === 'checkout'
+                ? hasValidSelection ? 'checkout' : hasServicesAndLocation ? 'datetime' : 'cart'
+                : parsedStep === 'datetime'
+                    ? hasServicesAndLocation ? 'datetime' : 'cart'
+                    : 'cart';
     useEffect(() => {
-        if (step !== 'checkout' && step !== 'confirmed' && lockToken) {
-            release(selectedLocation, startAt);
+        if (!hydrated || !hasLegacySelection) return;
+        setSelection(selectionFromSearch(query));
+        router.replace(`/booking?step=${step}`, { scroll: false });
+    }, [hydrated, hasLegacySelection, query, setSelection, router, step]);
+    useEffect(() => {
+        if (!hydrated || hasLegacySelection) return;
+        if (requestedStep !== step) {
+            router.replace(`/booking?step=${step}`, { scroll: false });
         }
-    }, [step]);
-
-    // Fires only when BookingPageWrapper truly unmounts — i.e. the user navigates
-    // away from /booking entirely (Navbar: Home, About Us, Services, Gallery, News, Store).
-    // Uses refs (not searchParams) so startAt is still valid at cleanup time.
-    // Uses fetch with keepalive (not sendBeacon) because this is a cross-origin
-    // call with a JSON body — sendBeacon cannot perform the CORS preflight that
-    // application/json requires cross-origin, while keepalive fetch can, and still
-    // survives the navigation/unmount the same way sendBeacon would.
-    useEffect(() => {
-        return () => {
-            if (
-                (stepRef.current === 'checkout') &&
-                lockTokenRef.current &&
-                selectedLocationRef.current &&
-                startAtRef.current
-            ) {
-                fetch(
-                    `${process.env.NEXT_PUBLIC_API_BASE_URL}/appointments/lock/release`,
-                    {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            locationId: selectedLocationRef.current,
-                            startAt: startAtRef.current,
-                            lockToken: lockTokenRef.current,
-                        }),
-                        keepalive: true,
-                    }
-                ).catch(() => { });
-            }
-        };
-    }, []);
-
+    }, [hydrated, hasLegacySelection, requestedStep, router, step]);
+    useCheckoutLock(step, hydrated && !hasLegacySelection);
     const updateStep = (newStep: Step) => {
-        const params = new URLSearchParams(searchParams.toString());
-        params.set('step', newStep);
-        router.push(`/booking?${params.toString()}`, { scroll: false });
-        setStep(newStep);
+        router.push(`/booking?step=${newStep}`, { scroll: false });
     };
-
-    useEffect(() => {
-        if (stepParam && stepParam !== step) {
-            setStep(stepParam);
-        }
-    }, [stepParam]);
-
-    const handleDateTimeProceed = (startAt: string, time: string) => {
-        setBookingStartAt(startAt);
-        setBookingTime(time);
-        updateStep('checkout');
-    };
+    const handleDateTimeProceed = () => updateStep('checkout');
 
     const visibleStep: 'cart' | 'datetime' | 'checkout' = step === 'confirmed' ? 'checkout' : step;
 
@@ -110,22 +73,20 @@ export function BookingPageWrapper() {
                 <div className="flex flex-col justify-between items-center w-full max-w-[1280px] xl:max-w-[1320px]">
                     <div className="flex flex-col items-center gap-4 sm:gap-6 w-full">
                         {step !== 'confirmed' && <BookingSteps currentStep={visibleStep} onStepChange={updateStep} />}
-                        {step === 'cart' && <CartStep onProceed={() => updateStep('datetime')} />}
-                        {step === 'datetime' && (
+                        {hydrated && !hasLegacySelection && step === 'cart' && <CartStep onProceed={() => updateStep('datetime')} />}
+                        {hydrated && !hasLegacySelection && step === 'datetime' && (
                             <DateTimeStep
                                 onProceed={handleDateTimeProceed}
                                 onBack={() => updateStep('cart')}
                             />
                         )}
-                        {step === 'checkout' && (
+                        {hydrated && !hasLegacySelection && step === 'checkout' && (
                             <CheckoutStep
                                 onBack={() => updateStep('datetime')}
                                 onSuccess={() => updateStep('confirmed')}
-                                bookingStartAt={bookingStartAt}
-                                bookingTime={bookingTime}
                             />
                         )}
-                        {step === 'confirmed' && (
+                        {hydrated && !hasLegacySelection && step === 'confirmed' && (
                             <div className="flex justify-center w-full">
                                 <BookingSuccess />
                             </div>

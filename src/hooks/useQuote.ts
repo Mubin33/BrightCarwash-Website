@@ -1,5 +1,6 @@
 'use client';
 
+import { getApiFailure } from '@/lib/http-client';
 import { useState } from 'react';
 import { submitQuote } from '@/services/quote.api';
 import { toast } from 'react-toastify';
@@ -19,8 +20,9 @@ export function useQuote() {
             await submitQuote(params);
             toast.success('Quote request submitted successfully!');
             return true;
-        } catch (error: any) {
-            toast.error(error.response?.data?.message || 'Failed to submit quote');
+        } catch (error: unknown) {
+            const failure = getApiFailure(error, 'Failed to submit quote');
+            toast.error(failure.message);
             return false;
         } finally {
             setLoading(false);

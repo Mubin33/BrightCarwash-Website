@@ -1,5 +1,7 @@
 "use client";
 
+import { shouldBypassImageOptimization } from "@/lib/image-optimization";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import type { Campaign } from "@/services/ai-chatbot.api";
@@ -54,7 +56,10 @@ export default function CampaignImageGallery({
               className="relative h-28 w-28 overflow-hidden rounded-lg border border-[#DCE7FF] bg-white transition hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-[#33ADED]"
               aria-label={`View campaign: ${campaign.title}`}
             >
-              <img
+              <Image
+                unoptimized={shouldBypassImageOptimization(campaign.image)}
+                width={112}
+                height={112}
                 src={campaign.image}
                 alt={campaign.title}
                 className="h-full w-full object-cover"
@@ -81,10 +86,14 @@ export default function CampaignImageGallery({
             className="relative w-full max-w-3xl overflow-hidden rounded-xl bg-white dark:bg-[#092544]"
             onClick={(event) => event.stopPropagation()}
           >
-            <img
+            <Image
+              unoptimized={shouldBypassImageOptimization(selectedCampaign.image)}
+              sizes="(max-width: 799px) calc(100vw - 32px), 768px"
+              width={1200}
+              height={800}
               src={selectedCampaign.image}
               alt={selectedCampaign.title}
-              className="max-h-[75vh] w-full object-contain bg-black"
+              className="max-h-[75vh] h-auto w-full object-contain bg-black"
             />
             <div className="flex items-center justify-between gap-3 p-3 text-[#0F172A] dark:text-white">
               <p className="truncate text-sm font-semibold">

@@ -1,7 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import Script from 'next/script';
+import { createContext, useContext, useSyncExternalStore, useCallback } from 'react';
 
 type Theme = 'light' | 'dark';
 
@@ -12,47 +11,26 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | null>(null);
 
+function getTheme(): Theme {
+    return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+}
+
+function subscribeToTheme(onChange: () => void) {
+    const observer = new MutationObserver(onChange);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => observer.disconnect();
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-    // matches SSR exactly — no mismatch, no reset of children
-    const [theme, setThemeState] = useState<Theme>('light');
-    const [mounted, setMounted] = useState(false);
-
-    useEffect(() => {
-        // sync React state with whatever the blocking script already painted
-        const current = document.documentElement.getAttribute('data-theme') as Theme | null;
-        if (current === 'dark' || current === 'light') {
-            setThemeState(current);
-        }
-        setMounted(true);
-    }, []);
-
-    useEffect(() => {
-        if (!mounted) return; // skip the very first run, avoid overwriting pre-set attribute
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-    }, [theme, mounted]);
-
+    const theme = useSyncExternalStore(subscribeToTheme, getTheme, () => 'light' as Theme);
     const toggleTheme = useCallback(() => {
-        setThemeState((prev) => (prev === 'light' ? 'dark' : 'light'));
+        const nextTheme = getTheme() === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', nextTheme);
+        try { localStorage.setItem('theme', nextTheme); } catch { /* Storage may be unavailable. */ }
     }, []);
 
     return (
         <ThemeContext.Provider value={{ theme, toggleTheme }}>
-            <Script
-                id="theme-init"
-                strategy="beforeInteractive"
-                dangerouslySetInnerHTML={{
-                    __html: `
-                        (function() {
-                          try {
-                            var theme = localStorage.getItem('theme');
-                            if (theme !== 'light' && theme !== 'dark') theme = 'light';
-                            document.documentElement.setAttribute('data-theme', theme);
-                          } catch (e) {}
-                        })();
-                    `,
-                }}
-            />
             {children}
         </ThemeContext.Provider>
     );

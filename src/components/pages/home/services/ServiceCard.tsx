@@ -1,5 +1,6 @@
 "use client";
 
+import { shouldBypassImageOptimization } from "@/lib/image-optimization";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -62,7 +63,7 @@ export function ServiceCard({
           fill
           className="object-cover"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 380px, 424px"
-          unoptimized={service.image?.startsWith("https")}
+          unoptimized={shouldBypassImageOptimization(service.image || "/images/service.png")}
         />
         {selected && (
           <span className="absolute top-3 right-3 bg-[#006F1F] text-white text-xs px-2 py-1 rounded-full font-inter z-10">

@@ -4,13 +4,23 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { useBooking } from "@/contexts/BookingContext";
 import { useTheme } from "@/contexts/ThemeContext";
-import { format } from "date-fns";
+import { formatUtcDate, formatUtcTime } from "@/lib/bookingTime";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useRef } from "react";
 
 export function BookingSuccess() {
-  const searchParams = useSearchParams();
-  const { selectedServices, lastBookingDetails } = useBooking();
+  const { selectedServices, lastBookingDetails, setLastBookingDetails } = useBooking();
+  const mounted = useRef(false);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+      // Preserve the receipt during Strict Mode's setup/cleanup replay.
+      queueMicrotask(() => {
+        if (!mounted.current) setLastBookingDetails(null);
+      });
+    };
+  }, [setLastBookingDetails]);
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
@@ -19,29 +29,11 @@ export function BookingSuccess() {
       ? lastBookingDetails.services
       : selectedServices;
 
-  const dateParam = searchParams.get("date") || lastBookingDetails?.date;
+  const dateParam = lastBookingDetails?.date;
   const startAtParam =
-    searchParams.get("startAt") || lastBookingDetails?.startAt;
-  const timeParam = searchParams.get("time") || lastBookingDetails?.time || "";
-
-  const rawDate = startAtParam || dateParam;
-  let date: Date | null = null;
-  if (rawDate) {
-    const parsed = new Date(
-      rawDate.includes("T") ? rawDate : `${rawDate}T00:00:00`,
-    );
-    if (!isNaN(parsed.getTime())) {
-      date = parsed;
-    } else {
-      const fallbackParsed = new Date(rawDate);
-      if (!isNaN(fallbackParsed.getTime())) {
-        date = fallbackParsed;
-      }
-    }
-  }
-
-  const dateDisplay = date ? format(date, "MMMM d, yyyy") : "";
-  const timeDisplay = timeParam;
+    lastBookingDetails?.startAt;
+  const dateDisplay = formatUtcDate(startAtParam || dateParam || "");
+  const timeDisplay = startAtParam ? formatUtcTime(startAtParam) : "";
   const dateTimeDisplay = dateDisplay
     ? timeDisplay
       ? `${dateDisplay}, ${timeDisplay}`

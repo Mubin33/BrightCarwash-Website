@@ -1,5 +1,13 @@
+import type { Metadata } from 'next';
+import { createPageMetadata } from '@/lib/site';
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import React from "react";
+
+export const metadata: Metadata = createPageMetadata(
+    '/buy-membership',
+    'Buy a Membership',
+    'Join Brightside Car Wash and enjoy unlimited washes with our membership plans in Naperville.',
+);
 
 export default function BuyMembershipPage() {
   return (
@@ -22,6 +30,10 @@ export default function BuyMembershipPage() {
         </div>
         <div className="w-full rounded-lg overflow-hidden mt-5">
           <iframe
+            sandbox="allow-scripts allow-forms allow-same-origin allow-popups"
+            referrerPolicy="no-referrer"
+            title="Buy a Membership"
+            loading="lazy"
             src="https://app.flexwash.com/sign-up-portal/location-and-package?organizationId=264"
             style={{ width: "100%", minHeight: "400px", border: "none" }}
           ></iframe>

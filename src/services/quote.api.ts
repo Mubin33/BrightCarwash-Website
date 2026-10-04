@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+import { api } from "@/lib/http";
 
 interface QuoteParams {
     full_name: string;
@@ -11,6 +9,6 @@ interface QuoteParams {
 }
 
 export async function submitQuote(params: QuoteParams) {
-    const { data } = await axios.post(`${API_BASE}/quote`, params);
+    const { data } = await api.post(`/quote`, params);
     return data;
 }

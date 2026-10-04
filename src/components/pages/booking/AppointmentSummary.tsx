@@ -1,38 +1,31 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
 import { Icon } from '@/components/ui/Icon';
 import { useBooking } from '@/contexts/BookingContext';
 import { useTheme } from '@/contexts/ThemeContext';
-import { format } from 'date-fns';
-import { useCartSummary } from '@/hooks/useCartSummary';
+import { formatUtcDate, formatUtcTime } from '@/lib/bookingTime';
+import type { useCartSummary } from '@/hooks/useCartSummary';
 
 interface Props {
+    pricing: ReturnType<typeof useCartSummary>;
     overrideStartAt?: string;
     overrideTime?: string;
 }
 
-export function AppointmentSummary({ overrideStartAt, overrideTime }: Props) {
-    const searchParams = useSearchParams();
-    const { selectedServices, selectedLocation } = useBooking();
+export function AppointmentSummary({ overrideStartAt, pricing }: Props) {
+    const { selectedServices, selection } = useBooking();
     const { theme } = useTheme();
     const isDark = theme === 'dark';
 
-    const startAt = overrideStartAt || searchParams.get('startAt') || '';
-    const dateParam = searchParams.get('date');
-    const timeParam = overrideTime || searchParams.get('time');
-    const date = dateParam ? new Date(dateParam) : startAt ? new Date(startAt) : null;
-    const dayName = date ? format(date, 'EEEE') : '';
-    const dateDisplay = date ? format(date, 'MMMM d, yyyy') : '';
+    const startAt = overrideStartAt || selection.startAt || '';
+    const dateParam = selection.date;
+    const timeDisplay = startAt ? formatUtcTime(startAt) : '';
+    const dateDisplay = formatUtcDate(startAt || dateParam || '', true);
 
-    const { summary } = useCartSummary(
-        selectedLocation,
-        selectedServices.map((s) => s.variationId)
-    );
-
-    const subtotal = selectedServices.reduce((sum, s) => sum + s.price, 0);
-    const tax = summary ? summary.taxInCents / 100 : 0;
-    const total = summary ? summary.totalInCents / 100 : subtotal;
+    const { summary, error, loading, refetch } = pricing;
+    const subtotal = summary ? summary.subtotalInCents / 100 : null;
+    const tax = summary ? summary.taxInCents / 100 : null;
+    const total = summary ? summary.totalInCents / 100 : null;
 
     return (
         <div className={`flex p-3 sm:p-4 lg:p-6 flex-col items-center gap-4 sm:gap-6 self-stretch rounded-xl border ${isDark ? 'border-white/20 bg-white/[0.04]' : 'border-[#DFE1E7] bg-white'}`}>
@@ -44,13 +37,13 @@ export function AppointmentSummary({ overrideStartAt, overrideTime }: Props) {
                 <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
                     <Icon name="calendar" width={14} height={14} color="#0098E8" className="sm:w-4 sm:h-4 shrink-0" />
                     <span className={`font-inter text-xs sm:text-sm lg:text-base font-normal leading-[150%] truncate ${isDark ? 'text-white/80' : 'text-[#4A4C56]'}`}>
-                        {dayName}, {dateDisplay}
+                        {dateDisplay}
                     </span>
                 </div>
                 <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
                     <Icon name="clock" width={14} height={14} color="#0098E8" className="sm:w-4 sm:h-4 shrink-0" />
                     <span className={`font-inter text-xs sm:text-sm lg:text-base font-normal leading-[150%] truncate ${isDark ? 'text-white/80' : 'text-[#4A4C56]'}`}>
-                        {timeParam || '\u2014'}
+                        {timeDisplay || '\u2014'}
                     </span>
                 </div>
             </div>
@@ -68,19 +61,21 @@ export function AppointmentSummary({ overrideStartAt, overrideTime }: Props) {
 
             <div className={`w-full h-px ${isDark ? 'bg-white/20' : 'bg-[#DFE1E7]'}`} />
 
+            {loading && <p role="status">Calculating total including tax…</p>}
+            {error && <div role="alert"><p>{error}</p><button type="button" onClick={refetch} className="underline">Retry total</button></div>}
             <div className="flex justify-between items-center self-stretch">
                 <span className={`font-inter text-xs sm:text-sm ${isDark ? 'text-white/60' : 'text-[#4A4C56]'}`}>Subtotal</span>
-                <span className={`font-inter text-xs sm:text-sm font-medium ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>${subtotal.toFixed(2)}</span>
+                <span className={`font-inter text-xs sm:text-sm font-medium ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>{subtotal === null ? "—" : `$${subtotal.toFixed(2)}`}</span>
             </div>
 
             <div className="flex justify-between items-center self-stretch">
                 <span className={`font-inter text-xs sm:text-sm ${isDark ? 'text-white/60' : 'text-[#4A4C56]'}`}>Tax</span>
-                <span className={`font-inter text-xs sm:text-sm ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>${tax.toFixed(2)}</span>
+                <span className={`font-inter text-xs sm:text-sm ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>{tax === null ? "—" : `$${tax.toFixed(2)}`}</span>
             </div>
 
             <div className="flex justify-between items-center self-stretch">
                 <span className={`font-inter text-sm sm:text-base font-medium ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>Total</span>
-                <span className="text-[#B23730] font-inter text-base sm:text-lg font-bold">${total.toFixed(2)}</span>
+                <span className="text-[#B23730] font-inter text-base sm:text-lg font-bold">{total === null ? "—" : `$${total.toFixed(2)}`}</span>
             </div>
         </div>
     );

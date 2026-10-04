@@ -3,6 +3,7 @@ import { fetchHours } from "@/services/hours.api";
 import type { Content } from "@/types/hours";
 import { format, parse } from "date-fns";
 import { useEffect, useState } from "react";
+import { fetchCachedPublicData } from "@/lib/public-data-cache";
 
 const formatTime = (start: string, end: string) => {
   const formatTimeValue = (time: string) => {
@@ -44,8 +45,7 @@ export function LocationHours() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setLoading(true);
-    fetchHours()
+    fetchCachedPublicData("business-hours", fetchHours)
       .then((data) => {
         setHours(transformHours(data?.content || {}));
         setError(null);

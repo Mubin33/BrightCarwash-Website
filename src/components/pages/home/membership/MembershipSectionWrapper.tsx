@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { Icon } from '@/components/ui/Icon';
-import { Button } from '@/components/ui/Button';
 import { membershipData } from '@/data/membership';
 
 export function MembershipSectionWrapper() {
@@ -13,6 +12,7 @@ export function MembershipSectionWrapper() {
                         src={membershipData.image}
                         alt="Heroes Membership"
                         fill
+                        sizes="(min-width: 1280px) 397px, 300px"
                         className="object-cover "
                     />
                 </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { shouldBypassImageOptimization } from "@/lib/image-optimization";
 import { useTheme } from "@/contexts/ThemeContext";
 import type { NewsArticle } from "@/data/news";
 import Image from "next/image";
@@ -64,8 +65,8 @@ export function NewsCard({ article, loading = false }: Props) {
             alt={article.title}
             fill
             className="object-cover"
-            sizes="100vw"
-            unoptimized
+            sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 424px"
+            unoptimized={shouldBypassImageOptimization(article.image)}
           />
         </div>
         <div className="flex flex-col items-start gap-3 p-4 pt-0">

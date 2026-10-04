@@ -1,5 +1,13 @@
+import type { Metadata } from 'next';
+import { createPageMetadata } from '@/lib/site';
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import React from "react";
+
+export const metadata: Metadata = createPageMetadata(
+    '/gift-cards',
+    'Gift Cards',
+    'Give the gift of a clean car with Brightside Car Wash gift cards.',
+);
 
 export default function GiftCardsPage() {
   return (
@@ -21,6 +29,8 @@ export default function GiftCardsPage() {
         </div>
         <div className="w-full rounded-lg overflow-hidden mt-5">
           <iframe
+            sandbox="allow-scripts allow-forms allow-same-origin allow-popups"
+            referrerPolicy="no-referrer"
             src="https://app.flexwash.com/purchase-portal?organizationId=264&amp;carWashId=267&amp;packageId=5773&amp;denominations=2900%2C3900%2C4900%2C10000%2C20000%2C30000"
             className="w-full min-h-100 border-0"
             title="Purchase Gift Cards"

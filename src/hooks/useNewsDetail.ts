@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { fetchNewsBySlug } from '@/services/news.api';
 import { parseNewsContent } from '@/lib/news-parser';
-import { transformNewsArticle } from '@/data/news';
 import type { NewsDetail, NewsArticle } from '@/data/news';
+import { fetchCachedPublicData } from '@/lib/public-data-cache';
 
 function toDetail(article: NewsArticle, related: NewsArticle[]): NewsDetail {
     const parsed = parseNewsContent(article.content);
@@ -21,15 +21,24 @@ export function useNewsDetail(slug: string) {
     const [article, setArticle] = useState<NewsDetail | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const requestKey = slug;
+    const [previousKey, setPreviousKey] = useState(requestKey);
+    if (previousKey !== requestKey) {
+        setPreviousKey(requestKey);
+        setArticle(null);
+        setError(null);
+        setLoading(true);
+    }
 
     useEffect(() => {
-        setLoading(true);
-        fetchNewsBySlug(slug)
+        let active = true;
+        fetchCachedPublicData(`news-detail:${slug}`, () => fetchNewsBySlug(slug))
             .then(({ article: newsArticle, related }) =>
-                setArticle(toDetail(newsArticle, related))
+                active && setArticle(toDetail(newsArticle, related))
             )
-            .catch((err) => setError(err.message))
-            .finally(() => setLoading(false));
+            .catch((err) => { if (active) setError(err.message); })
+            .finally(() => { if (active) setLoading(false); });
+        return () => { active = false; };
     }, [slug]);
 
     return { article, loading, error };

@@ -1,25 +1,18 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useSyncExternalStore } from 'react';
 import { useBooking } from '@/contexts/BookingContext';
+import { BOOKING_LOCK_DURATION_MS } from '@/lib/booking-state';
 
-const LOCK_DURATION_SECONDS = 10 * 60; // 10 minutes
+const subscribeToHydration = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
+
+const LOCK_DURATION_SECONDS = BOOKING_LOCK_DURATION_MS / 1000;
 
 interface Props {
     onExpire?: () => void;
-}
-
-function getStoredTimestamp(): number | null {
-    if (typeof window === 'undefined') return null;
-    try {
-        const stored = localStorage.getItem('bookingLockTimestamp');
-        if (stored) {
-            const num = Number(stored);
-            if (!isNaN(num) && num > 0) return num;
-        }
-    } catch {}
-    return null;
 }
 
 function calculateRemainingSeconds(timestamp: number | null): number {
@@ -30,8 +23,8 @@ function calculateRemainingSeconds(timestamp: number | null): number {
 
 export function CountdownTimer({ onExpire }: Props) {
     const router = useRouter();
-    const { lockTimestamp, setLockTimestamp } = useBooking();
-    const [mounted, setMounted] = useState(false);
+    const { lockTimestamp } = useBooking();
+    const mounted = useSyncExternalStore(subscribeToHydration, getClientSnapshot, getServerSnapshot);
 
     // Keep onExpire in a ref to avoid clearing/restarting the interval on every parent re-render
     const onExpireRef = useRef(onExpire);
@@ -39,7 +32,7 @@ export function CountdownTimer({ onExpire }: Props) {
         onExpireRef.current = onExpire;
     }, [onExpire]);
 
-    const activeTimestamp = lockTimestamp || getStoredTimestamp();
+    const activeTimestamp = lockTimestamp;
     const [remainingSeconds, setRemainingSeconds] = useState<number>(() => {
         return calculateRemainingSeconds(activeTimestamp);
     });
@@ -47,23 +40,10 @@ export function CountdownTimer({ onExpire }: Props) {
     const hasExpiredRef = useRef(false);
 
     useEffect(() => {
-        setMounted(true);
-        const stored = getStoredTimestamp();
-        if (!lockTimestamp && stored) {
-            setLockTimestamp?.(stored);
-        } else if (!lockTimestamp && !stored) {
-            const now = Date.now();
-            setLockTimestamp?.(now);
-            try {
-                localStorage.setItem('bookingLockTimestamp', now.toString());
-            } catch {}
-        }
-    }, [lockTimestamp, setLockTimestamp]);
+        if (!mounted || !lockTimestamp) return;
+        hasExpiredRef.current = false;
 
-    useEffect(() => {
-        if (!mounted) return;
-
-        const effectiveTimestamp = lockTimestamp || getStoredTimestamp() || Date.now();
+        const effectiveTimestamp = lockTimestamp;
 
         const tick = () => {
             const remaining = calculateRemainingSeconds(effectiveTimestamp);

@@ -1,6 +1,8 @@
-import axios from 'axios';
+import type { LockSlotRequest, LockSlotResponse } from '@/types/booking';
+import { REQUEST_TIMEOUT_MS } from '@/lib/http-client';
+import { api } from "@/lib/http";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+import { API_BASE } from "@/lib/env";
 
 export interface AvailabilitySlot {
     startAt: string;
@@ -25,27 +27,48 @@ export async function getAvailability(params: {
     startAt: string;
     endAt: string;
 }): Promise<AvailabilityResponse> {
-    const { data } = await axios.post(`${API_BASE}/appointments/availability`, params);
+    const { data } = await api.post(`/appointments/availability`, params);
     return data.data;
 }
 
-export async function lockSlot(params: {
-    locationId: string;
-    startAt: string;
-    serviceVariationIds: string[];
-    cartId: string;
-}) {
-    const { data } = await axios.post(`${API_BASE}/appointments/lock`, params);
+export async function lockSlot(params: LockSlotRequest): Promise<LockSlotResponse> {
+    const { data } = await api.post<{ data: LockSlotResponse }>(`/appointments/lock`, params);
     return data.data;
 }
 
-export async function releaseLock(params: {
+export interface ReleaseLockParams {
     locationId: string;
     startAt: string;
     lockToken: string;
-}) {
-    const { data } = await axios.post(`${API_BASE}/appointments/lock/release`, params);
+}
+
+const releaseLockUrl = `${API_BASE}/appointments/lock/release`;
+
+export async function releaseLock(params: ReleaseLockParams) {
+    const { data } = await api.post(releaseLockUrl, params);
     return data;
+}
+
+/** Best-effort release during navigation/unload; keepalive lets the request outlive the page. */
+export async function releaseLockBeacon(params: ReleaseLockParams): Promise<boolean> {
+    if (!params.locationId || !params.startAt || !params.lockToken) return false;
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+    try {
+        const response = await fetch(releaseLockUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(params),
+            keepalive: true,
+            signal: controller.signal,
+        });
+        return response.ok;
+    } catch {
+        return false;
+    } finally {
+        clearTimeout(timer);
+    }
 }
 
 export async function checkoutBooking(params: {
@@ -60,6 +83,6 @@ export async function checkoutBooking(params: {
     customerNote: string;
     vehicle: string;
 }) {
-    const { data } = await axios.post(`${API_BASE}/appointments/checkout`, params);
+    const { data } = await api.post(`/appointments/checkout`, params, { timeout: 30_000 });
     return data;
 }

@@ -1,11 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { getApiFailure } from '@/lib/http-client';
+import { useRef, useState } from 'react';
 import { checkoutBooking } from '@/services/booking.api';
 import { toast } from 'react-toastify';
 
+export type CheckoutResult = 'success' | 'failed' | 'uncertain' | 'in-progress';
+
 export function useCheckout() {
     const [loading, setLoading] = useState(false);
+    const inFlight = useRef(false);
 
     const checkout = async (params: {
         locationId: string;
@@ -18,7 +22,9 @@ export function useCheckout() {
         customerNote: string;
         vehicle: string;
         nonce: string;
-    }) => {
+    }): Promise<CheckoutResult> => {
+        if (inFlight.current) return 'in-progress';
+        inFlight.current = true;
         setLoading(true);
         try {
             await checkoutBooking({
@@ -26,13 +32,16 @@ export function useCheckout() {
                 sourceId: params.nonce,
             });
             toast.success('Booking confirmed!');
-            return true;
-        } catch (error: any) {
-            const message = error.response?.data?.message;
-            const errorMsg = Array.isArray(message) ? message.join(', ') : message || 'Payment failed';
-            toast.error(errorMsg);
-            return false;
+            return 'success';
+        } catch (error: unknown) {
+            const failure = getApiFailure(error, 'Payment failed');
+            const uncertain = failure.kind !== 'http' || (failure.status ?? 0) >= 500;
+            toast.error(uncertain
+                ? 'We could not confirm your payment status. Please contact us to verify your booking before paying again.'
+                : failure.message);
+            return uncertain ? 'uncertain' : 'failed';
         } finally {
+            inFlight.current = false;
             setLoading(false);
         }
     };

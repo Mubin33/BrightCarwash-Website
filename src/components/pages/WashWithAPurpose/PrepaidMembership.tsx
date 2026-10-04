@@ -12,7 +12,7 @@ export default function PrepaidMembership() {
               width={500}
               height={500}
               src="/images/wash-with-a-purpose3.png"
-              alt=""
+              alt="Brightside Car Wash team posing together in front of an Uncle Sam display"
               className="w-full h-full rounded-lg object-cover object-center"
             />
           </div>
@@ -89,9 +89,9 @@ export default function PrepaidMembership() {
           </div>
         </div>
         <p className="border border-[#8AD0F4] rounded-lg text-[#0098E8] bg-[rgba(0,152,232,0.12)] text-xs lg:text-sm p-3 lg:p-4 mt-4 lg:mt-6">
-          You'll be taken to our secure Square checkout to complete your
-          purchase. We'll collect your name, email, phone, and license plate,
-          and you'll be asked to name the organization you're supporting
+          You&apos;ll be taken to our secure Square checkout to complete your
+          purchase. We&apos;ll collect your name, email, phone, and license plate,
+          and you&apos;ll be asked to name the organization you&apos;re supporting
           (required) so we can set up your membership and direct your 20%
           give-back.
         </p>

@@ -1,5 +1,6 @@
 'use client';
 
+import { shouldBypassImageOptimization } from "@/lib/image-optimization";
 import Image from 'next/image';
 import type { GalleryImage } from '@/types/gallery';
 
@@ -25,9 +26,9 @@ export function GalleryImageCard({ image, height, showLabel = true, onClick }: P
                 fill
                 className="object-cover rounded-xl"
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 424px"
-                unoptimized
-                onError={(e) => {
-                    console.error('Image failed to load in card:', image.src);
+                unoptimized={shouldBypassImageOptimization(image.src)}
+                onError={() => {
+                    // Intentionally silent in production to avoid noisy logs and leaking image URLs.
                 }}
             />
             {showLabel && image.label && (

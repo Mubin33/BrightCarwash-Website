@@ -1,3 +1,4 @@
+import { shouldBypassImageOptimization } from "@/lib/image-optimization";
 import Image from 'next/image';
 
 interface Company {
@@ -25,8 +26,9 @@ export function TrustedByLogos({ companies, isDark }: Props) {
                             src={company.logo}
                             alt={company.name}
                             fill
+                            sizes="160px"
                             className={`object-contain ${isDark ? 'brightness-0 invert' : ''}`}
-                            unoptimized={company.logo.startsWith('http')}
+                            unoptimized={shouldBypassImageOptimization(company.logo)}
                         />
                     </div>
                 </div>

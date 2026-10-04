@@ -68,7 +68,7 @@ export function AboutSectionWrapper() {
                 className="sm:w-4 sm:h-4"
               />
               <span className="w-fit font-inter text-[10px] xs:text-xs sm:text-sm font-normal leading-[112%] uppercase">
-                THE FOUNDER'S STORY
+                THE FOUNDER&apos;S STORY
               </span>
             </div>
             <h1 className="font-bebas text-3xl sm:text-4xl lg:text-5xl font-normal leading-[116%] text-white mb-4">
@@ -76,7 +76,7 @@ export function AboutSectionWrapper() {
               & SERVICE.
             </h1>
             <p className="text-white/80 font-inter text-sm xl:text-lg dark:text-white/80 font-normal leading-[160%] self-stretch">
-              At Brightside Car Wash, we're more than just a car wash we're a
+              At Brightside Car Wash, we&apos;re more than just a car wash we&apos;re a
               locally owned, community-focused business committed to providing
               exceptional full-service car care in Naperville. As a
               veteran-owned and family-operated company, we take pride in

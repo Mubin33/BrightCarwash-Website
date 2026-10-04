@@ -1,5 +1,6 @@
 "use client";
 
+import { shouldBypassImageOptimization } from "@/lib/image-optimization";
 import Image from 'next/image';
 
 interface HeroBannerProps {
@@ -13,10 +14,12 @@ export function HeroBanner({ bannerImageUrl }: HeroBannerProps) {
                 <Image
                     src={bannerImageUrl}
                     alt="Hero banner"
+                    loading="eager"
+                    sizes="(max-width: 1023px) calc(100vw - 48px), (max-width: 1279px) 500px, 648px"
                     width={648}
                     height={500}
                     className="w-full h-auto object-cover rounded-xl"
-                    unoptimized
+                    unoptimized={shouldBypassImageOptimization(bannerImageUrl)}
                 />
             </div>
         </div>

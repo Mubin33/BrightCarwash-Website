@@ -34,7 +34,7 @@ export function FaqSectionWrapper() {
       className={`self-stretch px-4 md:px-8 lg:px-16 xl:px-72 py-20 flex flex-col justify-center items-center gap-12 ${isDark ? "bg-[#1A1A1A]" : "bg-[#FFF7E6]"}`}
     >
       <div className="self-stretch flex flex-col justify-end items-center gap-3">
-        <FaqBadge isDark={isDark} />
+        <FaqBadge />
         <div className="self-stretch flex flex-col justify-center items-center gap-4">
           <div className="w-full max-w-[384px] text-center">
             <span

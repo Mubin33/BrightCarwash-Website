@@ -1,10 +1,6 @@
 import { Icon } from "@/components/ui/Icon";
 
-interface Props {
-  isDark: boolean;
-}
-
-export function FaqBadge({ isDark }: Props) {
+export function FaqBadge() {
   return (
     <div className="px-3 py-1.5 bg-[#b23730] rounded-lg outline outline-[#E7C1BF] inline-flex justify-start items-center gap-3">
       <div className="size-5 relative overflow-hidden">

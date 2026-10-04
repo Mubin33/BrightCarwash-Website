@@ -1,6 +1,5 @@
 'use client';
 
-import { Icon } from '@/components/ui/Icon';
 import { ContrastIcon } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 

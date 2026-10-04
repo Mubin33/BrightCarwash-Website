@@ -2,7 +2,6 @@
 
 import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
-import { HeroStats } from "./HeroStats";
 import { QuoteForm } from "./QuoteForm";
 import { usePublicHero } from "@/hooks/usePublicHero";
 import Link from "next/link";
@@ -73,7 +72,6 @@ export function HeroSectionWrapper() {
 
   const showForm = data.status === "form";
   const showBanner = data.status === "banner";
-  const isHidden = data.status === "hidden";
   const showRightColumn = showForm || showBanner;
 
   let backgroundImages: string[] = [];
@@ -101,9 +99,13 @@ export function HeroSectionWrapper() {
         {backgroundImages.length > 0 ? (
           <HeroBackgroundCarousel images={backgroundImages} autoPlayInterval={3000} />
         ) : (
-          <div
-            className="w-full h-full bg-cover bg-center"
-            style={{ backgroundImage: "url('/images/hero-image.png')" }}
+          <Image
+            src="/images/hero-image.png"
+            alt=""
+            fill
+            sizes="100vw"
+            preload
+            className="object-cover object-center"
           />
         )}
       </div>

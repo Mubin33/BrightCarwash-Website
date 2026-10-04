@@ -6,18 +6,33 @@ export function useCheckoutValidation(
 ) {
   const validate = (): BookingValidationErrors => {
     const errors: BookingValidationErrors = {};
+    const emailRegex = /^[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
-    if (!contactInfo.firstName.trim())
+    const firstName = contactInfo.firstName.trim();
+    if (!firstName) {
       errors.firstName = "First name is required";
-    if (!contactInfo.lastName.trim()) errors.lastName = "Last name is required";
+    } else if (firstName.length > 100) {
+      errors.firstName = "First name must be 100 characters or fewer";
+    }
+
+    const lastName = contactInfo.lastName.trim();
+    if (!lastName) {
+      errors.lastName = "Last name is required";
+    } else if (lastName.length > 100) {
+      errors.lastName = "Last name must be 100 characters or fewer";
+    }
+
+    const phoneDigits = contactInfo.phone.replace(/\D/g, "");
     if (!contactInfo.phone.trim()) {
       errors.phone = "Phone number is required";
-    } else if (contactInfo.phone.replace(/\D/g, "").length < 10) {
+    } else if (phoneDigits.length !== 10) {
       errors.phone = "Please enter a valid phone number";
     }
-    if (!contactInfo.email.trim()) {
+
+    const email = contactInfo.email.trim();
+    if (!email) {
       errors.email = "Email address is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactInfo.email)) {
+    } else if (email.length > 254 || !emailRegex.test(email)) {
       errors.email = "Please enter a valid email address";
     }
 
@@ -42,14 +57,16 @@ export function useCheckoutValidation(
       errors.vehicleYear = "Please enter a valid 4-digit year";
     }
 
+    if (contactInfo.note.length > 500) {
+      errors.note = "Appointment note must be 500 characters or fewer";
+    }
+
     if (!agreed) errors.agreed = "You must agree to the Privacy Policy";
 
     return errors;
   };
 
   return {
-    isFormValid: true,
-    errors: {},
     validate,
     hasErrors: () => Object.keys(validate()).length > 0,
   };

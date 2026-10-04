@@ -1,5 +1,6 @@
 "use client";
 
+import { shouldBypassImageOptimization } from "@/lib/image-optimization";
 import { SkeletonNewsDetail } from "@/components/ui/Skeleton";
 import { useTheme } from "@/contexts/ThemeContext";
 import type { NewsDetail } from "@/data/news";
@@ -38,7 +39,7 @@ export function NewsDetailContent({ article, loading = false }: Props) {
             fill
             className="object-cover object-top"
             sizes="100vw"
-            unoptimized
+            unoptimized={shouldBypassImageOptimization(article.image)}
           />
         </div>
 
@@ -85,8 +86,8 @@ export function NewsDetailContent({ article, loading = false }: Props) {
                   alt={`${article.title} ${i + 1}`}
                   fill
                   className="object-cover"
-                  sizes="50vw"
-                  unoptimized
+                  sizes="(max-width: 639px) 100vw, 50vw"
+                  unoptimized={shouldBypassImageOptimization(img)}
                 />
               </div>
             ))}

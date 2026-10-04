@@ -1,7 +1,7 @@
 'use client';
 
 import { TimeSlotButton } from './TimeSlotButton';
-import { format } from 'date-fns';
+import { formatUtcTime } from '@/lib/bookingTime';
 import type { AvailabilitySlot } from '@/services/booking.api';
 
 interface Props {
@@ -18,12 +18,12 @@ interface Props {
 
 export function TimeSlotList({ slots, timeSlots, cacheLoading, dateLoading, date, selectedTime, selectedStartAt, isDark, onTimeChange }: Props) {
     return (
-        <div className="flex flex-col items-start gap-3.5 self-stretch">
+        <div role="group" aria-label="Choose an appointment time (UTC)" className="flex flex-col items-start gap-3.5 self-stretch">
             <h3 className={`self-stretch font-inter text-xl font-bold leading-normal ${isDark ? 'text-white' : 'text-[#1D1F2C]'}`}>Select a time</h3>
             {cacheLoading || dateLoading ? (
-                <div className="flex items-center justify-center py-12 self-stretch"><div className="w-6 h-6 border-2 border-[#0098E8] border-t-transparent rounded-full animate-spin" /></div>
+                <div role="status" className="flex items-center justify-center py-12 self-stretch"><span className="sr-only">Loading available times...</span><div className="w-6 h-6 border-2 border-[#0098E8] border-t-transparent rounded-full animate-spin" /></div>
             ) : slots.length === 0 && date ? (
-                <p className={`font-inter text-sm ${isDark ? 'text-white/50' : 'text-[#A5A5AB]'}`}>No available slots for this date.</p>
+                <p role="status" className={`font-inter text-sm ${isDark ? 'text-white/50' : 'text-[#A5A5AB]'}`}>No available slots for this date.</p>
             ) : (
                 <div className="flex flex-col items-start gap-[15px] self-stretch">
                     {Object.entries(timeSlots).map(([period, periodSlots]) =>
@@ -32,7 +32,7 @@ export function TimeSlotList({ slots, timeSlots, cacheLoading, dateLoading, date
                                 <span className={`font-inter text-base font-semibold leading-[150%] tracking-[0.16px] ${isDark ? 'text-white' : 'text-[#070707]'}`}>{period}</span>
                                 <div className="grid lg:grid-cols-4 sm:grid-cols-2 gap-3">
                                     {periodSlots.map((slot) => {
-                                        const time = format(new Date(slot.startAt), 'hh:mm a');
+                                        const time = formatUtcTime(slot.startAt);
                                         const isSelected = selectedStartAt
                                             ? selectedStartAt === slot.startAt
                                             : selectedTime === slot.startAt || selectedTime === time;

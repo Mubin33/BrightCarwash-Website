@@ -1,34 +1,24 @@
 "use client";
 
 import type { ServiceData } from "@/data/services";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { readBookingSnapshot, writeBookingSnapshot } from "@/lib/booking-storage";
+import { bookingReducer, initialBookingState, type BookingAction, type BookingSelection } from "@/lib/booking-state";
+import { useBookingLockController } from "@/hooks/useBookingLock";
+import { createContext, useCallback, useContext, useEffect, useReducer, useRef } from "react";
 
-export interface LastBookingDetails {
-  services: ServiceData[];
-  locationId?: string;
-  startAt?: string;
-  date?: string;
-  time?: string;
-  customerName?: string;
-  customerEmail?: string;
-  total?: number;
-  vehicle?: string;
-}
+import { readBookingReceipt, writeBookingReceipt, sanitizeBookingReceipt, type LastBookingDetails } from "@/lib/booking-receipt";
+export type { LastBookingDetails } from "@/lib/booking-receipt";
 
 interface BookingContextType {
+  hydrated: boolean;
   selectedServices: ServiceData[];
   selectedLocation: string;
+  selection: BookingSelection;
   lockToken: string | null;
   lockTimestamp: number | null;
   lastBookingDetails: LastBookingDetails | null;
-  setLockToken: (token: string | null, timestamp?: number | null) => void;
-  setLockTimestamp: (timestamp: number | null) => void;
+  lockActions: ReturnType<typeof useBookingLockController>;
+  setSelection: (selection: BookingSelection) => void;
   addService: (service: ServiceData) => void;
   removeService: (id: string) => void;
   clearServices: () => void;
@@ -36,186 +26,59 @@ interface BookingContextType {
   setSelectedLocation: (locationId: string) => void;
   setLastBookingDetails: (details: LastBookingDetails | null) => void;
 }
-
 const BookingContext = createContext<BookingContextType | null>(null);
 
 export function BookingProvider({ children }: { children: React.ReactNode }) {
-  const [selectedServices, setSelectedServices] = useState<ServiceData[]>([]);
-  const [selectedLocation, setSelectedLocation] = useState("");
-  const [lockToken, setLockToken] = useState<string | null>(null);
-  const [lockTimestamp, setLockTimestamp] = useState<number | null>(null);
-  const [lastBookingDetails, setLastBookingDetails] =
-    useState<LastBookingDetails | null>(null);
-
-  /* eslint-disable react-hooks/set-state-in-effect */
+  const [state, dispatch] = useReducer(bookingReducer, initialBookingState);
+  const stateRef = useRef(initialBookingState);
+  const getState = useCallback(() => stateRef.current, []);
+  const send = useCallback((action: BookingAction) => {
+    stateRef.current = bookingReducer(stateRef.current, action);
+    dispatch(action);
+    try { writeBookingSnapshot(localStorage, stateRef.current); } catch { /* Storage access can be denied. */ }
+  }, []);
   useEffect(() => {
-    const stored = localStorage.getItem("bookingServices");
-    if (stored) {
-      try {
-        setSelectedServices(JSON.parse(stored));
-      } catch {}
-    }
-    const storedLocation = localStorage.getItem("bookingLocation");
-    if (storedLocation) setSelectedLocation(storedLocation);
-    const storedLockToken = localStorage.getItem("bookingLockToken");
-    const storedLockTimestamp = localStorage.getItem("bookingLockTimestamp");
-    if (storedLockToken && storedLockTimestamp) {
-      const timestamp = Number(storedLockTimestamp);
-      const elapsedSeconds = (Date.now() - timestamp) / 1000;
-      if (elapsedSeconds < 10 * 60) {
-        setLockToken(storedLockToken);
-        setLockTimestamp(timestamp);
+    let restored = { ...initialBookingState, hydrated: true };
+    try { restored = readBookingSnapshot(localStorage, window.location.search); } catch { /* Use memory only. */ }
+    try {
+      if (window.location.pathname === '/booking' && new URLSearchParams(window.location.search).get('step') === 'confirmed') {
+        restored.lastBookingDetails = readBookingReceipt(sessionStorage);
       } else {
-        localStorage.removeItem("bookingLockToken");
-        localStorage.removeItem("bookingLockTimestamp");
+        writeBookingReceipt(sessionStorage, null);
       }
-    } else if (storedLockToken) {
-      const now = Date.now();
-      setLockToken(storedLockToken);
-      setLockTimestamp(now);
-      localStorage.setItem("bookingLockTimestamp", now.toString());
-    }
-    const storedLastBooking = localStorage.getItem("lastBookingDetails");
-    if (storedLastBooking) {
-      try {
-        setLastBookingDetails(JSON.parse(storedLastBooking));
-      } catch {}
-    }
-  }, []);
-  /* eslint-enable react-hooks/set-state-in-effect */
-
-  useEffect(() => {
-    if (selectedServices.length > 0) {
-      localStorage.setItem("bookingServices", JSON.stringify(selectedServices));
-    } else {
-      localStorage.removeItem("bookingServices");
-    }
-  }, [selectedServices]);
-
-  useEffect(() => {
-    if (selectedLocation)
-      localStorage.setItem("bookingLocation", selectedLocation);
-  }, [selectedLocation]);
-
-  useEffect(() => {
-    if (lockToken) {
-      localStorage.setItem("bookingLockToken", lockToken);
-    } else {
-      localStorage.removeItem("bookingLockToken");
-    }
-  }, [lockToken]);
-
-  useEffect(() => {
-    if (lockTimestamp) {
-      localStorage.setItem("bookingLockTimestamp", lockTimestamp.toString());
-    } else {
-      localStorage.removeItem("bookingLockTimestamp");
-    }
-  }, [lockTimestamp]);
-
-  useEffect(() => {
-    if (lastBookingDetails) {
-      localStorage.setItem(
-        "lastBookingDetails",
-        JSON.stringify(lastBookingDetails),
-      );
-    } else {
-      localStorage.removeItem("lastBookingDetails");
-    }
-  }, [lastBookingDetails]);
-
-  const handleSetLockToken = useCallback(
-    (token: string | null, timestamp?: number | null) => {
-      setLockToken(token);
-      if (token) {
-        const ts = timestamp != null ? timestamp : Date.now();
-        setLockTimestamp(ts);
-        try {
-          localStorage.setItem("bookingLockTimestamp", ts.toString());
-        } catch {}
-      } else {
-        setLockTimestamp(null);
-        try {
-          localStorage.removeItem("bookingLockTimestamp");
-        } catch {}
-      }
-    },
-    [],
-  );
-
-  const handleSetLockTimestamp = useCallback((timestamp: number | null) => {
-    setLockTimestamp(timestamp);
-  }, []);
-
-  const addService = useCallback(
-    (service: ServiceData) => {
-      setSelectedServices((prev) => {
-        if (prev.some((s) => s.id === service.id)) return prev;
-        const updated = [...prev, service];
-        localStorage.setItem("bookingServices", JSON.stringify(updated));
-        return updated;
-      });
-      if (!selectedLocation && service.locationId) {
-        setSelectedLocation(service.locationId);
-      }
-    },
-    [selectedLocation],
-  );
-
-  const removeService = useCallback((id: string) => {
-    setSelectedServices((prev) => {
-      const updated = prev.filter((s) => s.id !== id);
-      localStorage.setItem("bookingServices", JSON.stringify(updated));
-      return updated;
-    });
-  }, []);
-
-  const resetServices = useCallback(() => {
-    setSelectedServices((prev) => {
-      if (prev.length > 0) {
-        setLastBookingDetails((current) => current || { services: [...prev] });
-      }
-      return [];
-    });
-    setLockToken(null);
-    setLockTimestamp(null);
-    localStorage.removeItem("bookingServices");
-    localStorage.removeItem("bookingLockToken");
-    localStorage.removeItem("bookingLockTimestamp");
-  }, []);
-
-  const clearServices = useCallback(() => {
-    resetServices();
-    setSelectedLocation("");
-    localStorage.removeItem("bookingLocation");
-  }, [resetServices]);
-
-  return (
-    <BookingContext.Provider
-      value={{
-        selectedServices,
-        selectedLocation,
-        lockToken,
-        lockTimestamp,
-        lastBookingDetails,
-        setLockToken: handleSetLockToken,
-        setLockTimestamp: handleSetLockTimestamp,
-        addService,
-        removeService,
-        clearServices,
-        resetServices,
-        setSelectedLocation,
-        setLastBookingDetails,
-      }}
-    >
-      {children}
-    </BookingContext.Provider>
-  );
+    } catch { /* Use memory only when session storage is unavailable. */ }
+    send({ type: 'restore', state: restored });
+  }, [send]);
+  const lockActions = useBookingLockController(getState, send);
+  const { abandon } = lockActions;
+  const setSelection = useCallback((selection: BookingSelection) => {
+    if (JSON.stringify(getState().selection) !== JSON.stringify(selection)) abandon();
+    send({ type: 'selection', selection });
+  }, [getState, send, abandon]);
+  const addService = useCallback((service: ServiceData) => {
+    if (getState().selectedServices.some(s => s.id === service.id)) return;
+    abandon(); send({ type: 'add', service });
+  }, [getState, abandon, send]);
+  const removeService = useCallback((id: string) => { abandon(); send({ type: 'remove', id }); }, [abandon, send]);
+  const setSelectedLocation = useCallback((locationId: string) => {
+    if (getState().selectedLocation !== locationId) abandon();
+    send({ type: 'location', locationId });
+  }, [getState, abandon, send]);
+  const resetServices = useCallback(() => { abandon(); send({ type: 'reset', clearLocation: false }); }, [abandon, send]);
+  const clearServices = useCallback(() => { send({ type: 'reset', clearLocation: true }); }, [send]);
+  const setLastBookingDetails = useCallback((details: LastBookingDetails | null) => {
+    const receipt = sanitizeBookingReceipt(details);
+    try { writeBookingReceipt(sessionStorage, receipt); } catch { /* Keep confirmation available in memory. */ }
+    send({ type: 'receipt', details: receipt });
+  }, [send]);
+  return <BookingContext.Provider value={{ ...state, lockToken: state.activeLock?.token ?? null,
+    lockTimestamp: state.activeLock?.timestamp ?? null, lockActions, setSelection, addService, removeService,
+    clearServices, resetServices, setSelectedLocation, setLastBookingDetails,
+  }}>{children}</BookingContext.Provider>;
 }
 
 export function useBooking() {
   const context = useContext(BookingContext);
-  if (!context)
-    throw new Error("useBooking must be used within a BookingProvider");
+  if (!context) throw new Error("useBooking must be used within a BookingProvider");
   return context;
 }

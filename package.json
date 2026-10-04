@@ -9,14 +9,12 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@square/web-sdk": "^2.2.0",
-    "axios": "^1.18.1",
+    "axios": "^1.20.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.4.0",
     "isomorphic-dompurify": "^4.3.0",
-    "lucide": "^1.27.0",
     "lucide-react": "^1.23.0",
-    "next": "^16.3.0",
+    "next": "^16.3.6",
     "react": "19.2.4",
     "react-day-picker": "^10.0.1",
     "react-dom": "19.2.4",
@@ -26,14 +24,26 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@types/uuid": "^10.0.0",
     "babel-plugin-react-compiler": "1.0.0",
-    "eslint": "^9",
+    "eslint": "^9.39.5",
     "eslint-config-next": "16.2.10",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "packageManager": "npm@11.17.0",
+  "engines": {
+    "node": "24.x",
+    "npm": "11.x"
+  },
+  "overrides": {
+    "axios": "$axios",
+    "next": "$next",
+    "brace-expansion@<1.1.21": "^1.1.21",
+    "brace-expansion@>=4.0.0 <5.0.12": "5.0.12",
+    "dompurify@>=3.4.13 <=3.4.15": "^3.4.16",
+    "js-yaml@>=4.0.0 <4.3.2": "^4.3.2"
   }
 }
